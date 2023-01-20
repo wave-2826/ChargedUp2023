@@ -77,3 +77,10 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   // The selected command will be run in autonomous
   return m_chooser.GetSelected();
 }
+
+frc::XboxController* RobotContainer::getDriver() {
+   return &m_driver;
+}
+frc::XboxController* RobotContainer::getOperator() {
+   return &m_operator;
+}
