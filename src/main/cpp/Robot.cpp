@@ -11,6 +11,7 @@
 // ROBOTBUILDER TYPE: Robot.
 
 #include "Robot.h"
+#include "Globals.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
@@ -63,22 +64,18 @@ void Robot::TeleopInit() {
   }
 }
 
-double Deadband(double x, double deadzone) {
-  if (std::fabs(x) < deadzone)
-    return 0;
-  return x;
-}
+double Joystick(double x, double deadzone) { return (std::fabs(x) < deadzone) ? 0 : x; }
 
 /**
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  // double joystickLeftX =  Deadband(m_container->getDriver()->GetLeftX(), 0.07);
-  // double joystickLeftY =  Deadband(m_container->getDriver()->GetLeftY(), 0.07);
-  // double joystickRightX = Deadband(m_container->getDriver()->GetRightX(), 0.07);
+  double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
-  // // joystick inputs for swerve
-  // m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  // joystick inputs for swerve
+  m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
 }
 
 /**
