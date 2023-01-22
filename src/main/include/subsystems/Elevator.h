@@ -81,6 +81,8 @@ public:
     void Periodic() override;
     void SimulationPeriodic() override;
 
+    void runElevator();
+
     double getElevatorPosition();
     bool isElevatorAtHome();
 

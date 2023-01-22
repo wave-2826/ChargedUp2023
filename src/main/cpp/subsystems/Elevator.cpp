@@ -93,13 +93,18 @@ bool Elevator::setEndoFactor(double speed) {
 
 void Elevator::Periodic() {
     // Put code here to be run every loop
-    // RobotContainer *container = RobotContainer::GetInstance();
-    // if(NULL == container){
-    //     return;
-    // }
+
+}
 
 
-    /////////  ELEVATOR FUNCTIONS  /////////////////////
+void Elevator::SimulationPeriodic() {
+    // This method will be called once per scheduler run when in simulation
+
+}
+
+void Elevator::runElevator() {
+
+    /////////  Routine ELEVATOR FUNCTIONS  /////////////////////
 
     double elevatorSpeedCmd = 0.0;
     bool elevatorOverride = m_operatorJoystick->GetRightBumper();
@@ -158,6 +163,7 @@ void Elevator::Periodic() {
     setElevator(elevatorSpeedCmd);
 
     //////////////// Endofactor operation ////////////////////
+    
     double endofactorCmd = m_operatorJoystick->GetRightX();
     if(k_jsDeadband < endofactorCmd) {
         setEndoFactor(endofactorCmd);
@@ -171,11 +177,5 @@ void Elevator::Periodic() {
     // Print out for debugging
     std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << ";" << std::endl;
     std::cout << "EndoFactorCmd: " << endofactorCmd << std::endl;
-
-}
-
-
-void Elevator::SimulationPeriodic() {
-    // This method will be called once per scheduler run when in simulation
 
 }
