@@ -1,21 +1,9 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling AutonomousCommand.cpp successful.
+compiling Elevator.cpp successful.
 
 compiling Robot.cpp successful.
 
-compiling Intake.cpp successful.
-
-compiling Elevator.cpp successful.
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'virtual void Elevator::Periodic()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:127:10: warning: unused variable 'elevatorOverride' [-Wunused-variable]
-  127 |     bool elevatorOverride = m_operatorJoystick->GetRightBumper();
-      |          ^~~~~~~~~~~~~~~~
-
-compiling SwervePod.cpp successful.
-
 compiling RobotContainer.cpp successful.
-
-compiling Vision.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 
