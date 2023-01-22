@@ -151,14 +151,14 @@ gradle-app.setting
 .settings/
 bin/
 
-.vscode/*
+!.vscode/*
 !.gradle/*
-build
+!build
 !gradlew.bat
 !setting
 !radle/*
-.WPILib
-b!uild.gradle
+!.WPILib
+!b!uild.gradle
 !gradlew
 !BSD_License_for_WPILib_code.txt
 !Settings.gradle
