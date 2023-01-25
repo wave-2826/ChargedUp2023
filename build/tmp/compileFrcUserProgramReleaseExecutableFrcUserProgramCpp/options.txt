@@ -33,16 +33,6 @@ C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\9cd687ed106c05ce052598559edf
 -I
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\85738f1502889c3a45a5addc009c73c8\\transformed\\wpiapi-cpp-23.0.4-headers
 -I
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\f6c1b3059b7d759625896b3a4b166dfd\\transformed\\wpiapi-cpp-5.30.2-headers
--I
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\2869da6cd5f58e5990d5b793a258b6aa\\transformed\\api-cpp-5.30.2-headers
--I
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\39bb31eb16e6417821fe3ae219f7be31\\transformed\\cci-5.30.2-headers
--I
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\54233cc55cca1f1666803ede3a79af86\\transformed\\tools-23.0.1-headers
--I
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\600aab44103b552cea947e5d0ef8480e\\transformed\\wpiapi-cpp-23.0.1-headers
--I
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\2248a5f0cdaa42c1391739edb89c05c3\\transformed\\wpilibc-cpp-2023.1.1-headers
 -I
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\51fed8e3845b98fc49b8382d27827158\\transformed\\ntcore-cpp-2023.1.1-headers

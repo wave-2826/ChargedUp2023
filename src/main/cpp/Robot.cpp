@@ -70,12 +70,12 @@ double Joystick(double x, double deadzone) { return (std::fabs(x) < deadzone) ? 
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
-  double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
-  double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+  // double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  // double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  // double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
   // joystick inputs for swerve
-  m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  // m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
 
   // Elevator Operations
   m_container->m_elevator.runElevator();

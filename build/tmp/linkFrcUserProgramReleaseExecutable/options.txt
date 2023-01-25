@@ -16,11 +16,6 @@ C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\0ecd718ec84ade753925b143bb4f
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\15bd20052bee1d9e0dc7d9ab993aedca\\transformed\\cci-5.30.3-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\6a54346d40cb81ae8056621425bb1a39\\transformed\\tools-23.0.4-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\ae1f53c771537613179573236f063349\\transformed\\wpiapi-cpp-23.0.4-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixPro_WPI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\f96accd68a7ee5d3f00db95bea1ddb4d\\transformed\\wpiapi-cpp-5.30.2-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix_WPI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\51f02d1dac08c768d78ab4f828051e59\\transformed\\api-cpp-5.30.2-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\7b8f06e8155d7b901d3aee5f12da3c13\\transformed\\cci-5.30.2-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\a2d7ebe720cf03727efffa1bbe879f10\\transformed\\tools-23.0.1-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\ebf37d630cc4129afb3fa8e93d044bba\\transformed\\wpiapi-cpp-23.0.1-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixPro_WPI.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\3327ca3f3fca77967d0a90da4f517af4\\transformed\\wpilibc-cpp-2023.1.1-linuxathena\\linux\\athena\\shared\\libwpilibc.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\bcbadaab737f00067f239f08cd678906\\transformed\\ntcore-cpp-2023.1.1-linuxathena\\linux\\athena\\shared\\libntcore.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\521a11c5db3be161462dfd5d2787b9a7\\transformed\\hal-cpp-2023.1.1-linuxathena\\linux\\athena\\shared\\libwpiHal.so

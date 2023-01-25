@@ -16,11 +16,6 @@ C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\d5b2a04fe281b54050d361e14149
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\e3d9b43da8302731f07d1957569d9488\\transformed\\cci-5.30.3-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\642418e79235b785d448cc68b8543f69\\transformed\\tools-23.0.4-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\937e7096e56e9e49abe2d448d05e666a\\transformed\\wpiapi-cpp-23.0.4-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixPro_WPI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\3e0a53f5b968d7adbf73fedf394571dd\\transformed\\wpiapi-cpp-5.30.2-linuxathenadebug\\linux\\athena\\shared\\libCTRE_Phoenix_WPI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\9e03ad755eab529cd7568e5649a5d635\\transformed\\api-cpp-5.30.2-linuxathenadebug\\linux\\athena\\shared\\libCTRE_Phoenix.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\cdea70b27acc6beb1429c121f09802d2\\transformed\\cci-5.30.2-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\d07944fe43710513bf035c8ab00ee6c8\\transformed\\tools-23.0.1-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
-C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\eda34b115708ecec1d387de1993c03f7\\transformed\\wpiapi-cpp-23.0.1-linuxathenadebug\\linux\\athena\\shared\\libCTRE_PhoenixPro_WPI.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\6004149fe07880772b4dac2b4a7993ab\\transformed\\wpilibc-cpp-2023.1.1-linuxathenadebug\\linux\\athena\\shared\\libwpilibcd.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\451c72e23d52479192fbddf12e375f91\\transformed\\ntcore-cpp-2023.1.1-linuxathenadebug\\linux\\athena\\shared\\libntcored.so
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\c2b02f98476076d07eecd22e23fbfc5d\\transformed\\hal-cpp-2023.1.1-linuxathenadebug\\linux\\athena\\shared\\libwpiHald.so

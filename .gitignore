@@ -100,10 +100,6 @@ Temporary Items
 .apdisk
 
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 # Windows thumbnail cache files
 Thumbs.db
@@ -130,7 +126,6 @@ $RECYCLE.BIN/
 *.lnk
 
 .gradle
-/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -151,15 +146,4 @@ gradle-app.setting
 .settings/
 bin/
 
-!.vscode/*
-!.gradle/*
-!build
-!gradlew.bat
-!setting
-!radle/*
-!.WPILib
-!b!uild.gradle
-!gradlew
-!BSD_License_for_WPILib_code.txt
-!Settings.gradle
-!vendordeps/*
+build/
