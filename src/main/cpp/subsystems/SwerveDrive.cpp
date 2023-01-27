@@ -46,23 +46,15 @@ SwerveDrive::SwerveDrive() {
     m_kinematics = new SwerveDriveKinematics<3>{
         m_rightLocation, m_leftLocation, m_pointLocation
     };
-
-<<<<<<< HEAD
 */
-=======
->>>>>>> dc1fd9c75c30a3db96533cbc436361d9d530c40d
     SetName("SwerveDrive");
     SetSubsystem("SwerveDrive");
 }
 
 void SwerveDrive::initialize(){
-<<<<<<< HEAD
-    // m_frontPod->Initialize();
-=======
     m_rightPod->Initialize();
     m_leftPod->Initialize();
     m_pointPod->Initialize();
->>>>>>> dc1fd9c75c30a3db96533cbc436361d9d530c40d
 }
 
 void SwerveDrive::Periodic() {
@@ -74,36 +66,23 @@ void SwerveDrive::SimulationPeriodic() {
 }
 
 void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
-    // const double k_gearRatioWheelSpeed = 3.2196;
-    // const double k_wheelDiameterMeters = 0.0635;
-    // const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
-    // const double k_maxMotorSpeed = 5200.0;
+    const double k_gearRatioWheelSpeed = 3.2196;
+    const double k_wheelDiameterMeters = 0.0635;
+    const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
+    const double k_maxMotorSpeed = 5200.0;
 
-    // // transforming from pure joystick input into chassisspeeds
-    // double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
+    // transforming from pure joystick input into chassisspeeds
+    double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
 
-    // // represents the velocity of the robot chassis
-    // // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
-    // // foward is negated to flip the axis of the LX input
-    // frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(-forward*transform),
-    //     (units::velocity::meters_per_second_t)(strafe*transform),
-    //     (units::angular_velocity::radians_per_second_t)(rotation*transform)};
+    // represents the velocity of the robot chassis
+    // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
+    // foward is negated to flip the axis of the LX input
+    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(-forward*transform),
+        (units::velocity::meters_per_second_t)(strafe*transform),
+        (units::angular_velocity::radians_per_second_t)(rotation*transform)};
     
-<<<<<<< HEAD
-    // // returns each pods state (speed, angle)
-    // // auto [front, backLeft, backRight] = m_kinematics->ToSwerveModuleStates(speeds);
-    // auto [front, rear] = m_kinematics->ToSwerveModuleStates(speeds);
-
-    // m_frontPod->Drive(front);
-
-    // //m_frontPod->Drive(front);
-    // //m_rearPod->Drive(rear);
-    // //m_backLeftPod->Drive(backLeft);
-    // //m_backRightPod->Drive(backRight);
-=======
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
->>>>>>> dc1fd9c75c30a3db96533cbc436361d9d530c40d
 
     m_rightPod->Drive(right);
     m_leftPod->Drive(left);

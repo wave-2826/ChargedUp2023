@@ -46,23 +46,23 @@ Elevator::Elevator()
     m_elevatorPosition = 0.0;
 
     // TODO: Hard coded elevator target. Need to determine.
-    m_elevatorTargetA = 10.0;
-    m_elevatorTargetB = 5.0;
+    m_elevatorTargetTop = 10.0;
+    m_elevatorTargetMiddle = 5.0;
 
 }
 
 bool Elevator::isElevatorAtHome() {
 
-    if(m_elevatorAtHomeLimitSwitch.Get()) {
-        return true;
-    }
+    // if(m_elevatorAtHomeLimitSwitch.Get()) {
+    //     return true;
+    // }
 
     return false;
 }
 double Elevator::getElevatorPosition() {
 
     double position = 0;
-    double const k_maxDelta = 5.0; // TBD: Needs to determine
+    double const k_maxDelta = 5.0; // TBD: Needs to determine. 
     double posA = m_elevatorEncoderA->GetPosition();
     double posB = m_elevatorEncoderB->GetPosition();
 
@@ -120,11 +120,12 @@ void Elevator::runElevator() {
             setElevator(0);
         }
     } else {
+        // Need to set the motor speed to zero BEFORE checking for a button input
         // Get the target command
         if(m_operatorJoystick->GetAButtonPressed()) {
-            m_elevatorFunction = Elevator_DeployTargetA;
+            m_elevatorFunction = Elevator_DeployTargetTop;
         } else if(m_operatorJoystick->GetBButtonPressed()) {
-            m_elevatorFunction = Elevator_DeployTargetB;
+            m_elevatorFunction = Elevator_DeployTargetMiddle;
         } else if(m_operatorJoystick->GetStartButton()) {
             m_elevatorFunction = Elevator_Stow;
         }
@@ -136,16 +137,16 @@ void Elevator::runElevator() {
         case Elevator_Off:
         default:
             break;
-        case Elevator_DeployTargetA:
-            if(k_delta >= std::fabs(m_elevatorPosition - m_elevatorTargetA)) {
-                elevatorSpeedCmd = m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTargetA);
+        case Elevator_DeployTargetTop:
+            if(k_delta >= std::fabs(m_elevatorPosition - m_elevatorTargetTop)) {
+                elevatorSpeedCmd = m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTargetTop);
             } else {
                 m_elevatorFunction = Elevator_Off;
             }
             break;
-        case Elevator_DeployTargetB:
-            if(k_delta >= std::fabs(m_elevatorPosition - m_elevatorTargetB)) {
-                elevatorSpeedCmd = m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTargetB);
+        case Elevator_DeployTargetMiddle:
+            if(k_delta >= std::fabs(m_elevatorPosition - m_elevatorTargetMiddle)) {
+                elevatorSpeedCmd = m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTargetMiddle);
             } else {
                 m_elevatorFunction = Elevator_Off;
             }

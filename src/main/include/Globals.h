@@ -9,8 +9,8 @@
 double const k_jsDeadband = 0.07;
 
 // CANSparkMax Motor IDs
-int const k_elevatorMotorA = 20;
-int const k_elevatorMotorB = 21;
-int const k_endofactorMotor = 22;
+int const k_elevatorMotorA = 58;
+int const k_elevatorMotorB = 60;
+int const k_endofactorMotor = 9;
 
 #endif
