@@ -24,37 +24,37 @@ using namespace frc;
  */
 SwerveDrive::SwerveDrive() {
 /*
-    // All swerve module motors
-    m_rightTopMotor = new CANSparkMax(58, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_rightBottomMotor = new CANSparkMax(4, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_leftTopMotor = new CANSparkMax(1, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_leftBottomMotor = new CANSparkMax(2, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_pointTopMotor = new CANSparkMax(45, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_pointBottomMotor = new CANSparkMax(67, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // // All swerve module motors
+    // m_rightTopMotor = new CANSparkMax(58, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_rightBottomMotor = new CANSparkMax(4, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_leftTopMotor = new CANSparkMax(1, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_leftBottomMotor = new CANSparkMax(2, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_pointTopMotor = new CANSparkMax(45, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_pointBottomMotor = new CANSparkMax(67, CANSparkMaxLowLevel::MotorType::kBrushless);
 
-    // Individual swerve pod instances
-    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 1.0, 90.0, 0); // 90 or 270?
-    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 1.0, 270.0, 1);   // 90 or 270?
-    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 1.0, 45.0, 2); // 45 or -135?
+    // // Individual swerve pod instances
+    // m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 1.0, 90.0, 0); // 90 or 270?
+    // m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 1.0, 270.0, 1);   // 90 or 270?
+    // m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 1.0, 45.0, 2); // 45 or -135?
     
-    // Locations for the swerve drive modules relative to the robot center.
-    frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
-    frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
-    frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
+    // // Locations for the swerve drive modules relative to the robot center.
+    // frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    // frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    // frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
 
-    // 3 pod swerve kinematics object using module locations
-    m_kinematics = new SwerveDriveKinematics<3>{
-        m_rightLocation, m_leftLocation, m_pointLocation
-    };
+    // // 3 pod swerve kinematics object using module locations
+    // m_kinematics = new SwerveDriveKinematics<3>{
+    //     m_rightLocation, m_leftLocation, m_pointLocation
+    // };
 */
     SetName("SwerveDrive");
     SetSubsystem("SwerveDrive");
 }
 
 void SwerveDrive::initialize(){
-    m_rightPod->Initialize();
-    m_leftPod->Initialize();
-    m_pointPod->Initialize();
+    // m_rightPod->Initialize();
+    // m_leftPod->Initialize();
+    // m_pointPod->Initialize();
 }
 
 void SwerveDrive::Periodic() {
@@ -84,7 +84,7 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    m_rightPod->Drive(right);
-    m_leftPod->Drive(left);
-    m_pointPod->Drive(point);
+    // m_rightPod->Drive(right);
+    // m_leftPod->Drive(left);
+    // m_pointPod->Drive(point);
 }

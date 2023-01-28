@@ -17,9 +17,9 @@
 #include <frc/DigitalOutput.h>
 #include <frc/motorcontrol/PWMSparkMax.h>
 #include <frc/XboxController.h>
-#include <rev/SparkMaxRelativeEncoder.h>
-#include <rev/CANSparkMax.h>
-#include<rev/CANSparkMaxLowLevel.h>
+// #include <rev/SparkMaxRelativeEncoder.h>
+// #include <rev/CANSparkMax.h>
+// #include<rev/CANSparkMaxLowLevel.h>
 #include "frc2/command/PIDSubsystem.h"
 
 
@@ -65,18 +65,21 @@ private:
     // Current position of the elevator
     double m_elevatorPosition;
 
-    // The motor controller for the Endofactor intake motor
-    rev::CANSparkMax *m_endofactorMotor;
+    // // The motor controller for the Endofactor intake motor
+    // rev::CANSparkMax *m_endofactorMotor;
 
-    // Motor controller for the elevator
-    rev::CANSparkMax *m_elevatorMotorB;
-    rev::CANSparkMax *m_elevatorMotorA;
+    // // Motor controller for the elevator
+    // rev::CANSparkMax *m_elevatorMotorB;
+    // rev::CANSparkMax *m_elevatorMotorA;
 
-    // Internal incoders for the elevator motors
-    rev::SparkMaxRelativeEncoder *m_elevatorEncoderA;
-    rev::SparkMaxRelativeEncoder *m_elevatorEncoderB;
+    //rev::CANSparkMax *m_elevatorMotorA;
+    //rev::SparkMaxRelativeEncoder *m_elevatorEncoderA;
 
-    // PID controller for the elevator auto deploy operations
+    // // Internal incoders for the elevator motors
+    // rev::SparkMaxRelativeEncoder *m_elevatorEncoderA;
+    // rev::SparkMaxRelativeEncoder *m_elevatorEncoderB;
+
+    // // PID controller for the elevator auto deploy operations
     frc2::PIDController *m_elevatorPID; 
 
     // Pointer to the operator controller
