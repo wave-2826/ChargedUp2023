@@ -5,6 +5,7 @@
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/controller/PIDController.h>
 #include <frc2/command/PIDSubsystem.h>
+#include <string>
 
 /**
  * Swerve Pod encapsulating individual swerve pod functions + attributes
@@ -40,6 +41,7 @@ class SwervePod {
 
         int m_counter;
         bool m_isReversed = false;
+        std::string m_podName = "";
 
         double m_currentTopMotorSpeed;
         double m_currentBottomMotorSpeed;
