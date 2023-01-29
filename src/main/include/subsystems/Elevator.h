@@ -58,10 +58,10 @@ private:
     frc::DigitalInput m_elevatorAtHomeLimitSwitch{5};
 
     // Endofactor grabber solenoid to grab and release the cone
-    frc::DigitalOutput m_endoFactorGrabberOut{0};
+    // frc::DigitalOutput m_endoFactorGrabberOut{0};
  
     // Endofactor solenoid to move up. Spring to down
-    frc::DigitalOutput m_endoFactorOut{1};
+    // frc::DigitalOutput m_endoFactorOut{1};
 
     // Current position of the elevator
     double m_elevatorPosition;

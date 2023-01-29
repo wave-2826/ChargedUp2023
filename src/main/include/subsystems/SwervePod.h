@@ -41,6 +41,7 @@ class SwervePod {
 
         int m_counter;
         bool m_isReversed = false;
+        double m_offsetAngle;
         std::string m_podName = "";
 
         double m_currentTopMotorSpeed;
