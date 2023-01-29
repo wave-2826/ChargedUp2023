@@ -22,25 +22,25 @@ Elevator::Elevator()
     SetName("Elevator");
     SetSubsystem("Elevator");
 
-    m_elevatorMotorA = new rev::CANSparkMax(k_elevatorMotorA, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_elevatorMotorB = new rev::CANSparkMax(k_elevatorMotorB, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_endofactorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_elevatorPID = new frc2::PIDController(k_P, k_I, k_D);
+    // m_elevatorMotorA = new rev::CANSparkMax(k_elevatorMotorA, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_elevatorMotorB = new rev::CANSparkMax(k_elevatorMotorB, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_endofactorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    // m_elevatorPID = new frc2::PIDController(k_P, k_I, k_D);
 
-    m_elevatorFunction = Elevator_Off;
-    m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
-    if(NULL != m_elevatorEncoderA) {
-        m_elevatorEncoderA->SetPositionConversionFactor(1.0); // TBD: Need the conversion factor
-    }
+    // m_elevatorFunction = Elevator_Off;
+    // m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
+    // if(NULL != m_elevatorEncoderA) {
+    //     m_elevatorEncoderA->SetPositionConversionFactor(1.0); // TBD: Need the conversion factor
+    // }
 
-    m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
-    if(NULL != m_elevatorEncoderB) {
-        m_elevatorEncoderB->SetPositionConversionFactor(1.0); // TBD: Need the conversion factor
-    }
+    // m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
+    // if(NULL != m_elevatorEncoderB) {
+    //     m_elevatorEncoderB->SetPositionConversionFactor(1.0); // TBD: Need the conversion factor
+    // }
 
-    m_elevatorPosition = 0.0;
-    m_scoringTarget = 0.0;
-    m_isCone = false;
+    // m_elevatorPosition = 0.0;
+    // m_scoringTarget = 0.0;
+    // m_isCone = false;
 }
 
 bool Elevator::isElevatorAtHome() {
@@ -169,13 +169,13 @@ void Elevator::runElevator() {
 
     // Grabber operation
     // Keep it open until it senses a Cone
-    m_endoFactorGrabberOut.Set(true);
+    // m_endoFactorGrabberOut.Set(true);
     
 
 
     // Print out for debugging
-    std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << ";" << std::endl;
-    std::cout << "EndoFactorCmd: " << endofactorCmd << std::endl;
+    // std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << ";" << std::endl;
+    // std::cout << "EndoFactorCmd: " << endofactorCmd << std::endl;
 
 }
 
