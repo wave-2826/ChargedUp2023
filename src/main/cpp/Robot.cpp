@@ -13,6 +13,8 @@
 #include "Robot.h"
 #include "Globals.h"
 
+#include <iostream> 
+
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 
@@ -73,9 +75,10 @@ void Robot::TeleopPeriodic() {
   double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+// std::cout << "Left X: " << joystickLeftX << std::endl;
 
   // joystick inputs for swerve
-  m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  //m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
 
   // Elevator Operations
   m_container->m_elevator.runElevator();

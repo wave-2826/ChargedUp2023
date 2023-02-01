@@ -23,8 +23,8 @@ int const k_leftPodEncoder = 1;
 int const k_pointPodEncoder = 2;
 
 // Elevator Motors
-int const k_elevatorMotorA = 11;
-int const k_elevatorMotorB = 12;
+int const k_elevatorMotorA = 58;
+int const k_elevatorMotorB = 8;
 int const k_endofactorMotor = 13;
 
 #endif
