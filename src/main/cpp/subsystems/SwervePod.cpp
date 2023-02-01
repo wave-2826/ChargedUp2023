@@ -159,7 +159,7 @@ double SwervePod::GetPreviousBottomMotorSpeed() {
     return m_previousBottomMotorSpeed;
 }
 
-void SwervePod::Drive(frc::SwerveModuleState state)
+bool SwervePod::Drive(frc::SwerveModuleState state)
 {
     // TODO: set max motor speeds
     double topMotorSpeed = 0.0;
@@ -327,9 +327,9 @@ void SwervePod::Drive(frc::SwerveModuleState state)
         // std::cout << m_podName << " offset: " << m_offsetAngle << std::endl;
 
         // std::cout << m_podName << ": " << m_offsetAngle <<  std::endl;
-        std::cout << swerveCase << std::endl;
-        std::cout << m_podName << " current angle: " << current_angle << std::endl;
-        std::cout << "target angle: " << target_angle << std::endl << std::endl;
+        // std::cout << swerveCase << std::endl;
+        // std::cout << m_podName << " current angle: " << current_angle << std::endl;
+        // std::cout << "target angle: " << target_angle << std::endl << std::endl;
 
 
 
@@ -380,10 +380,12 @@ void SwervePod::Drive(frc::SwerveModuleState state)
     //     // std::cout << "State Speed: " << state.speed.value() << std::endl;
     //     // std::cout << "State Angle: " << state.angle.Degrees().value() << std::endl;
         SetCounter(0);
+        return true;
     }
     else
     {
         int current_count = GetCounter();
         SetCounter(current_count + 1);
     }
+    return false;
 }

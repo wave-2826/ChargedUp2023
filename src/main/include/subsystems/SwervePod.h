@@ -77,7 +77,7 @@ class SwervePod {
          * @param offsetAngle defines the absolute encoder 0 position in relation to 
          * the "front" or 0 of the robot 
          **/
-        void Drive(frc::SwerveModuleState state);
+        bool Drive(frc::SwerveModuleState state);
 
         /**
          * Function that gets the current counter

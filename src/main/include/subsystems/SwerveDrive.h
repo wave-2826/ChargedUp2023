@@ -46,7 +46,15 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         SwervePod *m_rightPod;
         SwervePod *m_leftPod;
-        SwervePod *m_pointPod;   
+        SwervePod *m_pointPod;
+
+        // motor currents;
+        double m_leftPodTopMotorCurrent = 0.0;
+        double m_leftPodBottomMotorCurrent = 0.0;
+        double m_rightPodTopMotorCurrent = 0.0;
+        double m_rightPodBottomMotorCurrent = 0.0;
+        double m_pointPodTopMotorCurrent = 0.0;
+        double m_pointPodBottomMotorCurrent = 0.0;
 
         double m_leftPodOffsetAngle = 107.0;
         double m_rightPodOffsetAngle = 124.0;
@@ -79,6 +87,19 @@ class SwerveDrive: public frc2::SubsystemBase {
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
         double GetPointPodOffsetAngle();
+
+        /**
+         * Function that gets the current of a given pod and motor in amps
+         * 
+         * @param pod which pod you want to queery
+         * rght: 0
+         * left: 1
+         * point: 2
+         * @param motor which motor you want to get the current from
+         * bottom: 0
+         * top: 1
+        */
+        double GetPodCurrent(int pod, bool motor);
 
         void SetLeftPodOffsetAngle(double offsetAngle);
         void SetRightPodOffsetAngle(double offsetAngle);

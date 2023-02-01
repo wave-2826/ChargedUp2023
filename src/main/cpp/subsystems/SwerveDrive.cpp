@@ -89,6 +89,32 @@ void SwerveDrive::SimulationPeriodic() {
     // This method will be called once per scheduler run when in simulation
 }
 
+double SwerveDrive::GetPodCurrent(int pod, bool motor) 
+{
+    switch (pod) {
+        case 0: // right
+            if (motor) // top
+                return m_rightTopMotor->GetOutputCurrent();
+            else
+                return m_rightBottomMotor->GetOutputCurrent();
+            break;
+        case 1: // left
+            if (motor) // top
+                return m_leftTopMotor->GetOutputCurrent();
+            else
+                return m_leftBottomMotor->GetOutputCurrent();
+            break;
+        case 2: // point
+            if (motor) // top
+                return m_pointTopMotor->GetOutputCurrent();
+            else
+                return m_pointBottomMotor->GetOutputCurrent();
+            break;
+        default:
+            return 0.0;
+    }
+}
+
 double SwerveDrive::GetLeftPodOffsetAngle() 
 {
     return m_leftPodOffsetAngle;
@@ -138,7 +164,9 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    m_rightPod->Drive(right);
-    m_leftPod->Drive(left);
-    m_pointPod->Drive(point);
+    if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+        for (int i = 0; i < 6; i++) {
+            std::cout << GetPodCurrent(i % 3, (i / 3) < 1) << std::endl;
+        }
+    }
 }
