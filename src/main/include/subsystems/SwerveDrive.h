@@ -35,32 +35,40 @@ class SwerveDrive: public frc2::SubsystemBase {
     // for methods that implement subsystem capabilities
     private:        
 
-        rev::CANSparkMax *m_frontBottomMotor;
-        rev::CANSparkMax *m_frontTopMotor;
-        rev::CANSparkMax *m_rearBottomMotor;
-        rev::CANSparkMax *m_rearTopMotor;
+        rev::CANSparkMax *m_rightBottomMotor;
+        rev::CANSparkMax *m_rightTopMotor;
+        rev::CANSparkMax *m_leftBottomMotor;
+        rev::CANSparkMax *m_leftTopMotor;
+        rev::CANSparkMax *m_pointBottomMotor;
+        rev::CANSparkMax *m_pointTopMotor;
 
-        rev::SparkMaxRelativeEncoder *m_topEncoder;
-        rev::SparkMaxRelativeEncoder *m_bottomEncoder;
+        frc::SwerveDriveKinematics<3> *m_kinematics;
 
-        // rev::CANSparkMax *m_rightFrontBottomMotor;
-        // rev::CANSparkMax *m_rightFrontTopMotor;
-        // rev::CANSparkMax *m_rightBackBottomMotor;
-        // rev::CANSparkMax *m_rightBackTopMotor;
-        // rev::CANSparkMax *m_leftBackBottomMotor;
-        // rev::CANSparkMax *m_leftBackTopMotor;
+        SwervePod *m_rightPod;
+        SwervePod *m_leftPod;
+        SwervePod *m_pointPod;
 
-        // frc::SwerveDriveKinematics<3> *m_kinematics;
+        // motor currents;
+        double m_leftPodTopMotorCurrent = 0.0;
+        double m_leftPodBottomMotorCurrent = 0.0;
+        double m_rightPodTopMotorCurrent = 0.0;
+        double m_rightPodBottomMotorCurrent = 0.0;
+        double m_pointPodTopMotorCurrent = 0.0;
+        double m_pointPodBottomMotorCurrent = 0.0;
 
-        frc::SwerveDriveKinematics<2> *m_kinematics;
-
-        SwervePod *m_frontPod;
-        SwervePod *m_rearPod;
-        //SwervePod *m_frontRightPod;
-        //SwervePod *m_backLeftPod;
-        //SwervePod *m_backRightPod;             
+        double m_leftPodOffsetAngle = 107.0;
+        double m_rightPodOffsetAngle = 124.0;
+        double m_pointPodOffsetAngle = -11.0;
+        double leftOffset;
+        double rightOffset;
+        double pointOffset;
 
     public:
+        // length of the intake side
+        const double robotWidth = 0.717;
+        // length of the point to the midpoint of the intake side
+        const double robotHeight = 0.617;
+
         SwerveDrive();
 
         void Periodic() override;
@@ -75,6 +83,27 @@ class SwerveDrive: public frc2::SubsystemBase {
          * @param rotation joystick input from right x-axis (RX)
          **/
         void DrivePods(double forward, double strafe, double rotation);
+
+        double GetLeftPodOffsetAngle();
+        double GetRightPodOffsetAngle();
+        double GetPointPodOffsetAngle();
+
+        /**
+         * Function that gets the current of a given pod and motor in amps
+         * 
+         * @param pod which pod you want to queery
+         * rght: 0
+         * left: 1
+         * point: 2
+         * @param motor which motor you want to get the current from
+         * bottom: 0
+         * top: 1
+        */
+        double GetPodCurrent(int pod, bool motor);
+
+        void SetLeftPodOffsetAngle(double offsetAngle);
+        void SetRightPodOffsetAngle(double offsetAngle);
+        void SetPointPodOffsetAngle(double offsetAngle);  
 
         void initialize();
         

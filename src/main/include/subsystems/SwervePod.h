@@ -5,6 +5,7 @@
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/controller/PIDController.h>
 #include <frc2/command/PIDSubsystem.h>
+#include <string>
 
 /**
  * Swerve Pod encapsulating individual swerve pod functions + attributes
@@ -12,7 +13,7 @@
  * 
  * @author 2826WaveRobotics
  **/
-class SwervePod: public frc2::SubsystemBase {
+class SwervePod {
     private:
 
         rev::SparkMaxRelativeEncoder *m_topEncoder;
@@ -40,6 +41,13 @@ class SwervePod: public frc2::SubsystemBase {
 
         int m_counter;
         bool m_isReversed = false;
+        double m_offsetAngle;
+        std::string m_podName = "";
+        int m_encoderChannel;
+
+        double m_leftOffset;
+        double m_rightOffset;
+        double m_pointOffset;
 
         double m_currentTopMotorSpeed;
         double m_currentBottomMotorSpeed;
@@ -69,7 +77,7 @@ class SwervePod: public frc2::SubsystemBase {
          * @param offsetAngle defines the absolute encoder 0 position in relation to 
          * the "front" or 0 of the robot 
          **/
-        void Drive(frc::SwerveModuleState state);
+        bool Drive(frc::SwerveModuleState state);
 
         /**
          * Function that gets the current counter
@@ -103,7 +111,8 @@ class SwervePod: public frc2::SubsystemBase {
         double GetPreviousBottomMotorSpeed();
         void SetPreviousBottomMotorSpeed(double value);
 
-        void Periodic() override;
-        void SimulationPeriodic() override;
+        void UpdateOffsetAngles();
+        void Periodic(); 
+        void SimulationPeriodic();
 
 };

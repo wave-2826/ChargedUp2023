@@ -11,9 +11,11 @@
 // ROBOTBUILDER TYPE: Robot.
 
 #include "Robot.h"
+#include "Globals.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <iostream>
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
@@ -27,7 +29,18 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+void Robot::RobotPeriodic() 
+{ 
+  frc2::CommandScheduler::GetInstance().Run(); 
+  // std::cout << "Container - LEFT: " << m_container->leftOffset << std::endl;
+  double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+  double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+  double pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+  m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
+  m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
+  m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+  // std::cout << " LEFT OFFSET: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle();
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You
@@ -63,22 +76,34 @@ void Robot::TeleopInit() {
   }
 }
 
-double Deadband(double x, double deadzone) {
-  if (std::fabs(x) < deadzone)
-    return 0;
-  return x;
+double Joystick(double input, double deadzone) 
+{ 
+  return (std::fabs(input) < deadzone) ? 0 : input; 
 }
 
 /**
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  // double joystickLeftX =  Deadband(m_container->getDriver()->GetLeftX(), 0.07);
-  // double joystickLeftY =  Deadband(m_container->getDriver()->GetLeftY(), 0.07);
-  // double joystickRightX = Deadband(m_container->getDriver()->GetRightX(), 0.07);
+  
+  // std::cout << "left: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle() << std::endl;
+  m_container->m_swerveDrive.Periodic();
 
-  // // joystick inputs for swerve
-  // m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  double joystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  double joystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  double joystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+
+  // joystick inputs for swerve
+  m_container->m_swerveDrive.DrivePods(
+    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.001), 
+    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.001) , 
+    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.001) );
+  m_container->SetPreviousJoystickInputLX(joystickLX);
+  m_container->SetPreviousJoystickInputLY(joystickLY);
+  m_container->SetPreviousJoystickInputRX(joystickRX);
+
+  // Elevator Operations
+  // m_container->m_elevator.runElevator();
 }
 
 /**

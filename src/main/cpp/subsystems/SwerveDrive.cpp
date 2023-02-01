@@ -13,6 +13,7 @@
 #include "subsystems/SwerveDrive.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+#include "Globals.h"
 
 using namespace rev;
 using namespace frc;
@@ -22,53 +23,126 @@ using namespace frc;
  *
  * @author 2826WaveRobotics
  */
-SwerveDrive::SwerveDrive() {
-
+SwerveDrive::SwerveDrive() 
+{
     // All swerve module motors
-    m_frontTopMotor = new CANSparkMax(58, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_frontBottomMotor = new CANSparkMax(4, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_rearTopMotor = new CANSparkMax(1, CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_rearBottomMotor = new CANSparkMax(2, CANSparkMaxLowLevel::MotorType::kBrushless);
+    // B = bottom , A = top
+    m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
+    m_rightBottomMotor = new CANSparkMax(k_swerveRightBotton, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    // B = bottom , A = top
+    m_leftTopMotor = new CANSparkMax(k_swerveLeftTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
+    m_leftBottomMotor = new CANSparkMax(k_swerveLeftBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    // right = bottom , left = top
+    m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
+    m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
+
+    // explicitly set all motors to coast
+    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+
+
+    // set initial offset angles from the smart dashboard
+    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
 
     // Individual swerve pod instances
-    //TODO: Fix this: object of abstract class type "SwervePod" is not allowed: -- pure virtual function "frc2::PIDSubsystem::GetMeasurement" has no overrider -- pure virtual function "frc2::PIDSubsystem::UseOutput" has no overriderC/C++(322)
-    m_frontPod = new SwervePod(m_frontTopMotor, m_frontBottomMotor, 13.7, 45.0, 0);
-    m_rearPod = new SwervePod(m_rearTopMotor, m_rearBottomMotor, 13.7, 45.0, 1);
-    //m_backLeftPod = new SwervePod(m_leftBackTopMotor, m_leftBackBottomMotor, 1);
-    //m_backRightPod = new SwervePod(m_rightBackTopMotor, m_rightBackBottomMotor, 2);
+    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 0.01, leftOffset, k_leftPodEncoder);
+    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 0.01, rightOffset, k_rightPodEncoder);
+    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 0.01, pointOffset, k_pointPodEncoder);
+    
 
     // Locations for the swerve drive modules relative to the robot center.
-    frc::Translation2d m_frontLocation{0.0_m, 0.0_m};
-    frc::Translation2d m_rearLocation{0.0_m, 0.0_m};
+    frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
 
-    // Creating kinematics object using the module locations for 3 pod swerve
-    // m_kinematics = new SwerveDriveKinematics<3>{
-    //     m_frontLocation, m_backLeftLocation, m_backRightLocation
-    // };
-
-    // 2 pod swerve kinematics object using module locations
-    m_kinematics = new SwerveDriveKinematics<2>{
-        m_frontLocation, m_rearLocation
+    // 3 pod swerve kinematics object using module locations
+    m_kinematics = new SwerveDriveKinematics<3>{
+        m_rightLocation, m_leftLocation, m_pointLocation
     };
-
 
     SetName("SwerveDrive");
     SetSubsystem("SwerveDrive");
-
 }
 
-void SwerveDrive::initialize(){
-    m_frontPod->Initialize();
+void SwerveDrive::initialize()
+{
+    m_rightPod->Initialize();
+    m_leftPod->Initialize();
+    m_pointPod->Initialize();
 }
 
 void SwerveDrive::Periodic() {
     // Put code here to be run every loop
-    
+    // std::cout << "SWERVE DRIVE PERIODIC" << std::endl;
+    m_leftPod->UpdateOffsetAngles();
+    m_rightPod->UpdateOffsetAngles();
+    m_pointPod->UpdateOffsetAngles();
 }
 
 void SwerveDrive::SimulationPeriodic() {
     // This method will be called once per scheduler run when in simulation
+}
 
+double SwerveDrive::GetPodCurrent(int pod, bool motor) 
+{
+    switch (pod) {
+        case 0: // right
+            if (motor) // top
+                return m_rightTopMotor->GetOutputCurrent();
+            else
+                return m_rightBottomMotor->GetOutputCurrent();
+            break;
+        case 1: // left
+            if (motor) // top
+                return m_leftTopMotor->GetOutputCurrent();
+            else
+                return m_leftBottomMotor->GetOutputCurrent();
+            break;
+        case 2: // point
+            if (motor) // top
+                return m_pointTopMotor->GetOutputCurrent();
+            else
+                return m_pointBottomMotor->GetOutputCurrent();
+            break;
+        default:
+            return 0.0;
+    }
+}
+
+double SwerveDrive::GetLeftPodOffsetAngle() 
+{
+    return m_leftPodOffsetAngle;
+}
+
+double SwerveDrive::GetRightPodOffsetAngle() 
+{
+    return m_rightPodOffsetAngle;
+}
+
+double SwerveDrive::GetPointPodOffsetAngle() 
+{
+    return m_pointPodOffsetAngle;
+}
+
+void SwerveDrive::SetLeftPodOffsetAngle(double offsetAngle)
+{
+    m_leftPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetRightPodOffsetAngle(double offsetAngle)
+{
+    m_rightPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
+{
+    m_pointPodOffsetAngle = offsetAngle;
 }
 
 void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
@@ -85,18 +159,14 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
     // foward is negated to flip the axis of the LX input
     frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(-forward*transform),
         (units::velocity::meters_per_second_t)(strafe*transform),
-        (units::angular_velocity::radians_per_second_t)(rotation*transform)};
+        (units::angular_velocity::radians_per_second_t)(2*rotation*transform)};
     
     // returns each pods state (speed, angle)
-    // auto [front, backLeft, backRight] = m_kinematics->ToSwerveModuleStates(speeds);
-    auto [front, rear] = m_kinematics->ToSwerveModuleStates(speeds);
+    auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    m_frontPod->Drive(front);
-
-    //m_frontPod->Drive(front);
-    //m_rearPod->Drive(rear);
-    //m_backLeftPod->Drive(backLeft);
-    //m_backRightPod->Drive(backRight);
-
+    if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+        for (int i = 0; i < 6; i++) {
+            std::cout << GetPodCurrent(i % 3, (i / 3) < 1) << std::endl;
+        }
+    }
 }
-
