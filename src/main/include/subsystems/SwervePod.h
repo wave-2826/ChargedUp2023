@@ -43,6 +43,11 @@ class SwervePod {
         bool m_isReversed = false;
         double m_offsetAngle;
         std::string m_podName = "";
+        int m_encoderChannel;
+
+        double m_leftOffset;
+        double m_rightOffset;
+        double m_pointOffset;
 
         double m_currentTopMotorSpeed;
         double m_currentBottomMotorSpeed;
@@ -106,6 +111,7 @@ class SwervePod {
         double GetPreviousBottomMotorSpeed();
         void SetPreviousBottomMotorSpeed(double value);
 
+        void UpdateOffsetAngles();
         void Periodic(); 
         void SimulationPeriodic();
 

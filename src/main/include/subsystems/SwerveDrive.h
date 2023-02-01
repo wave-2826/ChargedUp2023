@@ -46,7 +46,14 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         SwervePod *m_rightPod;
         SwervePod *m_leftPod;
-        SwervePod *m_pointPod;     
+        SwervePod *m_pointPod;   
+
+        double m_leftPodOffsetAngle = 107.0;
+        double m_rightPodOffsetAngle = 124.0;
+        double m_pointPodOffsetAngle = -11.0;
+        double leftOffset;
+        double rightOffset;
+        double pointOffset;
 
     public:
         // length of the intake side
@@ -68,6 +75,14 @@ class SwerveDrive: public frc2::SubsystemBase {
          * @param rotation joystick input from right x-axis (RX)
          **/
         void DrivePods(double forward, double strafe, double rotation);
+
+        double GetLeftPodOffsetAngle();
+        double GetRightPodOffsetAngle();
+        double GetPointPodOffsetAngle();
+
+        void SetLeftPodOffsetAngle(double offsetAngle);
+        void SetRightPodOffsetAngle(double offsetAngle);
+        void SetPointPodOffsetAngle(double offsetAngle);  
 
         void initialize();
         
