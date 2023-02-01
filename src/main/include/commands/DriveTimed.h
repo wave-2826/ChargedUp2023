@@ -15,28 +15,34 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/WaitCommand.h>
+#include <subsystems/SwerveDrive.h>
 #include <units/time.h>
 
 /**
  *
  *
- * @author WaveRobotics
+ * @author 2826WaveRobotics
  */
-class WaveWaitCommand: public frc2::WaitCommand 
+class DriveTimed: public frc2::WaitCommand 
 {
 
 public:
 
-    explicit WaveWaitCommand(units::second_t timeout = (units::second_t)0);
+    explicit DriveTimed(SwerveDrive* swerveDrive, double inputLX, double inputLY, double inputRX, 
+                        units::second_t timeout = (units::second_t)0);
 
     void Initialize() override;
     void Execute() override;
-    bool IsFinished() override;
+    // bool IsFinished() override;
     void End(bool interrupted) override;
     bool RunsWhenDisabled() const override;
 
 private:
 
     units::second_t m_timeout;
+    SwerveDrive* m_swerveDrive;
+    double m_inputLX;
+    double m_inputLY;
+    double m_inputRX;
 
 };
