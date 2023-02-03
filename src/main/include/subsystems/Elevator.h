@@ -34,12 +34,8 @@
 // Elevator functions used to deploy the elevator in auto mode
 typedef enum {
     Elevator_Off,
-    // Deploy elevator to top level
-    Elevator_DeployTargetTop,
-    // Deploy elevator to middle level
-    Elevator_DeployTargetMiddle,
-    // Human player Station
-    Elevator_RecieveGamePiece,
+    // Deploy elevator to a target
+    Elevator_Deploy,
     // Stow Elevator
     Elevator_Stow
 } ElevatorFunction;
@@ -97,6 +93,15 @@ private:
     // Scoring target for the elevator
     double m_scoringTarget;
 
+    // Factor for the elevator position
+    double m_distancePerRotation;
+
+    bool m_initCmd;
+    double m_initialPidCmd;
+
+    // Maximum travel distance for the Elevator
+    //double m_maxElevatorPosition;
+
     // Command speed to the elevator motors if speed is within range.
     // Returns true if speed is between -k_maxElevatorSpeed and k_maxElevatorSpeed
     bool setElevator(double speed);
@@ -108,17 +113,24 @@ private:
     // Constants used for Elevator functions
     static constexpr const double k_maxElevatorSpeed = 0.8;
     static constexpr const double k_maxEndoFactorSpeed = 0.5;
-    static constexpr const double k_P = 0.5;
+    static constexpr const double k_P = 0.1;
     static constexpr const double k_I = 0.0;
-    static constexpr const double k_D = 0.1;
-    static constexpr const double k_delta = 0.2;
+    static constexpr const double k_D = 0.0;
+    static constexpr const double k_delta = 0.5;
+
+    static constexpr const double k_numOfTeeth = 36.0;
+    static constexpr const double k_teethSize = 0.25;  // in inches
+    static constexpr const double k_gearRatio = 4; // Ratio 4:1
+
+    static constexpr const double k_maxElevatorPosition = 50.0; // in inches
+    static constexpr const double k_encoderPosConversionFactor = 10.0; // TBD: Need the conversion factor
 
     // Pre-set elevator scoring position for the elevator
-    static constexpr const double k_elevatorTargetTopCone = 4.0;
-    static constexpr const double k_elevatorTargetMiddleCone = 3.0;
-    static constexpr const double k_elevatorTargetTopCube = 3.0;
-    static constexpr const double k_elevatorTargetMiddleCube = 2.0;
-    static constexpr const double k_elevatorReceiveGamePiece = 2.0;
+    static constexpr const double k_elevatorTargetTopCone = 45.0;
+    static constexpr const double k_elevatorTargetMiddleCone = 30.0;
+    static constexpr const double k_elevatorTargetTopCube = 40.0;
+    static constexpr const double k_elevatorTargetMiddleCube = 20.0;
+    static constexpr const double k_elevatorHumanStation = 20.0;
 
 public:
     Elevator();

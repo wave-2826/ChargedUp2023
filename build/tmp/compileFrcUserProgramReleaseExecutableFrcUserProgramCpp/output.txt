@@ -1,8 +1,8 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:221:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  221 | }
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:246:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  246 | }
       | ^
 
 compiling Robot.cpp successful.
