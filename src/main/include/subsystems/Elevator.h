@@ -35,9 +35,7 @@
 typedef enum {
     Elevator_Off,
     // Deploy elevator to a target
-    Elevator_Deploy,
-    // Stow Elevator
-    Elevator_Stow
+    Elevator_Deploy
 } ElevatorFunction;
 
 // Elevator class shall be used to extend and retract the elevator. 
@@ -66,6 +64,9 @@ private:
     // Current position of the elevator
     double m_elevatorPosition;
 
+    // Elevator Home position
+    double m_elevatorHomePosition;
+
     // The motor controller for the EndEffector intake motor
     rev::CANSparkMax *m_endEffectorMotor;
 
@@ -84,53 +85,48 @@ private:
     frc::XboxController *m_operatorJoystick;
     ElevatorFunction m_elevatorFunction;
     
-    // Flag is true while elevator is stowing
-    bool m_stowing;
-
     // Scoring object flag. True when scoring with Cone
     bool m_isCone;
 
+    // Flag for stowing the elevator
+    bool m_isStowing;
+
     // Scoring target for the elevator
-    double m_scoringTarget;
+    double m_elevatorTarget;
 
     // Factor for the elevator position
     double m_distancePerRotation;
 
-    bool m_initCmd;
-    double m_initialPidCmd;
-
-    // Maximum travel distance for the Elevator
-    //double m_maxElevatorPosition;
-
-    // Command speed to the elevator motors if speed is within range.
-    // Returns true if speed is between -k_maxElevatorSpeed and k_maxElevatorSpeed
-    bool setElevator(double speed);
+    // Command speed to the elevator motors.
+    void setElevator(double speed);
 
     // Command speed to the endEffector motor if speed is within range.
     // Returns true if speed is between -k_maxEndoFactorSpeed and k_maxEndoFactorSpeed
     bool setEndEffector(double speed);
 
+    double getPIDSpeed(double pidCommnd);
+
     // Constants used for Elevator functions
-    static constexpr const double k_maxElevatorSpeed = 0.8;
+    static constexpr const double k_maxElevatorSpeed = 1.0;
     static constexpr const double k_maxEndoFactorSpeed = 0.5;
-    static constexpr const double k_P = 0.1;
+    static constexpr const double k_P = 0.5;
     static constexpr const double k_I = 0.0;
     static constexpr const double k_D = 0.0;
-    static constexpr const double k_delta = 0.5;
+    static constexpr const double k_delta = 1.0;
 
     static constexpr const double k_numOfTeeth = 36.0;
     static constexpr const double k_teethSize = 0.25;  // in inches
     static constexpr const double k_gearRatio = 4; // Ratio 4:1
 
-    static constexpr const double k_maxElevatorPosition = 50.0; // in inches
-    static constexpr const double k_encoderPosConversionFactor = 10.0; // TBD: Need the conversion factor
+    static constexpr const double k_maxElevatorPosition = 100.0; // in inches
+    static constexpr const double k_encoderPosConversionFactor = 0.5; // TBD: Need the conversion factor
 
-    // Pre-set elevator scoring position for the elevator
-    static constexpr const double k_elevatorTargetTopCone = 45.0;
-    static constexpr const double k_elevatorTargetMiddleCone = 30.0;
-    static constexpr const double k_elevatorTargetTopCube = 40.0;
-    static constexpr const double k_elevatorTargetMiddleCube = 20.0;
-    static constexpr const double k_elevatorHumanStation = 20.0;
+    // Pre-set elevator scoing position for the elevator
+    static constexpr const double k_elevatorTargetTopCone = 54.5;
+    static constexpr const double k_elevatorTargetMiddleCone = 30.5;
+    static constexpr const double k_elevatorTargetTopCube = 46.5;
+    static constexpr const double k_elevatorTargetMiddleCube = 22.5;
+    static constexpr const double k_elevatorHumanStation = 10.25;
 
 public:
     Elevator();
