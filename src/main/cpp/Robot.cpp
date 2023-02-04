@@ -32,7 +32,9 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() 
 { 
   frc2::CommandScheduler::GetInstance().Run(); 
-  // std::cout << "Container - LEFT: " << m_container->leftOffset << std::endl;
+
+  // TODO: check redundant with SwerveDrive::UpdatePodOffsetAngles 
+  // SET pod offset angles with values from dashboard
   double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
   double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
   double pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
@@ -87,20 +89,32 @@ double Joystick(double input, double deadzone)
 void Robot::TeleopPeriodic() {
   
   // std::cout << "left: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle() << std::endl;
-  m_container->m_swerveDrive.Periodic();
+  // updates pod angle offsets (on dashboard)
+  m_container->m_swerveDrive.UpdatePodOffsetAngles();
 
   double joystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double joystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double joystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
-  // joystick inputs for swerve
-  m_container->m_swerveDrive.DrivePods(
-    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.001), 
-    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.001) , 
-    m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.001) );
-  m_container->SetPreviousJoystickInputLX(joystickLX);
-  m_container->SetPreviousJoystickInputLY(joystickLY);
-  m_container->SetPreviousJoystickInputRX(joystickRX);
+  /// TESTING - joystick inputs with scaling
+  // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.0001);
+  // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.0001);
+  // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.0001);
+  // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+
+
+  // joystick inputs for swerve - scaling
+  // m_container->m_swerveDrive.DrivePods(
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.001), 
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.001) , 
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.001) );
+  // m_container->SetPreviousJoystickInputLX(joystickLX);
+  // m_container->SetPreviousJoystickInputLY(joystickLY);
+  // m_container->SetPreviousJoystickInputRX(joystickRX);
+
+
+    // joystick inputs for swerve - NO scaling
+    m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);
 
   // Elevator Operations
   // m_container->m_elevator.runElevator();

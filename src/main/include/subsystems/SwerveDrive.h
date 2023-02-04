@@ -19,6 +19,10 @@
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <units/velocity.h>
 
+//PIDGEON STUFF
+#include "ctre/phoenixpro/core/CorePigeon2.hpp"
+#include "ctre/phoenix/platform/DeviceType.hpp"
+
 #define FRONT_RIGHT  0
 #define FRONT_LEFT  1
 #define BACK_RIGHT  2
@@ -35,6 +39,7 @@ class SwerveDrive: public frc2::SubsystemBase {
     // for methods that implement subsystem capabilities
     private:        
 
+        ctre::phoenixpro::hardware::core::CorePigeon2 *m_pidgeon;
         rev::CANSparkMax *m_rightBottomMotor;
         rev::CANSparkMax *m_rightTopMotor;
         rev::CANSparkMax *m_leftBottomMotor;
@@ -46,7 +51,15 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         SwervePod *m_rightPod;
         SwervePod *m_leftPod;
-        SwervePod *m_pointPod;   
+        SwervePod *m_pointPod;
+
+        // motor currents;
+        double m_leftPodTopMotorCurrent = 0.0;
+        double m_leftPodBottomMotorCurrent = 0.0;
+        double m_rightPodTopMotorCurrent = 0.0;
+        double m_rightPodBottomMotorCurrent = 0.0;
+        double m_pointPodTopMotorCurrent = 0.0;
+        double m_pointPodBottomMotorCurrent = 0.0;
 
         double m_leftPodOffsetAngle = 107.0;
         double m_rightPodOffsetAngle = 124.0;
@@ -67,6 +80,11 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SimulationPeriodic() override;
 
         /**
+         * Function that updates a pod offset angle based on input from the smartdashboard
+        */
+        void UpdatePodOffsetAngles();
+
+        /**
          * Function that takes inputs from the joysticks and transforms
          * the inputs into states (speed, angle) that individual swerve modules will utilize
          * 
@@ -79,6 +97,19 @@ class SwerveDrive: public frc2::SubsystemBase {
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
         double GetPointPodOffsetAngle();
+
+        /**
+         * Function that gets the current of a given pod and motor in amps
+         * 
+         * @param pod which pod you want to query
+         * rght: 0
+         * left: 1
+         * point: 2
+         * @param motor which motor you want to get the current from
+         * bottom: 0
+         * top: 1
+        */
+        double GetPodCurrent(int pod, bool motor);
 
         void SetLeftPodOffsetAngle(double offsetAngle);
         void SetRightPodOffsetAngle(double offsetAngle);

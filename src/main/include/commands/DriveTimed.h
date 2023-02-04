@@ -39,10 +39,10 @@ public:
 
 private:
 
-    units::second_t m_timeout;
     SwerveDrive* m_swerveDrive;
     double m_inputLX;
     double m_inputLY;
     double m_inputRX;
+    units::second_t m_timeout;
 
 };
