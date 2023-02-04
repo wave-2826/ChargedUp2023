@@ -52,16 +52,11 @@ class SwervePod {
         double m_currentTopMotorSpeed;
         double m_currentBottomMotorSpeed;
         double m_currentPosition;
-
-        double m_previousTopMotorSpeed;
-        double m_previousBottomMotorSpeed;
         
         bool m_initialized;
 
         double turnTuningFactor;
         double offsetAngle;
-
-        double LinearInterpolate(double speed, double targetSpeed, double movePercentage);
 
     public:
         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double turnTuningFactor, double offsetAngle, int encoderChannel);
@@ -106,12 +101,7 @@ class SwervePod {
          **/ 
         void FlipIsReversed(bool state);
 
-        double GetPreviousTopMotorSpeed();
-        void SetPreviousTopMotorSpeed(double value);
-        double GetPreviousBottomMotorSpeed();
-        void SetPreviousBottomMotorSpeed(double value);
-
-        void UpdateOffsetAngles();
+        void UpdateOffsetAngle();
         void Periodic(); 
         void SimulationPeriodic();
 

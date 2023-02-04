@@ -82,20 +82,11 @@ double RobotContainer::LinearInterpolate(double speed, double targetSpeed, doubl
         newSpeed = speed - std::fabs(targetSpeed - speed) * movePercentage;
     }
     // adding a buffer between newSpeed and targetSpeed
-    if (std::abs(targetSpeed - newSpeed) < 0.01f) {
+    if (std::fabs(targetSpeed - newSpeed) < 0.01f) {
         newSpeed = targetSpeed;
     }
     // prevent newSpeed from going outside of physical boundaries
-    if (newSpeed <= -1.0f)
-    {
-        newSpeed = -1.0f;
-    }
-    else if (newSpeed >= 1.0f)
-    {
-        newSpeed = 1.0f;
-    }
-
-    return newSpeed;
+    return std::clamp(newSpeed, -1.0, 1.0);
 }
 
 double RobotContainer::GetPreviousJoystickInputLX() {

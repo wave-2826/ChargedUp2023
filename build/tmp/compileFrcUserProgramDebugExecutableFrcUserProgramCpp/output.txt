@@ -1,35 +1,29 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling SwervePod.cpp successful.
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp: In member function 'bool SwervePod::Drive(frc::SwerveModuleState)':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp:169:12: warning: unused variable 'testStationKeepTop' [-Wunused-variable]
-  169 |     double testStationKeepTop = 0.0;
-      |            ^~~~~~~~~~~~~~~~~~
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp:170:12: warning: unused variable 'testStationKeepBottom' [-Wunused-variable]
-  170 |     double testStationKeepBottom = 0.0;
-      |            ^~~~~~~~~~~~~~~~~~~~~
+compiling OpenCommand.cpp successful.
+
+compiling AutonomousCommand.cpp successful.
+
+compiling RotateDownCommand.cpp successful.
+
+compiling WaveWaitCommand.cpp successful.
+
+compiling Vision.cpp successful.
 
 compiling DriveTimed.cpp successful.
-In file included from C:\Wave2826\ChargedUp2023\src\main\cpp\commands\DriveTimed.cpp:13:
-C:\Wave2826\ChargedUp2023\src\main\include/commands/DriveTimed.h: In constructor 'DriveTimed::DriveTimed(SwerveDrive*, double, double, double, units::time::second_t)':
-C:\Wave2826\ChargedUp2023\src\main\include/commands/DriveTimed.h:46:12: warning: 'DriveTimed::m_inputRX' will be initialized after [-Wreorder]
-   46 |     double m_inputRX;
-      |            ^~~~~~~~~
-C:\Wave2826\ChargedUp2023\src\main\include/commands/DriveTimed.h:42:21: warning:   'units::time::second_t DriveTimed::m_timeout' [-Wreorder]
-   42 |     units::second_t m_timeout;
-      |                     ^~~~~~~~~
-C:\Wave2826\ChargedUp2023\src\main\cpp\commands\DriveTimed.cpp:16:1: warning:   when initialized here [-Wreorder]
-   16 | DriveTimed::DriveTimed(SwerveDrive* swerveDrive, double inputLX, double inputLY, double inputRX, units::second_t timeout)
-      | ^~~~~~~~~~
+
+compiling SwervePod.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling RobotContainer.cpp successful.
+
+compiling Intake.cpp successful.
 
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:184:1: warning: no return statement in function returning non-void [-Wreturn-type]
   184 | }
       | ^
-
-compiling Robot.cpp successful.
-
-compiling RobotContainer.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

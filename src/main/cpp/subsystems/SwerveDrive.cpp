@@ -15,6 +15,15 @@
 #include <iostream>
 #include "Globals.h"
 
+#include "ctre/phoenixpro/core/CorePigeon2.hpp"
+#include "ctre/phoenix/platform/DeviceType.hpp"
+#include "frc/interfaces/Gyro.h"
+#include "frc/geometry/Rotation2d.h"
+#include "wpi/sendable/Sendable.h"
+#include "wpi/sendable/SendableBuilder.h"
+#include "wpi/sendable/SendableHelper.h"
+#include <hal/SimDevice.h>
+
 using namespace rev;
 using namespace frc;
 
@@ -25,6 +34,8 @@ using namespace frc;
  */
 SwerveDrive::SwerveDrive() 
 {
+    m_pidgeon = new ctre::phoenixpro::hardware::core::CorePigeon2(21, "*");
+
     // All swerve module motors
     // B = bottom , A = top
     m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
@@ -77,16 +88,29 @@ void SwerveDrive::initialize()
     m_pointPod->Initialize();
 }
 
-void SwerveDrive::Periodic() {
-    // Put code here to be run every loop
-    // std::cout << "SWERVE DRIVE PERIODIC" << std::endl;
-    m_leftPod->UpdateOffsetAngles();
-    m_rightPod->UpdateOffsetAngles();
-    m_pointPod->UpdateOffsetAngles();
+// Put code here to be run every loop
+void SwerveDrive::Periodic() 
+{
+    // TESTING Pigeon 2.0 
+    std::cout << "yaw: " << m_pidgeon->GetYaw() << std::endl;
+    std::cout << "pitch: " << m_pidgeon->GetPitch() << std::endl;
+    std::cout << "roll: " << m_pidgeon->GetRoll() << std::endl;
+    std::cout << "gx: " << m_pidgeon->GetGravityVectorX() << std::endl;
+    std::cout << "id: " << m_pidgeon->GetDeviceID() << std::endl;
+
 }
 
 void SwerveDrive::SimulationPeriodic() {
     // This method will be called once per scheduler run when in simulation
+}
+
+void SwerveDrive::UpdatePodOffsetAngles() 
+{
+    // UPDATE pod offset angles
+    m_leftPod->UpdateOffsetAngle();
+    m_rightPod->UpdateOffsetAngle();
+    m_pointPod->UpdateOffsetAngle();
+
 }
 
 double SwerveDrive::GetPodCurrent(int pod, bool motor) 
@@ -165,8 +189,11 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
     if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+        std::string s[] = {"Right", "Left", "Point"};
+        std::string tb[] = {"Bottom", "Top"};
+
         for (int i = 0; i < 6; i++) {
-            std::cout << GetPodCurrent(i % 3, (i / 3) < 1) << std::endl;
+            std::cout << tb[i % 2] << " "<< s[i / 3] << ": "<< GetPodCurrent(i / 3, i % 2) << std::endl;
         }
     }
 }
