@@ -1,20 +1,22 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling ScoreConeTop.cpp successful.
+
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:286:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  286 | }
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:324:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  324 | }
       | ^
 
 compiling Robot.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp: In member function 'virtual void Robot::TeleopPeriodic()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:75:10: warning: unused variable 'joystickLeftX' [-Wunused-variable]
-   75 |   double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:78:10: warning: unused variable 'joystickLeftX' [-Wunused-variable]
+   78 |   double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
       |          ^~~~~~~~~~~~~
-C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:76:10: warning: unused variable 'joystickLeftY' [-Wunused-variable]
-   76 |   double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:79:10: warning: unused variable 'joystickLeftY' [-Wunused-variable]
+   79 |   double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
       |          ^~~~~~~~~~~~~
-C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:77:10: warning: unused variable 'joystickRightX' [-Wunused-variable]
-   77 |   double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:80:10: warning: unused variable 'joystickRightX' [-Wunused-variable]
+   80 |   double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
       |          ^~~~~~~~~~~~~~
 
 compiling RobotContainer.cpp successful.

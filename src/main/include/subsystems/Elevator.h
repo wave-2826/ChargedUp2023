@@ -91,6 +91,8 @@ private:
     // Flag for stowing the elevator
     bool m_isStowing;
 
+    bool m_targetSet;
+
     // Scoring target for the elevator
     double m_elevatorTarget;
 
@@ -147,5 +149,16 @@ public:
 
     // Returns true when elevator is at home position
     bool isElevatorAtHome();
+    
+    //Set scoring target
+    void setTopConeTarget();
+    void setMidConeTarget();
+    void setTopCubeTarget();
+    void setMidCubeTarget();
+    void setHumanStationTarget();
+    void resetTarget();
+    bool isTargetSet(){ return m_targetSet; }
+
+    bool moveToCurrentTarget();
 };
 

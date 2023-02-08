@@ -48,9 +48,46 @@ Elevator::Elevator()
     m_elevatorHomePosition = 0.0;
     m_elevatorTarget = 0.0;
     m_isStowing = false;
+    m_targetSet = false;
 
     // May or may not use this
     m_distancePerRotation = (k_numOfTeeth * k_teethSize)/k_gearRatio;
+}
+
+void Elevator::setTopConeTarget()
+{
+    m_elevatorTarget = k_elevatorTargetTopCone;
+    m_targetSet = true;
+}
+
+void Elevator::setMidConeTarget()
+{
+    m_elevatorTarget = k_elevatorTargetMiddleCone;
+    m_targetSet = true;
+}
+
+void Elevator::setTopCubeTarget()
+{
+    m_elevatorTarget = k_elevatorTargetTopCube;
+    m_targetSet = true;
+}
+
+void Elevator::setMidCubeTarget()
+{
+    m_elevatorTarget = k_elevatorTargetMiddleCube;
+    m_targetSet = true;
+}
+
+void Elevator::setHumanStationTarget()
+{
+    m_elevatorTarget = k_elevatorHumanStation;
+    m_targetSet = true;
+}
+
+void Elevator::resetTarget()
+{
+    m_elevatorTarget = m_elevatorHomePosition;
+    m_targetSet = false;
 }
 
 bool Elevator::isElevatorAtHome() 
@@ -158,7 +195,9 @@ void Elevator::runElevator()
             elevatorSpeedCmd = 0.0;
         }
         
+        setElevator(elevatorSpeedCmd);
         std::cout << "Manual Operation" << std::endl;
+        std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
     } 
     else 
     {
@@ -167,36 +206,33 @@ void Elevator::runElevator()
         {
             if(m_isCone) 
             {
-                m_elevatorTarget = k_elevatorTargetTopCone;
+                setTopConeTarget();
             } 
             else 
             {
-                m_elevatorTarget = k_elevatorTargetTopCube;
+                setTopCubeTarget();
             }
-            m_elevatorFunction = Elevator_Deploy;
         } else if(m_operatorJoystick->GetBButton()) 
         {
             if(m_isCone) 
             {
-                m_elevatorTarget = k_elevatorTargetMiddleCone;
+                setMidConeTarget();
             } 
             else 
             {
-                m_elevatorTarget = k_elevatorTargetMiddleCube;
+                setMidCubeTarget();
             }
-            m_elevatorFunction = Elevator_Deploy;
         } 
         else if(m_operatorJoystick->GetXButton()) 
         {
-            m_elevatorTarget = k_elevatorHumanStation;
-            m_elevatorFunction = Elevator_Deploy;
+            setHumanStationTarget();
         } 
-        else if(m_operatorJoystick->GetYButton()) 
-        {
-            m_elevatorTarget = m_elevatorHomePosition;
-            m_elevatorFunction = Elevator_Deploy;
-        } 
+        // else if(m_operatorJoystick->GetYButton()) 
+        // {
+        //     m_elevatorTarget = m_elevatorHomePosition;
+        // } 
 
+        m_elevatorFunction = Elevator_Deploy;
 
         // Set the elevator function based on Joystick command
         switch(m_elevatorFunction) 
@@ -206,50 +242,52 @@ void Elevator::runElevator()
                 break;
 
             case Elevator_Deploy:
-                // Check the direction to move the elevator
-                double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-                std::cout << "PIDOut: " << pidOut << std::endl;
+                if(moveToCurrentTarget())
+                {
+                    m_elevatorFunction = Elevator_Off;
+                }
 
-                double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
-                if(k_delta < delta)
-                {
-                    // Extend elevator
-                    elevatorSpeedCmd = pidOut;
-                }
-                else
-                {
-                    if(m_isStowing)
-                    {
-                        // Finish stowing
-                        if(!isElevatorAtHome() || (0.1 >= delta))
-                        {
-                            elevatorSpeedCmd = 0.5;
-                        }
-                        else
-                        {
-                            m_isStowing = false;
-                        }
-                    }
-                    else
-                    {
-                        m_elevatorFunction = Elevator_Off;
-                    }
-                }
+
+                // // Check the direction to move the elevator
+                // double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
+                // std::cout << "PIDOut: " << pidOut << std::endl;
+
+                // double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+                // if(k_delta < delta)
+                // {
+                //     // Extend elevator
+                //     elevatorSpeedCmd = pidOut;
+                // }
+                // else
+                // {
+                //     if(m_isStowing)
+                //     {
+                //         // Finish stowing
+                //         if(!isElevatorAtHome() || (0.1 >= delta))
+                //         {
+                //             elevatorSpeedCmd = 0.5;
+                //         }
+                //         else
+                //         {
+                //             m_isStowing = false;
+                //         }
+                //     }
+                //     else
+                //     {
+                //         m_elevatorFunction = Elevator_Off;
+                //     }
+                // }
 
                 break;
         }
     }
 
-    // Elevator can not extend beyond the max limit
-    if(k_maxElevatorPosition < m_elevatorPosition)
-    {
-        std::cout << "Max Elevator position reached." << std::endl;
-        //elevatorSpeedCmd =0.0;
-    }
-
-    setElevator(elevatorSpeedCmd);
-    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
-
+    // // Elevator can not extend beyond the max limit
+    // if(k_maxElevatorPosition < m_elevatorPosition)
+    // {
+    //     std::cout << "Max Elevator position reached." << std::endl;
+    //     //elevatorSpeedCmd =0.0;
+    // }
 
     //////////////// endEffector operation ////////////////////
     
@@ -283,4 +321,29 @@ bool Elevator::stowElevator()
 
     }
 
+}
+
+bool Elevator::moveToCurrentTarget()
+{
+    double speedCmd = 0.0;
+    bool retVal = false;
+
+    double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
+    std::cout << "PIDOut: " << pidOut << std::endl;
+
+    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+    if(k_delta <= delta)
+    {
+        speedCmd = pidOut;
+    }
+    else
+    {
+        retVal = true;
+    }
+
+    setElevator(speedCmd);
+
+    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
+
+    return retVal;
 }
