@@ -263,7 +263,7 @@ void Elevator::runElevator()
                 //     if(m_isStowing)
                 //     {
                 //         // Finish stowing
-                //         if(!isElevatorAtHome() || (0.1 >= delta))
+                //         if(!isElevatorAtHome() || (delta <= 0.1))
                 //         {
                 //             elevatorSpeedCmd = 0.5;
                 //         }
