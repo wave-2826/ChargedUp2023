@@ -17,6 +17,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <iostream>
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
@@ -30,7 +31,20 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+void Robot::RobotPeriodic() 
+{ 
+  frc2::CommandScheduler::GetInstance().Run(); 
+
+  // TODO: check redundant with SwerveDrive::UpdatePodOffsetAngles 
+  // SET pod offset angles with values from dashboard
+  double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+  double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+  double pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+  m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
+  m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
+  m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+  // std::cout << " LEFT OFFSET: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle();
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You
@@ -69,19 +83,46 @@ void Robot::TeleopInit() {
   }
 }
 
-double Joystick(double x, double deadzone) { return (std::fabs(x) < deadzone) ? 0 : x; }
+double Joystick(double input, double deadzone) 
+{ 
+  return (std::fabs(input) < deadzone) ? 0 : input; 
+}
 
 /**
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
-  double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
-  double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
-// std::cout << "Left X: " << joystickLeftX << std::endl;
+  
+  // std::cout << "left: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle() << std::endl;
+  // updates pod angle offsets (on dashboard)
+  m_container->m_swerveDrive.UpdatePodOffsetAngles();
 
-  // joystick inputs for swerve
-  //m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  double joystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  double joystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  double joystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+
+  /// TESTING - joystick inputs with scaling
+  // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.0001);
+  // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.0001);
+  // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.0001);
+  // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+
+
+  // joystick inputs for swerve - scaling
+  // m_container->m_swerveDrive.DrivePods(
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), joystickLX, 0.001), 
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), joystickLY, 0.001) , 
+  //   m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), joystickRX, 0.001) );
+  // m_container->SetPreviousJoystickInputLX(joystickLX);
+  // m_container->SetPreviousJoystickInputLY(joystickLY);
+  // m_container->SetPreviousJoystickInputRX(joystickRX);
+
+
+    // joystick inputs for swerve - NO scaling
+    m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);
+
+  // Elevator Operations
+  // m_container->m_elevator.runElevator();
 }
 
 /**

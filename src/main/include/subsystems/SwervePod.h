@@ -41,21 +41,22 @@ class SwervePod {
 
         int m_counter;
         bool m_isReversed = false;
+        double m_offsetAngle;
         std::string m_podName = "";
+        int m_encoderChannel;
+
+        double m_leftOffset;
+        double m_rightOffset;
+        double m_pointOffset;
 
         double m_currentTopMotorSpeed;
         double m_currentBottomMotorSpeed;
         double m_currentPosition;
-
-        double m_previousTopMotorSpeed;
-        double m_previousBottomMotorSpeed;
         
         bool m_initialized;
 
         double turnTuningFactor;
         double offsetAngle;
-
-        double LinearInterpolate(double speed, double targetSpeed, double movePercentage);
 
     public:
         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double turnTuningFactor, double offsetAngle, int encoderChannel);
@@ -71,7 +72,7 @@ class SwervePod {
          * @param offsetAngle defines the absolute encoder 0 position in relation to 
          * the "front" or 0 of the robot 
          **/
-        void Drive(frc::SwerveModuleState state);
+        bool Drive(frc::SwerveModuleState state);
 
         /**
          * Function that gets the current counter
@@ -100,11 +101,7 @@ class SwervePod {
          **/ 
         void FlipIsReversed(bool state);
 
-        double GetPreviousTopMotorSpeed();
-        void SetPreviousTopMotorSpeed(double value);
-        double GetPreviousBottomMotorSpeed();
-        void SetPreviousBottomMotorSpeed(double value);
-
+        void UpdateOffsetAngle();
         void Periodic(); 
         void SimulationPeriodic();
 

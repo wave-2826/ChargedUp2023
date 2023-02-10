@@ -15,6 +15,15 @@
 #include <iostream>
 #include "Globals.h"
 
+#include "ctre/phoenixpro/core/CorePigeon2.hpp"
+#include "ctre/phoenix/platform/DeviceType.hpp"
+#include "frc/interfaces/Gyro.h"
+#include "frc/geometry/Rotation2d.h"
+#include "wpi/sendable/Sendable.h"
+#include "wpi/sendable/SendableBuilder.h"
+#include "wpi/sendable/SendableHelper.h"
+#include <hal/SimDevice.h>
+
 using namespace rev;
 using namespace frc;
 
@@ -23,7 +32,9 @@ using namespace frc;
  *
  * @author 2826WaveRobotics
  */
-SwerveDrive::SwerveDrive() {
+SwerveDrive::SwerveDrive() 
+{
+    m_pidgeon = new ctre::phoenixpro::hardware::core::CorePigeon2(21, "*");
 
     // All swerve module motors
     // B = bottom , A = top
@@ -36,11 +47,26 @@ SwerveDrive::SwerveDrive() {
     m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
+    // explicitly set all motors to coast
+    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+
+
+    // set initial offset angles from the smart dashboard
+    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+
     // Individual swerve pod instances
-    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 1.0, 0.0, k_rightPodEncoder); // 143.706
-    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 1.0, 0.0, k_leftPodEncoder);   // 164.36
-    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 1.0, 0.0, k_pointPodEncoder); // 272.912
+    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 0.01, leftOffset, k_leftPodEncoder);
+    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 0.01, rightOffset, k_rightPodEncoder);
+    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 0.01, pointOffset, k_pointPodEncoder);
     
+
     // Locations for the swerve drive modules relative to the robot center.
     frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
     frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
@@ -55,18 +81,92 @@ SwerveDrive::SwerveDrive() {
     SetSubsystem("SwerveDrive");
 }
 
-void SwerveDrive::initialize(){
+void SwerveDrive::initialize()
+{
     m_rightPod->Initialize();
     m_leftPod->Initialize();
     m_pointPod->Initialize();
 }
 
-void SwerveDrive::Periodic() {
-    // Put code here to be run every loop
+// Put code here to be run every loop
+void SwerveDrive::Periodic() 
+{
+    // TESTING Pigeon 2.0 
+    std::cout << "yaw: " << m_pidgeon->GetYaw() << std::endl;
+    std::cout << "pitch: " << m_pidgeon->GetPitch() << std::endl;
+    std::cout << "roll: " << m_pidgeon->GetRoll() << std::endl;
+    std::cout << "gx: " << m_pidgeon->GetGravityVectorX() << std::endl;
+    std::cout << "id: " << m_pidgeon->GetDeviceID() << std::endl;
+
 }
 
 void SwerveDrive::SimulationPeriodic() {
     // This method will be called once per scheduler run when in simulation
+}
+
+void SwerveDrive::UpdatePodOffsetAngles() 
+{
+    // UPDATE pod offset angles
+    m_leftPod->UpdateOffsetAngle();
+    m_rightPod->UpdateOffsetAngle();
+    m_pointPod->UpdateOffsetAngle();
+
+}
+
+double SwerveDrive::GetPodCurrent(int pod, bool motor) 
+{
+    switch (pod) {
+        case 0: // right
+            if (motor) // top
+                return m_rightTopMotor->GetOutputCurrent();
+            else
+                return m_rightBottomMotor->GetOutputCurrent();
+            break;
+        case 1: // left
+            if (motor) // top
+                return m_leftTopMotor->GetOutputCurrent();
+            else
+                return m_leftBottomMotor->GetOutputCurrent();
+            break;
+        case 2: // point
+            if (motor) // top
+                return m_pointTopMotor->GetOutputCurrent();
+            else
+                return m_pointBottomMotor->GetOutputCurrent();
+            break;
+        default:
+            return 0.0;
+    }
+}
+
+double SwerveDrive::GetLeftPodOffsetAngle() 
+{
+    return m_leftPodOffsetAngle;
+}
+
+double SwerveDrive::GetRightPodOffsetAngle() 
+{
+    return m_rightPodOffsetAngle;
+}
+
+double SwerveDrive::GetPointPodOffsetAngle() 
+{
+    return m_pointPodOffsetAngle;
+}
+
+void SwerveDrive::SetLeftPodOffsetAngle(double offsetAngle)
+{
+    m_leftPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetRightPodOffsetAngle(double offsetAngle)
+{
+    m_rightPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
+{
+    m_pointPodOffsetAngle = offsetAngle;
 }
 
 void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
@@ -83,12 +183,17 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
     // foward is negated to flip the axis of the LX input
     frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(-forward*transform),
         (units::velocity::meters_per_second_t)(strafe*transform),
-        (units::angular_velocity::radians_per_second_t)(rotation*transform)};
+        (units::angular_velocity::radians_per_second_t)(2*rotation*transform)};
     
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    // m_rightPod->Drive(right);
-    // m_leftPod->Drive(left);
-    m_pointPod->Drive(point);
+    if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+        std::string s[] = {"Right", "Left", "Point"};
+        std::string tb[] = {"Bottom", "Top"};
+
+        for (int i = 0; i < 6; i++) {
+            std::cout << tb[i % 2] << " "<< s[i / 3] << ": "<< GetPodCurrent(i / 3, i % 2) << std::endl;
+        }
+    }
 }

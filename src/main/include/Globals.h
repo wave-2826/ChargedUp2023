@@ -13,10 +13,10 @@ double const k_jsDeadband = 0.07;
 // Swerve Drive Motors
 int const k_swervePointBottom = 2;
 int const k_swervePointTop = 3;
-int const k_swerveLeftTop = 4;
-int const k_swerveLeftBottom = 5;
-int const k_swerveRightTop = 6;
-int const k_swerveRightBotton = 7;
+int const k_swerveLeftTop = 5;
+int const k_swerveLeftBottom = 4;
+int const k_swerveRightTop = 7;
+int const k_swerveRightBotton = 6;
 // Swerve Drive Pod Encoders
 int const k_rightPodEncoder = 0;
 int const k_leftPodEncoder = 1;
