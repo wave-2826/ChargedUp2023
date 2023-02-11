@@ -1,9 +1,7 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling OpenCommand.cpp successful.
+compiling ScoreConeTop.cpp successful.
 
 compiling AutonomousCommand.cpp successful.
-
-compiling RotateDownCommand.cpp successful.
 
 compiling WaveWaitCommand.cpp successful.
 
@@ -21,8 +19,8 @@ compiling Intake.cpp successful.
 
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:184:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  184 | }
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:307:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  307 | }
       | ^
 
 compiling SwerveDrive.cpp successful.

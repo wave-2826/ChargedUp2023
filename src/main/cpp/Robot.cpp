@@ -13,6 +13,8 @@
 #include "Robot.h"
 #include "Globals.h"
 
+#include <iostream> 
+
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <iostream>
@@ -65,7 +67,10 @@ void Robot::AutonomousInit() {
   }
 }
 
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() 
+{
+  
+}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when
