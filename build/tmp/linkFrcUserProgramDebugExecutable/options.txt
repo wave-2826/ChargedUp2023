@@ -8,6 +8,7 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramC
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\azbhnrziv6ao1kobf4di4zwgl\\SwerveDrive.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\b090uxgyspjmb6jsenh4cfckl\\DriveTimed.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\df5z1tdmtprv1zl32nen6pmhk\\Vision.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhvnccgr6zcre49ouohilqty0\\WaveWaitCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\e0xclfgehbabwga92smk06hp9\\Intake.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\esafwn6bxe6r8ammt45i8qdwa\\Elevator.o
 C:\\Users\\Wave2826\\.gradle\\caches\\transforms-3\\43b225627fd626d0157edac51b22795a\\transformed\\wpilibNewCommands-cpp-2023.1.1-linuxathenadebug\\linux\\athena\\shared\\libwpilibNewCommandsd.so

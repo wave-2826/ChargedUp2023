@@ -39,7 +39,7 @@ class SwerveDrive: public frc2::SubsystemBase {
     // for methods that implement subsystem capabilities
     private:        
 
-        ctre::phoenixpro::hardware::core::CorePigeon2 *m_pidgeon;
+        ctre::phoenixpro::hardware::core::CorePigeon2 *m_pigeon;
         rev::CANSparkMax *m_rightBottomMotor;
         rev::CANSparkMax *m_rightTopMotor;
         rev::CANSparkMax *m_leftBottomMotor;

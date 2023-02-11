@@ -34,12 +34,12 @@ using namespace frc;
  */
 SwerveDrive::SwerveDrive() 
 {
-    m_pidgeon = new ctre::phoenixpro::hardware::core::CorePigeon2(21, "*");
+    // m_pigeon = new ctre::phoenixpro::hardware::core::CorePigeon2(21, "*");
 
     // All swerve module motors
     // B = bottom , A = top
     m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
-    m_rightBottomMotor = new CANSparkMax(k_swerveRightBotton, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    m_rightBottomMotor = new CANSparkMax(k_swerveRightBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
     // B = bottom , A = top
     m_leftTopMotor = new CANSparkMax(k_swerveLeftTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
     m_leftBottomMotor = new CANSparkMax(k_swerveLeftBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
@@ -92,11 +92,11 @@ void SwerveDrive::initialize()
 void SwerveDrive::Periodic() 
 {
     // TESTING Pigeon 2.0 
-    std::cout << "yaw: " << m_pidgeon->GetYaw() << std::endl;
-    std::cout << "pitch: " << m_pidgeon->GetPitch() << std::endl;
-    std::cout << "roll: " << m_pidgeon->GetRoll() << std::endl;
-    std::cout << "gx: " << m_pidgeon->GetGravityVectorX() << std::endl;
-    std::cout << "id: " << m_pidgeon->GetDeviceID() << std::endl;
+    // std::cout << "yaw: " << m_pigeon->GetYaw() << std::endl;
+    // std::cout << "pitch: " << m_pigeon->GetPitch() << std::endl;
+    // std::cout << "roll: " << m_pigeon->GetRoll() << std::endl;
+    // std::cout << "gx: " << m_pigeon->GetGravityVectorX() << std::endl;
+    // std::cout << "id: " << m_pigeon->GetDeviceID() << std::endl;
 
 }
 

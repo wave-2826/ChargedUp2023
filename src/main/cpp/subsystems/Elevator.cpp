@@ -227,10 +227,6 @@ void Elevator::runElevator()
         {
             setHumanStationTarget();
         } 
-        // else if(m_operatorJoystick->GetYButton()) 
-        // {
-        //     m_elevatorTarget = m_elevatorHomePosition;
-        // } 
 
         m_elevatorFunction = Elevator_Deploy;
 
@@ -282,12 +278,6 @@ void Elevator::runElevator()
         }
     }
 
-    // // Elevator can not extend beyond the max limit
-    // if(k_maxElevatorPosition < m_elevatorPosition)
-    // {
-    //     std::cout << "Max Elevator position reached." << std::endl;
-    //     //elevatorSpeedCmd =0.0;
-    // }
 
     //////////////// endEffector operation ////////////////////
     
@@ -301,13 +291,6 @@ void Elevator::runElevator()
         setEndEffector(0);
     }
 
-    // Grabber operation
-    // Keep it open until it senses a Cone
-    // if (m_detectConeLimitSwitch.Get()) {
-    //     // Close it
-    //     // TODO: actually implement this
-    
-    // }
 
     // Print out for debugging
     // std::cout << "ElevPosition: " << m_elevatorPosition << "; TargetPosition: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
