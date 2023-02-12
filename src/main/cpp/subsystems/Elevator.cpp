@@ -196,8 +196,8 @@ void Elevator::runElevator()
         }
         
         setElevator(elevatorSpeedCmd);
-        std::cout << "Manual Operation" << std::endl;
-        std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+        // std::cout << "Manual Operation" << std::endl;
+        // std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
     } 
     else 
     {
@@ -312,7 +312,7 @@ bool Elevator::moveToCurrentTarget()
     bool retVal = false;
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-    std::cout << "PIDOut: " << pidOut << std::endl;
+    // std::cout << "PIDOut: " << pidOut << std::endl;
 
     double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
     if(k_delta <= delta)
@@ -326,7 +326,7 @@ bool Elevator::moveToCurrentTarget()
 
     setElevator(speedCmd);
 
-    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
+    // std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
 
     return retVal;
 }

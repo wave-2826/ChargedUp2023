@@ -51,7 +51,7 @@ bool ScoreConeTop::IsFinished()
     if(m_targetReached)
     {
         // Top Target reached
-        std::cout << "Top Target Reached" << std::endl;
+        // std::cout << "Top Target Reached" << std::endl;
         return true;
     }
     else
