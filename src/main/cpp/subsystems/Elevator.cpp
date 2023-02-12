@@ -13,7 +13,6 @@
 #include <iostream>
 #include "subsystems/Elevator.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "Globals.h"
 
 #include "RobotContainer.h"
 
@@ -54,6 +53,7 @@ Elevator::Elevator()
     m_distancePerRotation = (k_numOfTeeth * k_teethSize)/k_gearRatio;
 }
 
+<<<<<<< HEAD
 void Elevator::setTopConeTarget()
 {
     m_elevatorTarget = k_elevatorTargetTopCone;
@@ -88,6 +88,11 @@ void Elevator::resetTarget()
 {
     m_elevatorTarget = m_elevatorHomePosition;
     m_targetSet = false;
+=======
+void Elevator::initialize()
+{
+    m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
+>>>>>>> a141d10b097cb0676429953b058ca9ebe1c4adfc
 }
 
 bool Elevator::isElevatorAtHome() 
@@ -114,21 +119,9 @@ void Elevator::setElevator(double speed)
     m_elevatorMotorB->Set(speed);    
 }
 
-bool Elevator::setEndEffector(double speed) 
-{
-    if(k_maxEndoFactorSpeed >= speed) 
-    {
-        m_endEffectorMotor->Set(speed);
-        return true;
-    }
-    return false;
-}
-
 void Elevator::Periodic() 
 {
     // Put code here to be run every loop
-
-    m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
 
     // Set zero position (temporary for testing)
     if(m_operatorJoystick->GetStartButton())
@@ -144,6 +137,8 @@ void Elevator::Periodic()
     }
 
     runElevator();
+
+    runEndEffector();
 }
 
 
@@ -176,7 +171,7 @@ void Elevator::runElevator()
 {
     //////////////  Routine ELEVATOR FUNCTIONS  /////////////////////
     double elevatorSpeedCmd = 0.0;
-    bool elevatorOverride = m_operatorJoystick->GetRightBumper();
+    bool elevatorOverride = m_operatorJoystick->GetLeftBumper();
 
     m_elevatorPosition = getElevatorPosition();
     if(isElevatorAtHome())
@@ -189,7 +184,7 @@ void Elevator::runElevator()
         // Manual operation
         m_elevatorFunction = Elevator_Off;
         m_elevatorTarget = 0.0;
-        elevatorSpeedCmd = m_operatorJoystick->GetLeftY();
+        elevatorSpeedCmd = m_operatorJoystick->GetRightY();
         if(k_jsDeadband > std::fabs(elevatorSpeedCmd))
         {
             elevatorSpeedCmd = 0.0;
@@ -247,6 +242,7 @@ void Elevator::runElevator()
                     m_elevatorFunction = Elevator_Off;
                 }
 
+<<<<<<< HEAD
 
                 // // Check the direction to move the elevator
                 // double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
@@ -277,50 +273,133 @@ void Elevator::runElevator()
                 //         m_elevatorFunction = Elevator_Off;
                 //     }
                 // }
+=======
+                double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+                if(k_delta < delta)
+                {
+                    // Extend elevator
+                    elevatorSpeedCmd = pidOut;
+                }
+                else
+                {
+                    if(m_isStowing)
+                    {
+                        // Finish stowing
+                        if(!isElevatorAtHome() || (0.1 <= delta))
+                        {
+                            elevatorSpeedCmd = 0.5;
+                        }
+                        else
+                        {
+                            m_isStowing = false;
+                        }
+                    }
+                    else
+                    {
+                        m_elevatorFunction = Elevator_Off;
+                    }
+                }
+>>>>>>> a141d10b097cb0676429953b058ca9ebe1c4adfc
 
                 break;
         }
     }
 
+<<<<<<< HEAD
     // // Elevator can not extend beyond the max limit
     // if(k_maxElevatorPosition < m_elevatorPosition)
     // {
     //     std::cout << "Max Elevator position reached." << std::endl;
     //     //elevatorSpeedCmd =0.0;
     // }
-
-    //////////////// endEffector operation ////////////////////
-    
-    double endEffectorCmd = m_operatorJoystick->GetRightX();
-    if(k_jsDeadband < endEffectorCmd) 
+=======
+    // Elevator can not extend beyond the max limit
+    if(k_maxElevatorPosition < m_elevatorPosition)
     {
-        setEndEffector(endEffectorCmd);
-    } 
-    else 
-    {
-        setEndEffector(0);
+        std::cout << "Max Elevator position reached." << std::endl;
+        //elevatorSpeedCmd =0.0;
     }
 
-    // Grabber operation
-    // Keep it open until it senses a Cone
-    // if (m_detectConeLimitSwitch.Get()) {
-    //     // Close it
-    //     // TODO: actually implement this
-    
-    // }
-
-    // Print out for debugging
-    // std::cout << "ElevPosition: " << m_elevatorPosition << "; TargetPosition: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+    setElevator(elevatorSpeedCmd);
+    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
 }
 
-bool Elevator::stowElevator() 
-{
-    // Retract elevator until it reaches the Limit Switch
-    if(!isElevatorAtHome())
-    {
+>>>>>>> a141d10b097cb0676429953b058ca9ebe1c4adfc
 
+//////////////// endEffector operation ////////////////////
+
+void Elevator::setEndEffectorRoller(double speed) 
+{
+    m_endEffectorMotor->Set(speed);
+}
+
+void Elevator::moveEndEffector(bool down)
+{
+    m_endEffectorOut.Set(down);
+}
+
+void Elevator::closeGrabber()
+{
+    m_endEffectorGrabberOut.Set(false);
+}
+
+void Elevator::openGrabber()
+{
+    m_endEffectorGrabberOut.Set(true);
+}
+
+void Elevator::runEndEffector() 
+{
+    int endEffectorCmd = m_operatorJoystick->GetPOV(0);
+    switch(m_endEffectorFunction)    {
+        case EF_Up:
+        default:
+            // EndEffectorUp, turn off the output
+            moveEndEffector(false);
+
+            // EndEffector can go down only if the Elevator is above Human Station level
+            if((0 == endEffectorCmd) && (k_elevatorHumanStation < m_elevatorPosition))
+            {
+                m_endEffectorFunction = EF_Down;
+            }
+            break;
+        case EF_Down:
+            // EndEffector Down, turn on the output
+            moveEndEffector(true);
+
+            if((180 == endEffectorCmd) || (k_elevatorHumanStation > m_elevatorPosition))
+            {
+                m_endEffectorFunction = EF_Up;
+            }
+            break;
     }
 
+    std::cout << "EFCmd: " << endEffectorCmd << "; Function: " << m_endEffectorFunction << std::endl;
+
+    /////////////// End Effector Operation ///////////////////
+
+    double endEffectorRollerCmd = m_operatorJoystick->GetLeftY();
+
+    if(k_jsDeadband > std::fabs(endEffectorRollerCmd)) 
+    {
+        endEffectorRollerCmd = 0;
+    } 
+
+    setEndEffectorRoller(endEffectorRollerCmd * k_endEffectorSpeedFactor);
+ 
+    ///////////////////// End Effector Grabber Operations ///////////////////////
+
+    if(0.5 < m_operatorJoystick->GetLeftTriggerAxis())
+    {
+        openGrabber();
+    }
+    else
+    {
+        closeGrabber();
+    }
+
+    // Print out for debugging
+    // std::cout << "EFCmd1: " << endEffectorCmd1 << "; EFCmd2: " << endEffectorCmd2 << ";  EFCmd3: " << endEffectorCmd3 << std::endl;
 }
 
 bool Elevator::moveToCurrentTarget()

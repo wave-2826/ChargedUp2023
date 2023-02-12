@@ -20,6 +20,7 @@
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
+  m_container->m_elevator.initialize();
 }
 
 /**
