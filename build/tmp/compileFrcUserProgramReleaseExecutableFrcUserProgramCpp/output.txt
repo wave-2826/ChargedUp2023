@@ -1,27 +1,19 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling AutonomousCommand.cpp successful.
-
-compiling OpenCommand.cpp successful.
-
-compiling RotateDownCommand.cpp successful.
-
 compiling DriveTimed.cpp successful.
-
-compiling WaveWaitCommand.cpp successful.
-
-compiling Intake.cpp successful.
-
-compiling SwervePod.cpp successful.
 
 compiling Robot.cpp successful.
 
+compiling SwervePod.cpp successful.
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp: In member function 'void SwervePod::LockState(frc::SwerveModuleState)':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp:357:12: warning: unused variable 'angle_delta_optimized' [-Wunused-variable]
+  357 |     double angle_delta_optimized = 0.0;
+      |            ^~~~~~~~~~~~~~~~~~~~~
+
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:184:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  184 | }
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:315:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  315 | }
       | ^
-
-compiling Vision.cpp successful.
 
 compiling RobotContainer.cpp successful.
 

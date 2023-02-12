@@ -18,17 +18,11 @@
 #include "subsystems/SwervePod.h"
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <units/velocity.h>
-
-//PIDGEON STUFF
-#include "ctre/phoenixpro/core/CorePigeon2.hpp"
-#include "ctre/phoenix/platform/DeviceType.hpp"
-
-#define FRONT_RIGHT  0
-#define FRONT_LEFT  1
-#define BACK_RIGHT  2
-#define BACK_LEFT  3
+#include <ctre/phoenix/sensors/Pigeon2.h>
+#include <frc/XboxController.h>
 
 #define k_DB (double)0.07
+
 /**
  * SwerveDrive header file
  *
@@ -39,7 +33,8 @@ class SwerveDrive: public frc2::SubsystemBase {
     // for methods that implement subsystem capabilities
     private:        
 
-        ctre::phoenixpro::hardware::core::CorePigeon2 *m_pidgeon;
+        ctre::phoenix::sensors::Pigeon2 *m_pigeon;
+
         rev::CANSparkMax *m_rightBottomMotor;
         rev::CANSparkMax *m_rightTopMotor;
         rev::CANSparkMax *m_leftBottomMotor;
@@ -53,6 +48,11 @@ class SwerveDrive: public frc2::SubsystemBase {
         SwervePod *m_leftPod;
         SwervePod *m_pointPod;
 
+        const double k_gearRatioWheelSpeed = 3.2196;
+        const double k_wheelDiameterMeters = 0.0635;
+        const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
+        const double k_maxMotorSpeed = 5200.0;
+
         // motor currents;
         double m_leftPodTopMotorCurrent = 0.0;
         double m_leftPodBottomMotorCurrent = 0.0;
@@ -61,14 +61,15 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
-        double m_leftPodOffsetAngle = 107.0;
-        double m_rightPodOffsetAngle = 124.0;
-        double m_pointPodOffsetAngle = -11.0;
+        double m_leftPodOffsetAngle = 209.0;
+        double m_rightPodOffsetAngle = -50.0;
+        double m_pointPodOffsetAngle = 64.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
 
     public:
+    
         // length of the intake side
         const double robotWidth = 0.717;
         // length of the point to the midpoint of the intake side
@@ -91,8 +92,13 @@ class SwerveDrive: public frc2::SubsystemBase {
          * @param foward joystick input from left x-axis (LX)
          * @param strafe joystick input from left y-axis (LY)
          * @param rotation joystick input from right x-axis (RX)
-         **/
+        */
         void DrivePods(double forward, double strafe, double rotation);
+
+        /**
+         * Function that orients the swerve pods into opposing angles for a "locked" position
+        */
+        void LockSwerve();
 
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
@@ -115,7 +121,7 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SetRightPodOffsetAngle(double offsetAngle);
         void SetPointPodOffsetAngle(double offsetAngle);  
 
-        void initialize();
+        void Initialize();
         
 };
 

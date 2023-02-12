@@ -34,18 +34,12 @@
 // Elevator functions used to deploy the elevator in auto mode
 typedef enum {
     Elevator_Off,
-    // Deploy elevator to top level
-    Elevator_DeployTargetTop,
-    // Deploy elevator to middle level
-    Elevator_DeployTargetMiddle,
-    // Human player Station
-    Elevator_RecieveGamePiece,
-    // Stow Elevator
-    Elevator_Stow
+    // Deploy elevator to a target
+    Elevator_Deploy
 } ElevatorFunction;
 
 // Elevator class shall be used to extend and retract the elevator. 
-// This class will also preform the functions of the Endofactor.
+// This class will also preform the functions of the EndEffector.
 class Elevator: public frc2::SubsystemBase {
 private:
     // It's desirable that everything possible is private except
@@ -57,17 +51,24 @@ private:
     // Limit switch to detect the elevator home position
     frc::DigitalInput m_elevatorAtHomeLimitSwitch{5};
 
-    // Endofactor grabber solenoid to grab and release the cone
-    // frc::DigitalOutput m_endoFactorGrabberOut{0};
+    // Limit swtch to detect if a cone is in range
+    // TODO: change the id from 0 to the actual id
+    frc::DigitalInput m_detectConeLimitSwitch{9};
+
+    // EndEffector grabber solenoid to grab and release the cone
+    frc::DigitalOutput m_endEffectorGrabberOut{8};
  
-    // Endofactor solenoid to move up. Spring to down
-    // frc::DigitalOutput m_endoFactorOut{1};
+    // EndEffector solenoid to move up. Spring to down
+    frc::DigitalOutput m_endEffectorOut{7};
 
     // Current position of the elevator
     double m_elevatorPosition;
 
-    // The motor controller for the Endofactor intake motor
-    rev::CANSparkMax *m_endofactorMotor;
+    // Elevator Home position
+    double m_elevatorHomePosition;
+
+    // The motor controller for the EndEffector intake motor
+    rev::CANSparkMax *m_endEffectorMotor;
 
     // Motor controller for the elevator
     rev::CANSparkMax *m_elevatorMotorB;
@@ -84,43 +85,57 @@ private:
     frc::XboxController *m_operatorJoystick;
     ElevatorFunction m_elevatorFunction;
     
-    // Flag is true while elevator is stowing
-    bool m_stowing;
-
     // Scoring object flag. True when scoring with Cone
     bool m_isCone;
 
+    // Flag for stowing the elevator
+    bool m_isStowing;
+
+    bool m_targetSet;
+
     // Scoring target for the elevator
-    double m_scoringTarget;
+    double m_elevatorTarget;
 
-    // Command speed to the elevator motors if speed is within range.
-    // Returns true if speed is between -k_maxElevatorSpeed and k_maxElevatorSpeed
-    bool setElevator(double speed);
+    // Factor for the elevator position
+    double m_distancePerRotation;
 
-    // Command speed to the endofactor motor if speed is within range.
+    // Command speed to the elevator motors.
+    void setElevator(double speed);
+
+    // Command speed to the endEffector motor if speed is within range.
     // Returns true if speed is between -k_maxEndoFactorSpeed and k_maxEndoFactorSpeed
-    bool setEndoFactor(double speed);
+    bool setEndEffector(double speed);
+
+    double getPIDSpeed(double pidCommnd);
 
     // Constants used for Elevator functions
-    static constexpr const double k_maxElevatorSpeed = 0.8;
+    static constexpr const double k_maxElevatorSpeed = 1.0;
     static constexpr const double k_maxEndoFactorSpeed = 0.5;
-    static constexpr const double k_P = 0.1;
+    static constexpr const double k_P = 0.5;
     static constexpr const double k_I = 0.0;
     static constexpr const double k_D = 0.0;
     static constexpr const double k_delta = 1.0;
 
-    // Pre-set elevator scoring position for the elevator
-    static constexpr const double k_elevatorTargetTopCone = 10.0;
-    static constexpr const double k_elevatorTargetMiddleCone = 5.0;
-    static constexpr const double k_elevatorTargetTopCube = 8.0;
-    static constexpr const double k_elevatorTargetMiddleCube = 4.0;
-    static constexpr const double k_elevatorReceiveGamePiece = 3.0;
+    static constexpr const double k_numOfTeeth = 36.0;
+    static constexpr const double k_teethSize = 0.25;  // in inches
+    static constexpr const double k_gearRatio = 4; // Ratio 4:1
+
+    static constexpr const double k_maxElevatorPosition = 100.0; // in inches
+    static constexpr const double k_encoderPosConversionFactor = 0.5; // TBD: Need the conversion factor
+
+    // Pre-set elevator scoing position for the elevator
+    static constexpr const double k_elevatorTargetTopCone = 54.5;
+    static constexpr const double k_elevatorTargetMiddleCone = 30.5;
+    static constexpr const double k_elevatorTargetTopCube = 46.5;
+    static constexpr const double k_elevatorTargetMiddleCube = 22.5;
+    static constexpr const double k_elevatorHumanStation = 10.25;
 
 public:
     Elevator();
 
     void Periodic() override;
     void SimulationPeriodic() override;
+    void Initialize();
 
     // Periodic operation for the elevator
     void runElevator();
@@ -135,5 +150,16 @@ public:
 
     // Returns true when elevator is at home position
     bool isElevatorAtHome();
+    
+    //Set scoring target
+    void setTopConeTarget();
+    void setMidConeTarget();
+    void setTopCubeTarget();
+    void setMidCubeTarget();
+    void setHumanStationTarget();
+    void resetTarget();
+    bool isTargetSet(){ return m_targetSet; }
+
+    bool moveToCurrentTarget();
 };
 
