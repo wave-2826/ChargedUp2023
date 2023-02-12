@@ -5,14 +5,14 @@ compiling Robot.cpp successful.
 
 compiling SwervePod.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp: In member function 'void SwervePod::LockState(frc::SwerveModuleState)':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp:358:12: warning: unused variable 'angle_delta_optimized' [-Wunused-variable]
-  358 |     double angle_delta_optimized = 0.0;
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwervePod.cpp:357:12: warning: unused variable 'angle_delta_optimized' [-Wunused-variable]
+  357 |     double angle_delta_optimized = 0.0;
       |            ^~~~~~~~~~~~~~~~~~~~~
 
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:307:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  307 | }
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:315:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  315 | }
       | ^
 
 compiling RobotContainer.cpp successful.

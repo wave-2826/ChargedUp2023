@@ -314,7 +314,6 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
 */
 void SwervePod::LockState(frc::SwerveModuleState state)
 {
-    // TODO: set max motor speeds
     double topMotorSpeed = 0.0;
     double bottomMotorSpeed = 0.0;
 
@@ -361,12 +360,8 @@ void SwervePod::LockState(frc::SwerveModuleState state)
 
     if (fabs(angle_delta) < 30.0)
     {
-        // tuning factor is the P in PID (if we decide to use it)
-        // double tunedAngleDelta = angle_delta * turnTuningFactor;
-
         // check aligned -> don't move!!
         swerveCase = "ALIGNED";
-
     }
     else
     {
@@ -382,7 +377,7 @@ void SwervePod::LockState(frc::SwerveModuleState state)
 
     ///////////////////////////////// TESTING PRINTOUTS /////////////////////////////////////////
 
-    if (GetCounter() > 25)
+    if (GetCounter() > 1)
     {
         // SWERVE CASE
         std::cout << "LOCKED - " << swerveCase << std::endl;

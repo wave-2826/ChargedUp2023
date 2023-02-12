@@ -40,13 +40,12 @@ SwerveDrive::SwerveDrive()
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
     // explicitly set all motors to coast
-    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-
+    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
     // set initial offset angles from the smart dashboard
     leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
@@ -64,7 +63,7 @@ SwerveDrive::SwerveDrive()
     frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
 
     // 3 pod swerve kinematics object using module locations
-    m_kinematics = new SwerveDriveKinematics<3>{
+    m_kinematics = new SwerveDriveKinematics<3> {
         m_rightLocation, m_leftLocation, m_pointLocation
     };
 
@@ -72,23 +71,29 @@ SwerveDrive::SwerveDrive()
     SetSubsystem("SwerveDrive");
 }
 
-void SwerveDrive::initialize()
+void SwerveDrive::Initialize()
 {
     m_rightPod->Initialize();
     m_leftPod->Initialize();
     m_pointPod->Initialize();
+
+    // TODO: configure pigeon (?)
+    // m_pigeon->ConfigMountPosePitch();
 }
 
 // Put code here to be run every loop
 void SwerveDrive::Periodic() 
 {
     // TESTING Pigeon 2.0 
+    #ifdef _TESTPIGEON
     std::cout << "yaw: " << m_pigeon->GetYaw() << 
         "   pitch: " << m_pigeon->GetPitch() <<
         "   roll: " << m_pigeon->GetRoll() << std::endl;
+    #endif
 }
 
-void SwerveDrive::SimulationPeriodic() {
+void SwerveDrive::SimulationPeriodic() 
+{
     // This method will be called once per scheduler run when in simulation
 }
 

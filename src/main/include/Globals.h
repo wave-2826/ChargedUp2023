@@ -6,9 +6,12 @@
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
 
-double const k_jsDeadband = 0.07;
+#define _DEBUGME                    
+#define _TESTJOYSTICK               
+#define _TESTPIGEON                 1
+#define _TESTELEVATOR           
 
-// CANSparkMax Motor IDs
+double const k_jsDeadband =      0.07;
 
 // Swerve Drive Motors
 int const k_swervePointBottom =     2;

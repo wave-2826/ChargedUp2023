@@ -14,6 +14,8 @@
  * @author 2826WaveRobotics
  **/
 class SwervePod {
+    // It's desirable that everything possible is private except
+    // for methods that implement subsystem capabilities
     private:
 
         rev::SparkMaxRelativeEncoder *m_topEncoder;
@@ -59,6 +61,7 @@ class SwervePod {
         double offsetAngle;
 
     public:
+    
         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double turnTuningFactor, double offsetAngle, int encoderChannel);
 
         // Initialize this module with the details provided by the robot-specific subclass.
