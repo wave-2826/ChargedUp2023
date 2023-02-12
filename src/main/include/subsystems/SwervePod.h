@@ -74,6 +74,8 @@ class SwervePod {
          **/
         bool Drive(frc::SwerveModuleState state);
 
+        void LockState(frc::SwerveModuleState state);
+
         /**
          * Function that gets the current counter
          * Used as a printout limit for testing/debugging 

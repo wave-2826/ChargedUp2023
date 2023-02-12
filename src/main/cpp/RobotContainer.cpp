@@ -19,7 +19,6 @@ RobotContainer* RobotContainer::m_robotContainer = NULL;
 
 RobotContainer::RobotContainer() : m_autonomousCommand()
 {
-    std::cout << "ROBOT CONTAINER - DASHBOARD INIT" << std::endl;
     // Smartdashboard Subsystems
     frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
@@ -69,17 +68,19 @@ frc::XboxController* RobotContainer::getOperator()
    return &m_operator;
 }
 
-double RobotContainer::LinearInterpolate(double speed, double targetSpeed, double movePercentage) {
-    double newSpeed = speed;
+double RobotContainer::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) {
+    double newSpeed = currentSpeed;
     // current speed is less than target speed
-    if (speed < targetSpeed)
+    if (currentSpeed < targetSpeed)
     {
-        newSpeed = speed + std::fabs(targetSpeed - speed) * movePercentage;
+        newSpeed = currentSpeed + std::fabs(targetSpeed - currentSpeed) * movePercentage;
+        // newSpeed = speed + std::pow(std::fabs(targetSpeed - speed), 2);
     }
     // current speed is greater than target speed
-    else if (speed > targetSpeed)
+    else if (currentSpeed > targetSpeed)
     {
-        newSpeed = speed - std::fabs(targetSpeed - speed) * movePercentage;
+        newSpeed = currentSpeed - std::fabs(targetSpeed - currentSpeed) * movePercentage;
+        // newSpeed = speed - std::pow(std::fabs(targetSpeed - speed), 2);
     }
     // adding a buffer between newSpeed and targetSpeed
     if (std::fabs(targetSpeed - newSpeed) < 0.01f) {
