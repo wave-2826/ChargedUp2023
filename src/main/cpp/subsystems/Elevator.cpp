@@ -124,12 +124,9 @@ bool Elevator::setEndEffector(double speed)
     return false;
 }
 
+// Put code here to be run every loop
 void Elevator::Periodic() 
-{
-    // Put code here to be run every loop
-
-    m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
-
+{ 
     // Set zero position (temporary for testing)
     if(m_operatorJoystick->GetStartButton())
     {
@@ -146,12 +143,17 @@ void Elevator::Periodic()
     runElevator();
 }
 
-
-void Elevator::SimulationPeriodic() 
+void Elevator::Initialize() 
 {
-    // This method will be called once per scheduler run when in simulation
+    #ifdef _DEBUGME
+    std::cout << "Elevator Initialized" << std::endl;
+    #endif
 
+    m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
 }
+
+// This method will be called once per scheduler run when in simulation
+void Elevator::SimulationPeriodic() {}
 
 double Elevator::getPIDSpeed(double pidCommand)
 {
@@ -196,8 +198,11 @@ void Elevator::runElevator()
         }
         
         setElevator(elevatorSpeedCmd);
-        // std::cout << "Manual Operation" << std::endl;
-        // std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+
+        #ifdef _TESTELEVATOR
+        std::cout << "Manual Operation" << std::endl;
+        std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+        #endif
     } 
     else 
     {
@@ -246,7 +251,10 @@ void Elevator::runElevator()
 
                 // // Check the direction to move the elevator
                 // double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
+
+                // #ifdef _TESTELEVATOR
                 // std::cout << "PIDOut: " << pidOut << std::endl;
+                // #endif
 
                 // double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
                 // if(k_delta < delta)
@@ -291,9 +299,9 @@ void Elevator::runElevator()
         setEndEffector(0);
     }
 
-
-    // Print out for debugging
-    // std::cout << "ElevPosition: " << m_elevatorPosition << "; TargetPosition: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+    #ifdef _TESTELEVATOR
+    std::cout << "ElevPosition: " << m_elevatorPosition << "; TargetPosition: " << m_elevatorTarget << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
+    #endif
 }
 
 bool Elevator::stowElevator() 
@@ -312,7 +320,10 @@ bool Elevator::moveToCurrentTarget()
     bool retVal = false;
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-    // std::cout << "PIDOut: " << pidOut << std::endl;
+
+    #ifdef _TESTELEVATOR
+    std::cout << "PIDOut: " << pidOut << std::endl;
+    #endif
 
     double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
     if(k_delta <= delta)
@@ -326,7 +337,9 @@ bool Elevator::moveToCurrentTarget()
 
     setElevator(speedCmd);
 
-    // std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
+    #ifdef _TESTELEVATOR
+    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
+    #endif
 
     return retVal;
 }

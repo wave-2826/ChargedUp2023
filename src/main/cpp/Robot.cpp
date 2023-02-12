@@ -21,6 +21,7 @@
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
+  m_container->m_elevator.Initialize();
 }
 
 /**
@@ -43,7 +44,6 @@ void Robot::RobotPeriodic()
   m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
   m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
   m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
-  // std::cout << " LEFT OFFSET: " << m_container->m_swerveDrive.GetLeftPodOffsetAngle();
 }
 
 /**
@@ -67,10 +67,7 @@ void Robot::AutonomousInit() {
   }
 }
 
-void Robot::AutonomousPeriodic() 
-{
-  
-}
+void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when
@@ -96,6 +93,7 @@ void Robot::TeleopPeriodic()
   // updates pod angle offsets (on dashboard)
   m_container->m_swerveDrive.UpdatePodOffsetAngles();
 
+  // Drive Operations
   double targetJoystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double targetJoystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
@@ -108,11 +106,13 @@ void Robot::TeleopPeriodic()
   m_container->SetPreviousJoystickInputLX(currentJoystickLX);
   m_container->SetPreviousJoystickInputLY(currentJoystickLY);
   m_container->SetPreviousJoystickInputRX(currentJoystickRX);
-  // TESTING PRINTOUTS
-  // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
-  //  std::cout << "LY: " << targetJoystickLY << 
-  //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
-  //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
+
+  #ifdef _TESTJOYSTICK
+  std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+  std::cout << "LY: " << targetJoystickLY << 
+    "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
+    "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
+  #endif  
 
   // joystick inputs for swerve - NO scaling / ramp
   // m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);

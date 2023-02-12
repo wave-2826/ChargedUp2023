@@ -19,13 +19,10 @@
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <units/velocity.h>
 #include <ctre/phoenix/sensors/Pigeon2.h>
-
-#define FRONT_RIGHT  0
-#define FRONT_LEFT  1
-#define BACK_RIGHT  2
-#define BACK_LEFT  3
+#include <frc/XboxController.h>
 
 #define k_DB (double)0.07
+
 /**
  * SwerveDrive header file
  *
@@ -72,6 +69,7 @@ class SwerveDrive: public frc2::SubsystemBase {
         double pointOffset;
 
     public:
+    
         // length of the intake side
         const double robotWidth = 0.717;
         // length of the point to the midpoint of the intake side
@@ -123,7 +121,7 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SetRightPodOffsetAngle(double offsetAngle);
         void SetPointPodOffsetAngle(double offsetAngle);  
 
-        void initialize();
+        void Initialize();
         
 };
 

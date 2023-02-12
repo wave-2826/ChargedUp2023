@@ -135,6 +135,7 @@ public:
 
     void Periodic() override;
     void SimulationPeriodic() override;
+    void Initialize();
 
     // Periodic operation for the elevator
     void runElevator();
