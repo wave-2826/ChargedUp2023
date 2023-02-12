@@ -1,11 +1,5 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling ScoreConeTop.cpp successful.
-
-compiling Elevator.cpp successful.
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:324:1: warning: no return statement in function returning non-void [-Wreturn-type]
-  324 | }
-      | ^
+compiling ScoreConeMid.cpp successful.
 
 compiling Robot.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp: In member function 'virtual void Robot::TeleopPeriodic()':
@@ -20,6 +14,12 @@ C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:80:10: warning: unused variable
       |          ^~~~~~~~~~~~~~
 
 compiling RobotContainer.cpp successful.
+
+compiling Elevator.cpp successful.
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::stowElevator()':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:324:1: warning: no return statement in function returning non-void [-Wreturn-type]
+  324 | }
+      | ^
 
 compiling SwerveDrive.cpp successful.
 

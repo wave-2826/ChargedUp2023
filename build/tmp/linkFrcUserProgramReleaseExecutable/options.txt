@@ -6,6 +6,7 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgra
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\45vqxio4pi9nbs4dcvmcpqo1r\\RobotContainer.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\9yvqzo36yqmd3do9iqt0tjs3q\\SwervePod.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\azbhnrziv6ao1kobf4di4zwgl\\SwerveDrive.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\d75jfowehhiztss5dcaesyvz3\\ScoreConeMid.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\df5z1tdmtprv1zl32nen6pmhk\\Vision.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\e0xclfgehbabwga92smk06hp9\\Intake.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\esafwn6bxe6r8ammt45i8qdwa\\Elevator.o
