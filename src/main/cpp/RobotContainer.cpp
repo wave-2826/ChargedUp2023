@@ -9,11 +9,12 @@
 // it from being updated in the future.
 
 // ROBOTBUILDER TYPE: RobotContainer.
-
+#include <iostream>
 #include "RobotContainer.h"
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <iostream>
+#include <commands/ScoreConeTop.h>
+#include <commands/ScoreConeMid.h>
 
 RobotContainer* RobotContainer::m_robotContainer = NULL;
 
@@ -24,17 +25,21 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
 
+    frc::SmartDashboard::PutData("Score Top Cone", new ScoreConeTop(&m_elevator));
+    frc::SmartDashboard::PutData("Score Mid Cone", new ScoreConeMid(&m_elevator));
+
     // SmartDashboard Buttons
     frc::SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
-
-    ConfigureButtonBindings();
 
     // add options to the auto chooser
     m_chooser.SetDefaultOption("Drive Timed", new AutonomousCommand());
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
 
+    m_chooser.SetDefaultOption("Autonomous Command", new AutonomousCommand());
+
     frc::SmartDashboard::PutData("Auto Mode", &m_chooser);
 
+    ConfigureButtonBindings();
 }
 
 RobotContainer* RobotContainer::GetInstance() 

@@ -9,7 +9,7 @@
 #define _DEBUGME                    
 #define _TESTJOYSTICK               
 #define _TESTPIGEON                 1
-#define _TESTELEVATOR           
+#define _TESTELEVATOR               1
 
 double const k_jsDeadband =      0.07;
 
@@ -34,5 +34,11 @@ int const k_pointPodEncoder =       2;
 int const k_elevatorMotorA =        11;
 int const k_elevatorMotorB =        12;
 int const k_endofactorMotor =       13;
+
+// EndEffector Solenoid
+int const k_endEffectorOut = 7;
+int const k_elevatorAtHomeLimitSwitch = 5;
+int const k_detectConeLimitSwitch = 9;
+int const k_endEffectorGrabber = 8;
 
 #endif
