@@ -13,6 +13,7 @@
 #include "subsystems/SwerveDrive.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+#include "Globals.h"
 
 using namespace rev;
 using namespace frc;
@@ -22,69 +23,192 @@ using namespace frc;
  *
  * @author 2826WaveRobotics
  */
-SwerveDrive::SwerveDrive() {
-/*
-    // // All swerve module motors
-    // m_rightTopMotor = new CANSparkMax(58, CANSparkMaxLowLevel::MotorType::kBrushless);
-    // m_rightBottomMotor = new CANSparkMax(4, CANSparkMaxLowLevel::MotorType::kBrushless);
-    // m_leftTopMotor = new CANSparkMax(1, CANSparkMaxLowLevel::MotorType::kBrushless);
-    // m_leftBottomMotor = new CANSparkMax(2, CANSparkMaxLowLevel::MotorType::kBrushless);
-    // m_pointTopMotor = new CANSparkMax(45, CANSparkMaxLowLevel::MotorType::kBrushless);
-    // m_pointBottomMotor = new CANSparkMax(67, CANSparkMaxLowLevel::MotorType::kBrushless);
+SwerveDrive::SwerveDrive() 
+{
+    // inertial measurement unit (IMU) - senses acceleration, angular velocity, + magnetic fields
+    m_pigeon = new ctre::phoenix::sensors::Pigeon2(k_pigeonID, k_canbus);
 
-    // // Individual swerve pod instances
-    // m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 1.0, 90.0, 0); // 90 or 270?
-    // m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 1.0, 270.0, 1);   // 90 or 270?
-    // m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 1.0, 45.0, 2); // 45 or -135?
-    
-    // // Locations for the swerve drive modules relative to the robot center.
-    // frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
-    // frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
-    // frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
+    // All swerve module motors
+    // B = bottom , A = top
+    m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
+    m_rightBottomMotor = new CANSparkMax(k_swerveRightBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    // B = bottom , A = top
+    m_leftTopMotor = new CANSparkMax(k_swerveLeftTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
+    m_leftBottomMotor = new CANSparkMax(k_swerveLeftBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    // right = bottom , left = top
+    m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
+    m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
-    // // 3 pod swerve kinematics object using module locations
-    // m_kinematics = new SwerveDriveKinematics<3>{
-    //     m_rightLocation, m_leftLocation, m_pointLocation
-    // };
-*/
+    // explicitly set all motors to coast
+    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+
+    // set initial offset angles from the smart dashboard
+    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+
+    // Individual swerve pod instances
+    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, 0.01, leftOffset, k_leftPodEncoder);
+    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, 0.01, rightOffset, k_rightPodEncoder);
+    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, 0.01, pointOffset, k_pointPodEncoder);
+
+    // Locations for the swerve drive modules relative to the robot center.
+    frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    frc::Translation2d m_leftLocation{(units::meter_t)0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
+    frc::Translation2d m_pointLocation{0.0_m, (units::meter_t)0.5*robotHeight};
+
+    // 3 pod swerve kinematics object using module locations
+    m_kinematics = new SwerveDriveKinematics<3> {
+        m_rightLocation, m_leftLocation, m_pointLocation
+    };
+
     SetName("SwerveDrive");
     SetSubsystem("SwerveDrive");
 }
 
-void SwerveDrive::initialize(){
-    // m_rightPod->Initialize();
-    // m_leftPod->Initialize();
-    // m_pointPod->Initialize();
+void SwerveDrive::Initialize()
+{
+    m_rightPod->Initialize();
+    m_leftPod->Initialize();
+    m_pointPod->Initialize();
+
+    // TODO: configure pigeon (?)
+    // m_pigeon->ConfigMountPosePitch();
 }
 
-void SwerveDrive::Periodic() {
-    // Put code here to be run every loop
+// Put code here to be run every loop
+void SwerveDrive::Periodic() 
+{
+    // TESTING Pigeon 2.0 
+    #ifdef _TESTPIGEON
+    std::cout << "yaw: " << m_pigeon->GetYaw() << 
+        "   pitch: " << m_pigeon->GetPitch() <<
+        "   roll: " << m_pigeon->GetRoll() << std::endl;
+    #endif
 }
 
-void SwerveDrive::SimulationPeriodic() {
+void SwerveDrive::SimulationPeriodic() 
+{
     // This method will be called once per scheduler run when in simulation
 }
 
-void SwerveDrive::DrivePods(double forward, double strafe, double rotation) {
-    const double k_gearRatioWheelSpeed = 3.2196;
-    const double k_wheelDiameterMeters = 0.0635;
-    const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
-    const double k_maxMotorSpeed = 5200.0;
+void SwerveDrive::UpdatePodOffsetAngles() 
+{
+    // UPDATE pod offset angles
+    m_leftPod->UpdateOffsetAngle();
+    m_rightPod->UpdateOffsetAngle();
+    m_pointPod->UpdateOffsetAngle();
+}
+
+double SwerveDrive::GetPodCurrent(int pod, bool motor) 
+{
+    switch (pod) {
+        case 0: // right
+            if (motor) // top
+                return m_rightTopMotor->GetOutputCurrent();
+            else
+                return m_rightBottomMotor->GetOutputCurrent();
+            break;
+        case 1: // left
+            if (motor) // top
+                return m_leftTopMotor->GetOutputCurrent();
+            else
+                return m_leftBottomMotor->GetOutputCurrent();
+            break;
+        case 2: // point
+            if (motor) // top
+                return m_pointTopMotor->GetOutputCurrent();
+            else
+                return m_pointBottomMotor->GetOutputCurrent();
+            break;
+        default:
+            return 0.0;
+    }
+}
+
+double SwerveDrive::GetLeftPodOffsetAngle() 
+{
+    return m_leftPodOffsetAngle;
+}
+
+double SwerveDrive::GetRightPodOffsetAngle() 
+{
+    return m_rightPodOffsetAngle;
+}
+
+double SwerveDrive::GetPointPodOffsetAngle() 
+{
+    return m_pointPodOffsetAngle;
+}
+
+void SwerveDrive::SetLeftPodOffsetAngle(double offsetAngle)
+{
+    m_leftPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetRightPodOffsetAngle(double offsetAngle)
+{
+    m_rightPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
+{
+    m_pointPodOffsetAngle = offsetAngle;
+}
+
+void SwerveDrive::DrivePods(double forward, double strafe, double rotation) 
+{
+    // TODO: cleanup
+    // const double k_gearRatioWheelSpeed = 3.2196;
+    // const double k_wheelDiameterMeters = 0.0635;
+    // const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
+    // const double k_maxMotorSpeed = 5200.0;
 
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
 
     // represents the velocity of the robot chassis
     // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
-    // foward is negated to flip the axis of the LX input
-    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(-forward*transform),
-        (units::velocity::meters_per_second_t)(strafe*transform),
-        (units::angular_velocity::radians_per_second_t)(rotation*transform)};
+    // foward (LX) is considered the POINT
+    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(forward*transform),
+        (units::velocity::meters_per_second_t)(-strafe*transform),
+        (units::angular_velocity::radians_per_second_t)(-2*rotation*transform)};
     
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    // m_rightPod->Drive(right);
-    // m_leftPod->Drive(left);
-    // m_pointPod->Drive(point);
+    if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+        // std::string s[] = {"Right", "Left", "Point"};
+        // std::string tb[] = {"Bottom", "Top"};
+
+        // for (int i = 0; i < 6; i++) {
+        //     std::cout << tb[i % 2] << " "<< s[i / 3] << ": "<< GetPodCurrent(i / 3, i % 2) << std::endl;
+        // }
+    }
+}
+
+// TODO: TEST FUNCTION
+void SwerveDrive::LockSwerve() 
+{
+    // transforming from pure joystick input into chassisspeeds
+    double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
+
+    // represents the velocity of the robot chassis
+    // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
+    // rotate is the only input, we want those opposing angles to "lock" the drive train
+    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(0),
+        (units::velocity::meters_per_second_t)(0),
+        (units::angular_velocity::radians_per_second_t)(1*transform)};
+    
+    // returns each pods state (speed, angle)
+    auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
+
+    m_rightPod->LockState(right);
+    m_leftPod->LockState(left);
+    m_pointPod->LockState(point);
 }

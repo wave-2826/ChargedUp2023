@@ -13,11 +13,15 @@
 #include "Robot.h"
 #include "Globals.h"
 
+#include <iostream> 
+
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include <iostream>
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
+  m_container->m_elevator.Initialize();
 }
 
 /**
@@ -28,7 +32,19 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+void Robot::RobotPeriodic() 
+{ 
+  frc2::CommandScheduler::GetInstance().Run(); 
+
+  // TODO: check redundant with SwerveDrive::UpdatePodOffsetAngles 
+  // SET pod offset angles with values from dashboard
+  double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
+  double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
+  double pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+  m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
+  m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
+  m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You
@@ -64,22 +80,51 @@ void Robot::TeleopInit() {
   }
 }
 
-double Joystick(double x, double deadzone) { return (std::fabs(x) < deadzone) ? 0 : x; }
+double Joystick(double input, double deadzone) 
+{ 
+  return (std::fabs(input) < deadzone) ? 0 : input; 
+}
 
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {
-  // double joystickLeftX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
-  // double joystickLeftY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
-  // double joystickRightX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+void Robot::TeleopPeriodic() 
+{  
+  // updates pod angle offsets (on dashboard)
+  m_container->m_swerveDrive.UpdatePodOffsetAngles();
 
-  // joystick inputs for swerve
-  // m_container->m_swerveDrive.DrivePods(joystickLeftX, joystickLeftY, joystickRightX);
+  // Drive Operations
+  double targetJoystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  double targetJoystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+
+  // joystick inputs for swerve - scaling / ramp speed
+  double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
+  double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.1);
+  double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.1);
+  m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+  m_container->SetPreviousJoystickInputLX(currentJoystickLX);
+  m_container->SetPreviousJoystickInputLY(currentJoystickLY);
+  m_container->SetPreviousJoystickInputRX(currentJoystickRX);
+
+  #ifdef _TESTJOYSTICK
+  std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+  std::cout << "LY: " << targetJoystickLY << 
+    "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
+    "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
+  #endif  
+
+  // joystick inputs for swerve - NO scaling / ramp
+  // m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);
+
+  // TESTING - lock swerve drive
+  bool lockSwerve = m_container->getDriver()->GetAButton();
+  if (lockSwerve) {
+    m_container->m_swerveDrive.LockSwerve();
+  }
 
   // Elevator Operations
-  //testElevator.Periodic();
-  //m_container->m_elevator.runElevator();
+  // m_container->m_elevator.runElevator();
 }
 
 /**
