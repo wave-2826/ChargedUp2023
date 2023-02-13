@@ -18,13 +18,11 @@
 #include "subsystems/SwervePod.h"
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <units/velocity.h>
-
-#define FRONT_RIGHT  0
-#define FRONT_LEFT  1
-#define BACK_RIGHT  2
-#define BACK_LEFT  3
+#include <ctre/phoenix/sensors/Pigeon2.h>
+#include <frc/XboxController.h>
 
 #define k_DB (double)0.07
+
 /**
  * SwerveDrive header file
  *
@@ -34,6 +32,8 @@ class SwerveDrive: public frc2::SubsystemBase {
     // It's desirable that everything possible is private except
     // for methods that implement subsystem capabilities
     private:        
+
+        ctre::phoenix::sensors::Pigeon2 *m_pigeon;
 
         rev::CANSparkMax *m_rightBottomMotor;
         rev::CANSparkMax *m_rightTopMotor;
@@ -46,9 +46,30 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         SwervePod *m_rightPod;
         SwervePod *m_leftPod;
-        SwervePod *m_pointPod;     
+        SwervePod *m_pointPod;
+
+        const double k_gearRatioWheelSpeed = 3.2196;
+        const double k_wheelDiameterMeters = 0.0635;
+        const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
+        const double k_maxMotorSpeed = 5200.0;
+
+        // motor currents;
+        double m_leftPodTopMotorCurrent = 0.0;
+        double m_leftPodBottomMotorCurrent = 0.0;
+        double m_rightPodTopMotorCurrent = 0.0;
+        double m_rightPodBottomMotorCurrent = 0.0;
+        double m_pointPodTopMotorCurrent = 0.0;
+        double m_pointPodBottomMotorCurrent = 0.0;
+
+        double m_leftPodOffsetAngle = 209.0;
+        double m_rightPodOffsetAngle = -50.0;
+        double m_pointPodOffsetAngle = 64.0;
+        double leftOffset;
+        double rightOffset;
+        double pointOffset;
 
     public:
+    
         // length of the intake side
         const double robotWidth = 0.717;
         // length of the point to the midpoint of the intake side
@@ -60,16 +81,47 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SimulationPeriodic() override;
 
         /**
+         * Function that updates a pod offset angle based on input from the smartdashboard
+        */
+        void UpdatePodOffsetAngles();
+
+        /**
          * Function that takes inputs from the joysticks and transforms
          * the inputs into states (speed, angle) that individual swerve modules will utilize
          * 
          * @param foward joystick input from left x-axis (LX)
          * @param strafe joystick input from left y-axis (LY)
          * @param rotation joystick input from right x-axis (RX)
-         **/
+        */
         void DrivePods(double forward, double strafe, double rotation);
 
-        void initialize();
+        /**
+         * Function that orients the swerve pods into opposing angles for a "locked" position
+        */
+        void LockSwerve();
+
+        double GetLeftPodOffsetAngle();
+        double GetRightPodOffsetAngle();
+        double GetPointPodOffsetAngle();
+
+        /**
+         * Function that gets the current of a given pod and motor in amps
+         * 
+         * @param pod which pod you want to query
+         * rght: 0
+         * left: 1
+         * point: 2
+         * @param motor which motor you want to get the current from
+         * bottom: 0
+         * top: 1
+        */
+        double GetPodCurrent(int pod, bool motor);
+
+        void SetLeftPodOffsetAngle(double offsetAngle);
+        void SetRightPodOffsetAngle(double offsetAngle);
+        void SetPointPodOffsetAngle(double offsetAngle);  
+
+        void Initialize();
         
 };
 
