@@ -41,4 +41,7 @@ int const k_elevatorAtHomeLimitSwitch = 5;
 int const k_detectConeLimitSwitch = 9;
 int const k_endEffectorGrabber = 8;
 
+// Pneumatic
+int const k_pneumaticHub = 8;
+
 #endif

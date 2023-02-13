@@ -252,17 +252,17 @@ void Elevator::setEndEffectorRoller(double speed)
 
 void Elevator::moveEndEffector(bool down)
 {
-    m_endEffectorOut.Set(down);
+    m_endEffectorSolenoid.Set(down);
 }
 
 void Elevator::closeGrabber()
 {
-    m_endEffectorGrabberOut.Set(false);
+    m_endEffectorGrabberSolenoid.Set(false);
 }
 
 void Elevator::openGrabber()
 {
-    m_endEffectorGrabberOut.Set(true);
+    m_endEffectorGrabberSolenoid.Set(true);
 }
 
 void Elevator::runEndEffector() 
@@ -325,10 +325,6 @@ bool Elevator::moveToCurrentTarget()
     bool retVal = false;
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-
-    #ifdef _TESTELEVATOR
-    std::cout << "PIDOut: " << pidOut << std::endl;
-    #endif
 
     double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
     if(k_delta <= delta)
