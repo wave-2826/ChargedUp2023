@@ -12,22 +12,21 @@
 
 #pragma once
 
+
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
-#include <frc2/command/WaitCommand.h>
-#include <units/time.h>
+
+#include "subsystems/Elevator.h"
+
 
 /**
  *
  *
- * @author WaveRobotics
+ * @author Wave2826 
  */
-class WaveWaitCommand: public frc2::WaitCommand 
-{
-
+class OpenGrabber: public frc2::CommandHelper<frc2::CommandBase, OpenGrabber> {
 public:
-
-    explicit WaveWaitCommand(units::second_t timeout = (units::second_t)0);
+    explicit OpenGrabber(Elevator* m_elevator);
 
     void Initialize() override;
     void Execute() override;
@@ -35,7 +34,7 @@ public:
     void End(bool interrupted) override;
     bool RunsWhenDisabled() const override;
 
-private:
 
-    units::second_t m_timeout;
+private:
+    Elevator* m_elevator;
 };

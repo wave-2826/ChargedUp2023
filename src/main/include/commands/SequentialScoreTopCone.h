@@ -8,34 +8,33 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-// ROBOTBUILDER TYPE: Command.
+// ROBOTBUILDER TYPE: SequentialCommandGroup.
+
 
 #pragma once
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
-#include <frc2/command/WaitCommand.h>
-#include <units/time.h>
+
+#include "subsystems/Elevator.h"
+
+#include <frc2/command/SequentialCommandGroup.h>
 
 /**
  *
  *
- * @author WaveRobotics
+ * @author ExampleAuthor
  */
-class WaveWaitCommand: public frc2::WaitCommand 
-{
-
+class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
+SequentialScoreTopCone>{
 public:
 
-    explicit WaveWaitCommand(units::second_t timeout = (units::second_t)0);
+    explicit SequentialScoreTopCone(Elevator* m_elevator);
 
-    void Initialize() override;
-    void Execute() override;
-    bool IsFinished() override;
-    void End(bool interrupted) override;
     bool RunsWhenDisabled() const override;
 
 private:
 
-    units::second_t m_timeout;
+    Elevator* m_elevator;
 };
+

@@ -255,14 +255,9 @@ void Elevator::moveEndEffector(bool down)
     m_endEffectorSolenoid.Set(down);
 }
 
-void Elevator::closeGrabber()
+void Elevator::MoveGrabber(bool open)
 {
-    m_endEffectorGrabberSolenoid.Set(false);
-}
-
-void Elevator::openGrabber()
-{
-    m_endEffectorGrabberSolenoid.Set(true);
+    m_endEffectorGrabberSolenoid.Set(open);
 }
 
 void Elevator::runEndEffector() 
@@ -311,11 +306,11 @@ void Elevator::runEndEffector()
 
     if(0.5 < m_operatorJoystick->GetLeftTriggerAxis())
     {
-        openGrabber();
+        MoveGrabber(true);
     }
     else
     {
-        closeGrabber();
+        MoveGrabber(false);
     }
 }
 

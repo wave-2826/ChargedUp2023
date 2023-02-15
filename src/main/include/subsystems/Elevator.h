@@ -118,10 +118,6 @@ private:
     // Command speed to the endEffector motor if speed is within range.
     void setEndEffectorRoller(double speed);
 
-    // Activate (open/close) grabber. Normally close
-    void closeGrabber();
-    void openGrabber();
-
     double getPIDSpeed(double pidCommnd);
 
     // Constants used for Elevator functions
@@ -176,6 +172,9 @@ public:
     void setHumanStationTarget();
     void resetTarget();
     bool isTargetSet(){ return m_targetSet; }
+    
+    // Activate (open/close) grabber. Normally close
+    void MoveGrabber(bool open);
 
     bool moveToCurrentTarget();
     void moveEndEffector(bool down);

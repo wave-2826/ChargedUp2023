@@ -14,20 +14,18 @@
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
-#include <frc2/command/WaitCommand.h>
-#include <units/time.h>
+
+#include "subsystems/Elevator.h"
 
 /**
  *
  *
- * @author WaveRobotics
+ * @author ExampleAuthor
  */
-class WaveWaitCommand: public frc2::WaitCommand 
+class ExtendElevatorMidCone: public frc2::CommandHelper<frc2::CommandBase, ExtendElevatorMidCone> 
 {
-
 public:
-
-    explicit WaveWaitCommand(units::second_t timeout = (units::second_t)0);
+    explicit ExtendElevatorMidCone(Elevator* m_elevator);
 
     void Initialize() override;
     void Execute() override;
@@ -37,5 +35,6 @@ public:
 
 private:
 
-    units::second_t m_timeout;
+    Elevator* m_elevator;
+    bool m_targetReached;
 };
