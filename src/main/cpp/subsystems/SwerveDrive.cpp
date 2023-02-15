@@ -40,12 +40,12 @@ SwerveDrive::SwerveDrive()
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
     // explicitly set all motors to coast
-    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
     // set initial offset angles from the smart dashboard
     leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
@@ -86,10 +86,17 @@ void SwerveDrive::Periodic()
 {
     // TESTING Pigeon 2.0 
     #ifdef _TESTPIGEON
-    std::cout << "yaw: " << m_pigeon->GetYaw() << 
-        "   pitch: " << m_pigeon->GetPitch() <<
-        "   roll: " << m_pigeon->GetRoll() << std::endl;
+    // std::cout << "yaw: " << m_pigeon->GetYaw() << 
+    //     "   pitch: " << m_pigeon->GetPitch() <<
+    //     "   roll: " << m_pigeon->GetRoll() << std::endl;
     #endif
+
+    // m_leftBottomMotor->Set(0.7);
+    // m_pointBottomMotor->Set(0.7);
+    // m_leftTopMotor->Set(0.1);
+    // m_rightTopMotor->Set(0.1);
+    // m_pointTopMotor->Set(0.1);
+    // m_rightTopMotor->Set(0.7);
 }
 
 void SwerveDrive::SimulationPeriodic() 
@@ -182,14 +189,18 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
     // returns each pods state (speed, angle)
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
-        // std::string s[] = {"Right", "Left", "Point"};
-        // std::string tb[] = {"Bottom", "Top"};
+    m_rightPod->Drive(right);
+    m_leftPod->Drive(left);
+    m_pointPod->Drive(point);
 
-        // for (int i = 0; i < 6; i++) {
-        //     std::cout << tb[i % 2] << " "<< s[i / 3] << ": "<< GetPodCurrent(i / 3, i % 2) << std::endl;
-        // }
-    }
+    // if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
+    //     // std::string s[] = {"Right", "Left", "Point"};
+    //     // std::string tb[] = {"Bottom", "Top"};
+
+    //     // for (int i = 0; i < 6; i++) {
+    //     //     std::cout << tb[i % 2] << " "<< s[i / 3] << ": "<< GetPodCurrent(i / 3, i % 2) << std::endl;
+    //     // }
+    // }
 }
 
 // TODO: TEST FUNCTION
@@ -211,4 +222,32 @@ void SwerveDrive::LockSwerve()
     m_rightPod->LockState(right);
     m_leftPod->LockState(left);
     m_pointPod->LockState(point);
+}
+
+void SwerveDrive::DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement)
+{
+    if (podInput == "RIGHT" && motorInput == "TOP") 
+    {
+        m_rightTopMotor->Set(speedIncrement);
+    }
+    else if (podInput == "RIGHT" && motorInput == "BOTTOM")
+    {
+        m_rightBottomMotor->Set(speedIncrement);
+    }
+    else if (podInput == "LEFT" && motorInput == "TOP")
+    {
+        m_leftTopMotor->Set(speedIncrement);
+    }
+    else if (podInput == "LEFT" && motorInput == "BOTTOM")
+    {
+        m_leftBottomMotor->Set(speedIncrement);
+    }
+    else if (podInput == "POINT" && motorInput == "TOP")
+    {
+        m_pointTopMotor->Set(speedIncrement);
+    }
+    else if (podInput == "POINT" && motorInput == "BOTTOM")
+    {
+        m_pointBottomMotor->Set(speedIncrement);
+    }
 }

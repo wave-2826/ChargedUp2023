@@ -61,9 +61,9 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
-        double m_leftPodOffsetAngle = 209.0;
-        double m_rightPodOffsetAngle = -50.0;
-        double m_pointPodOffsetAngle = 64.0;
+        double m_leftPodOffsetAngle = 95.0;
+        double m_rightPodOffsetAngle = -43.0;
+        double m_pointPodOffsetAngle = 168.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
@@ -79,6 +79,8 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         void Periodic() override;
         void SimulationPeriodic() override;
+
+        void DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement);
 
         /**
          * Function that updates a pod offset angle based on input from the smartdashboard
