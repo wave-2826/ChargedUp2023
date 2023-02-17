@@ -312,7 +312,7 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
  * 
  * @param SwerveModuleState state (speed, angle)
 */
-void SwervePod::LockState(frc::SwerveModuleState state)
+void SwervePod::LockState(double target_angle)
 {
     double topMotorSpeed = 0.0;
     double bottomMotorSpeed = 0.0;
@@ -322,29 +322,10 @@ void SwervePod::LockState(frc::SwerveModuleState state)
     // encoder angle (current) is 0 - 360
     // offsetAngle adjusts "forward" to align to position on robot
     double current_angle = m_offsetAngle + ToDegree(m_podEncoder->GetAbsolutePosition());
-    // double current_angle = ToDegree(m_podEncoder->GetAbsolutePosition());
-    double target_angle;
-    if (!GetIsReversed()) {
-        target_angle = state.angle.Degrees().value() + 180.0;
-
-    } else {
-        target_angle = state.angle.Degrees().value() + 360.0;
-        if (target_angle >= 360) {
-            target_angle -= 360.0;
-        }
-    }
-
-    if (target_angle < 0) {
-        target_angle += 360;
-    }
     
     // conversion from input state speed (rpm) to a motor power % val (0-1)
-    double commanded_speed = (state.speed.value() / 5200.0);
-    if (1 < commanded_speed)
-    {
-        commanded_speed = 1;
-    }
-
+    double commanded_speed = 1.0;
+    
     double angle_delta = target_angle - current_angle;
     if (angle_delta > 180.0)
     {
@@ -354,40 +335,12 @@ void SwervePod::LockState(frc::SwerveModuleState state)
     {
         angle_delta += 360.0;
     }
-    double angle_delta_optimized = 0.0;
     double normalizer = 1 / 180.0;
-    std::string swerveCase = "DID NOT ENTER";
 
-    if (fabs(angle_delta) < 30.0)
-    {
-        // check aligned -> don't move!!
-        swerveCase = "ALIGNED";
-    }
-    else
-    {
-        swerveCase = "ROTATE";
-
-        topMotorSpeed = -commanded_speed * angle_delta * normalizer;
-        bottomMotorSpeed = commanded_speed * angle_delta * normalizer;        
-    }
+    topMotorSpeed = -commanded_speed * angle_delta * normalizer;
+    bottomMotorSpeed = commanded_speed * angle_delta * normalizer;        
 
     // assign motor speeds
     m_topMotor->Set(topMotorSpeed);
     m_bottomMotor->Set(bottomMotorSpeed);
-
-    ///////////////////////////////// TESTING PRINTOUTS /////////////////////////////////////////
-
-    if (GetCounter() > 1)
-    {
-        // SWERVE CASE
-        std::cout << "LOCKED - " << swerveCase << std::endl;
-        
-        SetCounter(0);
-    }
-    else
-    {
-        int current_count = GetCounter();
-        SetCounter(current_count + 1);
-    }
-
 }

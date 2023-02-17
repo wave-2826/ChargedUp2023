@@ -112,36 +112,35 @@ void Robot::TeleopPeriodic()
   // std::cout << "LY: " << targetJoystickLY << 
   //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
   //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
-  // #endif  
+  // #endif
 
-  // joystick inputs for swerve - NO scaling / ramp
-  m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
-  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
+  bool lockSwerve = m_container->getDriver()->GetYButton();
+  if (!lockSwerve) {
+    // joystick inputs for swerve - NO scaling / ramp
+    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+    
+    // Swerve Diagnostics
+    bool testRightPod = m_container->getDriver()->GetBButton();
+    bool testLeftPod = m_container->getDriver()->GetXButton();
+    bool testPointPod = m_container->getDriver()->GetAButton();
+    int testMotor = m_container->getDriver()->GetPOV();
+    if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
+    {
+      std::string podInput;
+      std::string motorInput; 
+      podInput = testRightPod ? "RIGHT" : podInput;
+      podInput = testLeftPod ? "LEFT" : podInput;
+      podInput = testPointPod ? "POINT" : podInput;
+      motorInput = testMotor == 0 ? "TOP" : motorInput; 
+      motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
 
-  // TESTING - lock swerve drive
-  // bool lockSwerve = m_container->getDriver()->GetAButton();
-  // if (lockSwerve) {
-  //   m_container->m_swerveDrive.LockSwerve();
-  // }
-
-  // Swerve Diognostics
-  bool testRightPod = m_container->getDriver()->GetBButton();
-  bool testLeftPod = m_container->getDriver()->GetXButton();
-  bool testPointPod = m_container->getDriver()->GetAButton();
-  int testMotor = m_container->getDriver()->GetPOV();
-  if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
-  {
-    std::string podInput;
-    std::string motorInput; 
-    podInput = testRightPod ? "RIGHT" : podInput;
-    podInput = testLeftPod ? "LEFT" : podInput;
-    podInput = testPointPod ? "POINT" : podInput;
-    motorInput = testMotor == 0 ? "TOP" : motorInput; 
-    motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
-
-    // set motors for testing
-    m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.3);
+      // set motors for testing
+      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.7);
+    }
+  } else {
+    m_container->m_swerveDrive.LockSwerve();
   }
+  std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
 
   // Elevator Operations
   // m_container->m_elevator.runElevator();

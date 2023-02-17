@@ -68,6 +68,10 @@ class SwerveDrive: public frc2::SubsystemBase {
         double rightOffset;
         double pointOffset;
 
+        double m_lockedLeftAngle = 45.0;
+        double m_lockedRightAngle = 315.0;
+        double m_lockedPointAngle = 0.0;
+
     public:
     
         // length of the intake side
