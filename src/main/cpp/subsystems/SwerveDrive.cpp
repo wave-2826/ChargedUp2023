@@ -170,12 +170,6 @@ void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
 
 void SwerveDrive::DrivePods(double forward, double strafe, double rotation) 
 {
-    // TODO: cleanup
-    // const double k_gearRatioWheelSpeed = 3.2196;
-    // const double k_wheelDiameterMeters = 0.0635;
-    // const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
-    // const double k_maxMotorSpeed = 5200.0;
-
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
 
@@ -206,22 +200,9 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
 // TODO: TEST FUNCTION
 void SwerveDrive::LockSwerve() 
 {
-    // transforming from pure joystick input into chassisspeeds
-    double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
-
-    // represents the velocity of the robot chassis
-    // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
-    // rotate is the only input, we want those opposing angles to "lock" the drive train
-    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(0),
-        (units::velocity::meters_per_second_t)(0),
-        (units::angular_velocity::radians_per_second_t)(1*transform)};
-    
-    // returns each pods state (speed, angle)
-    auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
-
-    m_rightPod->LockState(right);
-    m_leftPod->LockState(left);
-    m_pointPod->LockState(point);
+    m_rightPod->LockState(m_lockedRightAngle);
+    m_leftPod->LockState(m_lockedLeftAngle);
+    m_pointPod->LockState(m_lockedPointAngle);
 }
 
 void SwerveDrive::DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement)

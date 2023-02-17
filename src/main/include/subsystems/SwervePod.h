@@ -77,7 +77,7 @@ class SwervePod {
          **/
         bool Drive(frc::SwerveModuleState state);
 
-        void LockState(frc::SwerveModuleState state);
+        void LockState(double target_angle);
 
         /**
          * Function that gets the current counter
