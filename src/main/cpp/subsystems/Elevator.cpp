@@ -122,16 +122,11 @@ void Elevator::Periodic()
         m_elevatorEncoderA->SetPosition(0.0);
         m_elevatorEncoderB->SetPosition(0.0);
     }
-    // Set scoring object (shall be based on the sensor)
-    if(m_operatorJoystick->GetBackButton())
+    // Set scoring object based on the sensor
+    if(m_detectConeLimitSwitch.Get())
     {
-        // Toggle state (for testing)
-        m_isCone = !m_isCone;
+        m_isCone = true;
     }
-
-    runElevator();
-
-    runEndEffector();
 }
 
 void Elevator::Initialize() 
@@ -241,6 +236,36 @@ void Elevator::runElevator()
                 break;
         }
     }
+    
+    // endEffector operation
+    runEndEffector();
+
+}
+
+bool Elevator::moveToCurrentTarget()
+{
+    double speedCmd = 0.0;
+    bool retVal = false;
+
+    double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
+
+    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+    if(k_delta <= delta)
+    {
+        speedCmd = pidOut;
+    }
+    else
+    {
+        retVal = true;
+    }
+
+    setElevator(speedCmd);
+
+    #ifdef _TESTELEVATOR
+    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
+    #endif
+
+    return retVal;
 }
 
 //////////////// endEffector operation ////////////////////
@@ -312,30 +337,4 @@ void Elevator::runEndEffector()
     {
         MoveGrabber(false);
     }
-}
-
-bool Elevator::moveToCurrentTarget()
-{
-    double speedCmd = 0.0;
-    bool retVal = false;
-
-    double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-
-    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
-    if(k_delta <= delta)
-    {
-        speedCmd = pidOut;
-    }
-    else
-    {
-        retVal = true;
-    }
-
-    setElevator(speedCmd);
-
-    #ifdef _TESTELEVATOR
-    std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
-    #endif
-
-    return retVal;
 }

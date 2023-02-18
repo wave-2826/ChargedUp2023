@@ -124,7 +124,7 @@ void Robot::TeleopPeriodic()
   }
 
   // Elevator Operations
-  // m_container->m_elevator.runElevator();
+  m_container->m_elevator.runElevator();
 }
 
 /**
