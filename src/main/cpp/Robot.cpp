@@ -118,8 +118,14 @@ void Robot::TeleopPeriodic()
   if (!lockSwerve) {
     // joystick inputs for swerve - NO scaling / ramp
     m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+
+    // Initial Swerve State
+    bool initialSwerveState = m_container->getDriver()->GetStartButton();
+    if (initialSwerveState) {
+      m_container->m_swerveDrive.InitialSwerve();
+    }
     
-    // Swerve Diagnostics
+    // Swerve Diagnostics State
     bool testRightPod = m_container->getDriver()->GetBButton();
     bool testLeftPod = m_container->getDriver()->GetXButton();
     bool testPointPod = m_container->getDriver()->GetAButton();
@@ -140,10 +146,10 @@ void Robot::TeleopPeriodic()
   } else {
     m_container->m_swerveDrive.LockSwerve();
   }
-  std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
+  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
 
   // Elevator Operations
-  // m_container->m_elevator.runElevator();
+  m_container->m_elevator.runElevator();
 }
 
 /**
