@@ -28,37 +28,23 @@ class SwervePod {
         rev::CANSparkMax *m_bottomMotor;
 
         // The encoder for the wheel position.
-        frc::DutyCycleEncoder *m_podEncoder;
-
-        // Desired state -- velocity of wheel in RPM, angle in degrees
-        // Angles are measured counter-clockwise, with zero being "robot forward"
+        frc::DutyCycleEncoder *m_podEncoder;        
 
         static constexpr const double kP = 0.1;
         static constexpr const double kI = 0.0;
         static constexpr const double kD = 0.0;
 
-        double m_desiredYawDegrees;
-        double m_desiredTopMotorSpeed;
-        double m_desiredBottomMotorSpeed;
+        // Angles are measured counter-clockwise, with zero being "robot forward"
+        double m_offsetAngle; 
 
-        int m_counter;
-        bool m_isReversed = false;
-        double m_offsetAngle;
-        std::string m_podName = "";
+        bool m_isReversed = false;       
         int m_encoderChannel;
+        std::string m_podName = "";
+        double m_turnTuningFactor;
+        bool m_initialized;   
 
-        double m_leftOffset;
-        double m_rightOffset;
-        double m_pointOffset;
-
-        double m_currentTopMotorSpeed;
-        double m_currentBottomMotorSpeed;
-        double m_currentPosition;
-        
-        bool m_initialized;
-
-        double turnTuningFactor;
-        double offsetAngle;
+        // variable for testing printouts
+        int m_counter;
 
     public:
     
@@ -77,7 +63,17 @@ class SwervePod {
          **/
         bool Drive(frc::SwerveModuleState state);
 
+        /**
+         * Function to orientate swerve pod to a "locked" position
+         * 
+         * @param targetAngle angle at which the swerve pod should orientate to
+        */
         void LockState(double target_angle);
+
+        /**
+         * Function to orientate swerve pod to an "initial" position (wheels aligned straight)
+        */
+        bool InitialState();
 
         /**
          * Function that gets the current counter
@@ -109,5 +105,4 @@ class SwervePod {
         void UpdateOffsetAngle();
         void Periodic(); 
         void SimulationPeriodic();
-
 };

@@ -4,12 +4,14 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramC
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\3ihf5dusj6zglk0wo615lai0m\\ScoreConeTop.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\45vqxio4pi9nbs4dcvmcpqo1r\\RobotContainer.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\5755hwy6zdvf3ckow229yxsu9\\SwerveInitializeCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\9yvqzo36yqmd3do9iqt0tjs3q\\SwervePod.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\azbhnrziv6ao1kobf4di4zwgl\\SwerveDrive.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\b090uxgyspjmb6jsenh4cfckl\\DriveTimed.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\d75jfowehhiztss5dcaesyvz3\\ScoreConeMid.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\df5z1tdmtprv1zl32nen6pmhk\\Vision.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhvnccgr6zcre49ouohilqty0\\WaveWaitCommand.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dzgzahidgdpofmjyrrqjpwl8e\\DriveHeading.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\e0xclfgehbabwga92smk06hp9\\Intake.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\esafwn6bxe6r8ammt45i8qdwa\\Elevator.o
 C:\\Users\\Wave\\.gradle\\caches\\transforms-3\\43b225627fd626d0157edac51b22795a\\transformed\\wpilibNewCommands-cpp-2023.1.1-linuxathenadebug\\linux\\athena\\shared\\libwpilibNewCommandsd.so

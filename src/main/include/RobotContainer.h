@@ -25,6 +25,9 @@
 #include "commands/AutonomousCommand.h"
 #include "commands/DriveTimed.h"
 #include "commands/WaveWaitCommand.h"
+#include "commands/SwerveInitializeCommand.h"
+#include <commands/ScoreConeTop.h>
+#include <commands/ScoreConeMid.h>
 
 class RobotContainer {
 

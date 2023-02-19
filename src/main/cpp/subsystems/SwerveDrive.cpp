@@ -78,7 +78,7 @@ void SwerveDrive::Initialize()
     m_pointPod->Initialize();
 
     // TODO: configure pigeon (?)
-    // m_pigeon->ConfigMountPosePitch();
+    m_pigeon->ConfigMountPose(ctre::phoenix::sensors::AxisDirection::NegativeZ, ctre::phoenix::sensors::AxisDirection::PositiveY);
 }
 
 // Put code here to be run every loop
@@ -89,19 +89,18 @@ void SwerveDrive::Periodic()
     // std::cout << "yaw: " << m_pigeon->GetYaw() << 
     //     "   pitch: " << m_pigeon->GetPitch() <<
     //     "   roll: " << m_pigeon->GetRoll() << std::endl;
+    // m_pigeon->GetRawGyro(m_gyroHeadings);
+    // std::cout << "x: " << m_gyroHeadings[0] << "    y: " << m_gyroHeadings[1] << "    z: " << m_gyroHeadings[2] << std::endl;
     #endif
-
-    // m_leftBottomMotor->Set(0.7);
-    // m_pointBottomMotor->Set(0.7);
-    // m_leftTopMotor->Set(0.1);
-    // m_rightTopMotor->Set(0.1);
-    // m_pointTopMotor->Set(0.1);
-    // m_rightTopMotor->Set(0.7);
 }
 
 void SwerveDrive::SimulationPeriodic() 
 {
     // This method will be called once per scheduler run when in simulation
+}
+
+double SwerveDrive::GetRobotYaw() {
+    return m_pigeon->GetYaw();
 }
 
 void SwerveDrive::UpdatePodOffsetAngles() 
@@ -181,12 +180,14 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
         (units::angular_velocity::radians_per_second_t)(-2*rotation*transform)};
     
     // returns each pods state (speed, angle)
+    // Desired state -- velocity of wheel in RPM, angle in degrees
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
     m_rightPod->Drive(right);
     m_leftPod->Drive(left);
     m_pointPod->Drive(point);
 
+    // Runs pod drives and prints out each pod's current
     // if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
     //     // std::string s[] = {"Right", "Left", "Point"};
     //     // std::string tb[] = {"Bottom", "Top"};
@@ -197,12 +198,26 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
     // }
 }
 
-// TODO: TEST FUNCTION
 void SwerveDrive::LockSwerve() 
 {
     m_rightPod->LockState(m_lockedRightAngle);
     m_leftPod->LockState(m_lockedLeftAngle);
     m_pointPod->LockState(m_lockedPointAngle);
+}
+
+bool SwerveDrive::InitialSwerve() 
+{
+    bool rightPodInitialized = m_rightPod->InitialState();
+    bool leftPodInitialized = m_leftPod->InitialState();
+    bool pointPodInitialized = m_pointPod->InitialState();
+    if (rightPodInitialized && leftPodInitialized && pointPodInitialized)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
 }
 
 void SwerveDrive::DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement)
