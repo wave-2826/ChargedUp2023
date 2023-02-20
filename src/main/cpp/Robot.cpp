@@ -107,21 +107,21 @@ void Robot::TeleopPeriodic()
   m_container->SetPreviousJoystickInputLY(currentJoystickLY);
   m_container->SetPreviousJoystickInputRX(currentJoystickRX);
 
-  #ifdef _TESTJOYSTICK
-  std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
-  std::cout << "LY: " << targetJoystickLY << 
-    "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
-    "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
-  #endif  
+  // #ifdef _TESTJOYSTICK
+  // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+  // std::cout << "LY: " << targetJoystickLY << 
+  //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
+  //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
+  // #endif  
 
   // joystick inputs for swerve - NO scaling / ramp
   // m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);
 
   // TESTING - lock swerve drive
-  bool lockSwerve = m_container->getDriver()->GetAButton();
-  if (lockSwerve) {
-    m_container->m_swerveDrive.LockSwerve();
-  }
+  // bool lockSwerve = m_container->getDriver()->GetAButton();
+  // if (lockSwerve) {
+  //   m_container->m_swerveDrive.LockSwerve();
+  // }
 
   // Elevator Operations
   m_container->m_elevator.runElevator();

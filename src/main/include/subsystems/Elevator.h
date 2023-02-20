@@ -43,6 +43,15 @@ typedef enum
     Elevator_Deploy
 } ElevatorFunction;
 
+// Steps to stoe Elevator
+typedef enum
+{
+    Stow_Off,
+    Stow_EndEffectorUp,
+    Stow_RetractElevator,
+    Stow_Finish
+} StowState;
+
 // EndEffector functions
 typedef enum
 {
@@ -95,6 +104,8 @@ private:
     frc::XboxController *m_operatorJoystick;
 
     ElevatorFunction m_elevatorFunction;
+
+    StowState m_elevatorStowState;
     
     EndEffectorFunction m_endEffectorFunction;
 
@@ -121,9 +132,9 @@ private:
     double getPIDSpeed(double pidCommnd);
 
     // Constants used for Elevator functions
-    static constexpr const double k_maxElevatorSpeed = 1.0;
+    static constexpr const double k_maxElevatorSpeed = 0.25;
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
-    static constexpr const double k_P = 0.5;
+    static constexpr const double k_P = 0.2;
     static constexpr const double k_I = 0.0;
     static constexpr const double k_D = 0.0;
     static constexpr const double k_delta = 1.0;
@@ -132,7 +143,7 @@ private:
     static constexpr const double k_teethSize = 0.25;  // in inches
     static constexpr const double k_gearRatio = 4; // Ratio 4:1
 
-    static constexpr const double k_maxElevatorPosition = 100.0; // in inches
+    static constexpr const double k_maxElevatorPosition = 60.0; // in inches
     static constexpr const double k_encoderPosConversionFactor = 0.5; // TBD: Need the conversion factor
 
     // Pre-set elevator scoing position for the elevator
@@ -177,6 +188,8 @@ public:
     void MoveGrabber(bool open);
 
     bool moveToCurrentTarget();
+    bool moveElevatorToTargetManual();
     void moveEndEffector(bool down);
+    bool stowElevator();
 };
 

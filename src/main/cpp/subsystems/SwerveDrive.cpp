@@ -84,12 +84,12 @@ void SwerveDrive::Initialize()
 // Put code here to be run every loop
 void SwerveDrive::Periodic() 
 {
-    // TESTING Pigeon 2.0 
-    #ifdef _TESTPIGEON
-    std::cout << "yaw: " << m_pigeon->GetYaw() << 
-        "   pitch: " << m_pigeon->GetPitch() <<
-        "   roll: " << m_pigeon->GetRoll() << std::endl;
-    #endif
+    // // TESTING Pigeon 2.0 
+    // #ifdef _TESTPIGEON
+    // std::cout << "yaw: " << m_pigeon->GetYaw() << 
+    //     "   pitch: " << m_pigeon->GetPitch() <<
+    //     "   roll: " << m_pigeon->GetRoll() << std::endl;
+    // #endif
 }
 
 void SwerveDrive::SimulationPeriodic() 

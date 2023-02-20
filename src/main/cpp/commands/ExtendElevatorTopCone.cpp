@@ -40,7 +40,11 @@ void ExtendElevatorTopCone::Execute() {
         m_elevator->setTopConeTarget();
     }
 
+    // Use this if we want to use PID (comment out if use manual operation)
     m_targetReached = m_elevator->moveToCurrentTarget();
+
+    // Use this if we do not use PID (comment out if use PID operation)
+    //m_targetReached = m_elevator->moveElevatorToTargetManual();
 }
 
 // Make this return true when this Command no longer needs to run execute()

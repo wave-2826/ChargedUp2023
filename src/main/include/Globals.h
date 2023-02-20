@@ -8,7 +8,7 @@
 
 #define _DEBUGME                    
 #define _TESTJOYSTICK               
-#define _TESTPIGEON                 1
+#define _TESTPIGEON                 
 #define _TESTELEVATOR               1
 
 double const k_jsDeadband =      0.07;

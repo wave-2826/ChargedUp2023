@@ -27,21 +27,23 @@ Elevator::Elevator()
     m_elevatorMotorA->SetInverted(true);
     m_elevatorMotorB->SetInverted(true);
     m_endEffectorMotor->SetInverted(true);
+    m_elevatorMotorA->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_elevatorMotorB->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     
     m_elevatorPID = new frc2::PIDController(k_P, k_I, k_D);
 
     m_elevatorFunction = Elevator_Off;
     m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
-    if(NULL != m_elevatorEncoderA) 
-    {
-        m_elevatorEncoderA->SetPositionConversionFactor(k_encoderPosConversionFactor);
-    }
+    // if(NULL != m_elevatorEncoderA) 
+    // {
+    //     m_elevatorEncoderA->SetPositionConversionFactor(k_encoderPosConversionFactor);
+    // }
 
     m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
-    if(NULL != m_elevatorEncoderB) 
-    {
-        m_elevatorEncoderB->SetPositionConversionFactor(k_encoderPosConversionFactor); 
-    }
+    // if(NULL != m_elevatorEncoderB) 
+    // {
+    //     m_elevatorEncoderB->SetPositionConversionFactor(k_encoderPosConversionFactor); 
+    // }
 
     m_elevatorPosition = 0.0;
     m_elevatorHomePosition = 0.0;
@@ -109,13 +111,29 @@ double Elevator::getElevatorPosition()
 
 void Elevator::setElevator(double speed) 
 {
-    m_elevatorMotorA->Set(speed);
-    m_elevatorMotorB->Set(speed);    
+    if(((speed < 0) && (k_maxElevatorPosition > m_elevatorPosition)) || (speed > 0))
+    {
+        m_elevatorMotorA->Set(speed);
+        m_elevatorMotorB->Set(speed);    
+    }
+    else
+    {
+        m_elevatorMotorA->Set(0);
+        m_elevatorMotorB->Set(0);    
+    }
 }
 
 // Put code here to be run every loop
 void Elevator::Periodic() 
 { 
+    m_elevatorPosition = getElevatorPosition();
+    // if(isElevatorAtHome())
+    // {
+    //     m_elevatorEncoderA->SetPosition(0.0);
+    //     m_elevatorEncoderB->SetPosition(0.0);
+    //     m_elevatorHomePosition = m_elevatorHomePosition;
+    // }
+
     // Set zero position (temporary for testing)
     if(m_operatorJoystick->GetStartButton())
     {
@@ -131,6 +149,9 @@ void Elevator::Periodic()
 
 void Elevator::Initialize() 
 {
+    m_elevatorEncoderA->SetPosition(0.0);
+    m_elevatorEncoderB->SetPosition(0.0);
+    
     #ifdef _DEBUGME
     std::cout << "Elevator Initialized" << std::endl;
     #endif
@@ -166,16 +187,11 @@ void Elevator::runElevator()
     double elevatorSpeedCmd = 0.0;
     bool elevatorOverride = m_operatorJoystick->GetLeftBumper();
 
-    m_elevatorPosition = getElevatorPosition();
-    if(isElevatorAtHome())
-    {
-        m_elevatorHomePosition = m_elevatorHomePosition;
-    }
-
-    if(elevatorOverride) 
+    if(!elevatorOverride) 
     {
         // Manual operation
         m_elevatorFunction = Elevator_Off;
+        m_elevatorStowState = Stow_Off;
         m_elevatorTarget = 0.0;
         elevatorSpeedCmd = m_operatorJoystick->GetRightY();
         if(k_jsDeadband > std::fabs(elevatorSpeedCmd))
@@ -183,10 +199,9 @@ void Elevator::runElevator()
             elevatorSpeedCmd = 0.0;
         }
         
-        setElevator(elevatorSpeedCmd);
+        setElevator(-elevatorSpeedCmd);
 
         #ifdef _TESTELEVATOR
-        std::cout << "Manual Operation" << std::endl;
         std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
         #endif
     } 
@@ -268,6 +283,39 @@ bool Elevator::moveToCurrentTarget()
     return retVal;
 }
 
+
+bool Elevator::moveElevatorToTargetManual()
+{
+    bool retVal = false;
+    double speedCmd = 0.0;
+    const double k_manualElevatorCmd = 0.33; 
+    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+
+    if(k_delta <= delta)
+    {
+        // Move the Elevator
+        if(m_elevatorTarget > m_elevatorPosition)
+        {
+            // Need to extend the elevator
+            speedCmd = k_manualElevatorCmd;
+        }
+        else if(m_elevatorTarget < m_elevatorPosition)
+        {
+            // Need to retract the elevator
+            speedCmd = -k_manualElevatorCmd;
+        }
+    }
+    else
+    {
+        // Target reached
+        retVal = true;
+    }
+
+    setElevator(speedCmd);
+
+    return retVal;
+}
+
 //////////////// endEffector operation ////////////////////
 
 void Elevator::setEndEffectorRoller(double speed) 
@@ -337,4 +385,31 @@ void Elevator::runEndEffector()
     {
         MoveGrabber(false);
     }
+}
+
+
+//////////////////  STOW ELEVATOR  ////////////////////////////////
+bool Elevator::stowElevator()
+{
+    bool stowed = false;
+
+    // switch (m_elevatorStowState)
+    // {
+    //     case Stow_Off:
+    //         // Set target to Elevator Home Position
+    //         m_elevatorTarget = m_elevatorHomePosition;
+    //         moveEndEffector(false);
+    //         m_elevatorStowState = Stow_EndEffectorUp;
+    //         break;
+    //     case Stow_EndEffectorUp:
+    //         break;
+    //     case Stow_RetractElevator:
+    //         break;
+    //     case Stow_Finish:
+    //         break;    
+    //     default:
+    //      break;
+    // }
+
+    return stowed;
 }
