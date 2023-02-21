@@ -36,10 +36,10 @@ int const k_elevatorMotorB =        12;
 int const k_endofactorMotor =       13;
 
 // EndEffector Solenoid
-int const k_endEffectorOut = 7;
+int const k_endEffectorOut = 0;
+int const k_endEffectorGrabber = 1;
 int const k_elevatorAtHomeLimitSwitch = 5;
 int const k_detectConeLimitSwitch = 9;
-int const k_endEffectorGrabber = 8;
 
 // Pneumatic
 int const k_pneumaticHub = 8;
