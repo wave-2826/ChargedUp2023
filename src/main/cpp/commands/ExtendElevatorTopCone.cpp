@@ -50,6 +50,7 @@ void ExtendElevatorTopCone::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendElevatorTopCone::IsFinished() 
 {
+    std::cout << "target reached: " << m_targetReached << std::endl;
     if(m_targetReached)
     {
         // Top Target reached

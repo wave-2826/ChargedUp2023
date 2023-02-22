@@ -242,11 +242,7 @@ void Elevator::runElevator()
             elevatorSpeedCmd = 0.0;
         }
 
-        setElevator(-0.33 * elevatorSpeedCmd);
-
-        // #ifdef _TESTELEVATOR
-        // std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
-        // #endif
+        setElevator(-0.2 * elevatorSpeedCmd);
     } 
     else 
     {
@@ -289,7 +285,7 @@ void Elevator::runElevator()
                 break;
 
             case Elevator_Deploy:
-                if(/*moveElevatorToTargetManual() */ moveToCurrentTarget())
+                if(moveToCurrentTarget())
                 {
                     m_elevatorFunction = Elevator_Off;
                 }
@@ -306,6 +302,7 @@ bool Elevator::moveToCurrentTarget()
     double speedCmd = 0.0;
     bool retVal = false;
     static int loop_count = 0;
+    static double lastSpeedCmd = 0.0;
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
 
@@ -313,22 +310,35 @@ bool Elevator::moveToCurrentTarget()
     if(k_delta < delta)
     {
         loop_count = 0;
-        speedCmd = pidOut;
+        if(pidOut > 0.0)
+        {
+            if (lastSpeedCmd < 0.0)
+                lastSpeedCmd = 0.0;
+
+            if(lastSpeedCmd < pidOut)
+            {
+                lastSpeedCmd += k_rampPerLoop;
+            }
+        }
+        else if(pidOut < 0.0)
+        {
+            if (lastSpeedCmd > 0.0)
+                lastSpeedCmd = 0.0;
+
+            if(lastSpeedCmd > pidOut)
+            {
+                lastSpeedCmd -= k_rampPerLoop;
+            }
+        }
+        speedCmd = lastSpeedCmd;
     }
     else
     {
-        ++loop_count;
-        if(5 < loop_count)
-        {
-            retVal = true;
-        }
+        lastSpeedCmd = 0.0;
+        retVal = true;
     }
 
     setElevator(speedCmd);
-
-    // #ifdef _TESTELEVATOR
-    // std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
-    // #endif
 
     return retVal;
 }
@@ -338,7 +348,7 @@ bool Elevator::moveElevatorToTargetManual(double target)
 {
     bool retVal = false;
     double speedCmd = 0.0;
-    const double k_manualElevatorCmd = 0.2; 
+    const double k_manualElevatorCmd = 0.075; 
     double delta = std::fabs(target - m_elevatorPosition);
 
     if(k_delta < delta)
@@ -438,9 +448,10 @@ void Elevator::runEndEffector()
 }
 
 
-//////////////////  STOW ELEVATOR  ////////////////////////////////
+//////////////////  STOW ELEVATOR  /////////////////////////////////
 bool Elevator::stowElevator()
 {
+    m_elevatorFunction = Elevator_Off;
     if(m_operatorJoystick->GetYButton())
     {
         return (moveElevatorToTargetManual(m_elevatorHomePosition));
@@ -470,4 +481,9 @@ bool Elevator::stowElevator()
     // }
 
     // return stowed;
+}
+
+bool Elevator::stowElevatorAuto()
+{
+     return (moveElevatorToTargetManual(m_elevatorHomePosition));
 }

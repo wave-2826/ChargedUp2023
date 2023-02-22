@@ -15,6 +15,7 @@
 #include "commands/EndEffectorDown.h"
 #include "commands/OpenGrabber.h"
 #include "commands/WaveWaitCommand.h"
+#include "commands/StowElevator.h"
 #include "frc2/command/SequentialCommandGroup.h"
 
 SequentialScoreTopCone::SequentialScoreTopCone(Elevator* m_elevator)
@@ -27,12 +28,13 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* m_elevator)
         frc2::SequentialCommandGroup
         (
             ExtendElevatorTopCone(m_elevator),
-            EndEffectorDown(m_elevator),
-            OpenGrabber(m_elevator),
-            WaveWaitCommand(units::second_t(0.5))
+            // EndEffectorDown(m_elevator),
+            // OpenGrabber(m_elevator),
+            WaveWaitCommand(units::second_t(1.0)),
+            StowElevator(m_elevator)
         )
     );
-
+  a
 }
 
 bool SequentialScoreTopCone::RunsWhenDisabled() const 
