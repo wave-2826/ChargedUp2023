@@ -31,7 +31,8 @@ typedef enum
 {
     Elevator_Off,
     // Deploy elevator to a target
-    Elevator_Deploy
+    Elevator_Deploy,
+    Elevator_Hold
 } ElevatorFunction;
 
 // Steps to stow Elevator
@@ -132,13 +133,13 @@ private:
     static constexpr const double k_P = 0.3;
     static constexpr const double k_I = 0.1;
     static constexpr const double k_D = 0.0;
-    static constexpr const double k_delta = 1.0;
+    static constexpr const double k_delta = 1.5;
     static constexpr const double k_rampPerLoop = 0.005;
 
 
     static constexpr const double k_numOfTeeth = 36.0;
     static constexpr const double k_teethSize = 0.25;  // in inches
-    static constexpr const double k_gearRatio = 4; // Ratio 4:1
+    static constexpr const double k_gearRatio = 5; // Ratio 5:1
 
     // static constexpr const double k_maxElevatorPosition = 60.0; // in inches
     // TESTING: half the max extension to prevent snapping elevator!

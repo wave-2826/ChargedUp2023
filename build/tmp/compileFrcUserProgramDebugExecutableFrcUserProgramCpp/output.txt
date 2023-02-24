@@ -1,12 +1,10 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling SequentialScoreTopCone.cpp successful.
-
 compiling DriveTimed.cpp successful.
 
 compiling Elevator.cpp successful.
 C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp: In member function 'bool Elevator::moveToCurrentTarget()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:304:16: warning: variable 'loop_count' set but not used [-Wunused-but-set-variable]
-  304 |     static int loop_count = 0;
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\Elevator.cpp:307:16: warning: variable 'loop_count' set but not used [-Wunused-but-set-variable]
+  307 |     static int loop_count = 0;
       |                ^~~~~~~~~~
 
 compiling Robot.cpp successful.

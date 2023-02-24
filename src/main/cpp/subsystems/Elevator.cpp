@@ -132,7 +132,7 @@ void Elevator::setElevator(double speed)
     m_elevatorMotorB->Set(speed);
 
     // std::cout << "ElevPosition: " << m_elevatorPosition << "    ElevSpeed: " << speed << "   Cone? " << m_isCone << std::endl;
-    std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   Cone? " << m_isCone << std::endl;
+    std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   State: " << m_elevatorFunction << std::endl;
 
 }
 
@@ -287,8 +287,11 @@ void Elevator::runElevator()
             case Elevator_Deploy:
                 if(moveToCurrentTarget())
                 {
-                    m_elevatorFunction = Elevator_Off;
+                    m_elevatorFunction = Elevator_Hold;
                 }
+                break;
+            case Elevator_Hold:
+                setElevator(0.015);
                 break;
         }
     }
@@ -395,16 +398,17 @@ void Elevator::MoveGrabber(bool open)
 
 void Elevator::runEndEffector() 
 {
-    int endEffectorCmd = m_operatorJoystick->GetPOV(0);
+    int endEffectorCmd = m_operatorJoystick->GetPOV();
     switch(m_endEffectorFunction)    
     {
         case EF_Up:
         default:
             // EndEffectorUp, turn off the output
+            // std::cout << "end effector - UP" << std::endl;
             moveEndEffector(false);
 
             // EndEffector can go down only if the Elevator is above Human Station level
-            if((0 == endEffectorCmd) && (k_elevatorHumanStation < m_elevatorPosition))
+            if((180 == endEffectorCmd) && (k_elevatorHumanStation < m_elevatorPosition))
             {
                 m_endEffectorFunction = EF_Down;
             }
@@ -412,8 +416,9 @@ void Elevator::runEndEffector()
         case EF_Down:
             // EndEffector Down, turn on the output
             moveEndEffector(true);
+            // std::cout << "end effector - DOWN" << std::endl;
 
-            if((180 == endEffectorCmd) || (k_elevatorHumanStation > m_elevatorPosition))
+            if((0 == endEffectorCmd) || (k_elevatorHumanStation > m_elevatorPosition))
             {
                 m_endEffectorFunction = EF_Up;
             }

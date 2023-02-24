@@ -34,7 +34,6 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* m_elevator)
             StowElevator(m_elevator)
         )
     );
-  a
 }
 
 bool SequentialScoreTopCone::RunsWhenDisabled() const 
