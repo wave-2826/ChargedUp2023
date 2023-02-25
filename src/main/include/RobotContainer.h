@@ -27,8 +27,6 @@
 #include "commands/WaveWaitCommand.h"
 #include "commands/AutoBalance.h"
 #include "commands/SwerveInitializeCommand.h"
-#include <commands/ScoreConeTop.h>
-#include <commands/ScoreConeMid.h>
 
 class RobotContainer {
 

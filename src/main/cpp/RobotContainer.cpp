@@ -29,8 +29,6 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     // SmartDashboard Buttons
     frc::SmartDashboard::PutData("Extend Elevator Top Cone", new ExtendElevatorTopCone(&m_elevator));
     frc::SmartDashboard::PutData("Extend Elevator Mid Cone", new ExtendElevatorMidCone(&m_elevator));
-    frc::SmartDashboard::PutData("Score Top Cone", new ScoreConeTop(&m_elevator));
-    frc::SmartDashboard::PutData("Score Mid Cone", new ScoreConeMid(&m_elevator));
     frc::SmartDashboard::PutData("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
 
     // add options + setup auto chooser
