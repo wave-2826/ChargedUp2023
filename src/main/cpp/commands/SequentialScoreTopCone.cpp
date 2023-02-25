@@ -28,8 +28,8 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* m_elevator)
         frc2::SequentialCommandGroup
         (
             ExtendElevatorTopCone(m_elevator),
-            // EndEffectorDown(m_elevator),
-            // OpenGrabber(m_elevator),
+            EndEffectorDown(m_elevator),
+            OpenGrabber(m_elevator),
             WaveWaitCommand(units::second_t(1.0)),
             StowElevator(m_elevator)
         )

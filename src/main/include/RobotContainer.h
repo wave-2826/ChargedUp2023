@@ -25,6 +25,7 @@
 #include "commands/AutonomousCommand.h"
 #include "commands/DriveTimed.h"
 #include "commands/WaveWaitCommand.h"
+#include "commands/AutoBalance.h"
 
 class RobotContainer {
 

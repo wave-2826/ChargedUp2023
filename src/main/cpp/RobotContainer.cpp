@@ -36,6 +36,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     // add options to the auto chooser
     m_chooser.SetDefaultOption("Drive Timed", new AutonomousCommand());
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
+    m_chooser.AddOption("Auto Balance", new AutoBalance(&m_swerveDrive, 0.0, 0.0, 0.0, units::second_t(1.0)));
 
     m_chooser.SetDefaultOption("Autonomous Command", new AutonomousCommand());
     m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator));

@@ -29,25 +29,16 @@ Elevator::Elevator()
     m_endEffectorMotor->SetInverted(true);
     m_elevatorMotorA->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     m_elevatorMotorB->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
+    m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
 
-    m_elevatorMotorA->SetClosedLoopRampRate(2.0);
-    m_elevatorMotorB->SetClosedLoopRampRate(2.0);
-    
+    m_compressor = new frc::Compressor(k_pneumaticHub, frc::PneumaticsModuleType::REVPH);
+    m_pneumaticHub.EnableCompressorAnalog(units::pressure::pounds_per_square_inch_t(90), 
+                                          units::pressure::pounds_per_square_inch_t(120));
+
     m_elevatorPID = new frc2::PIDController(k_P, k_I, k_D);
 
     m_elevatorFunction = Elevator_Off;
-    m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
-    // if(NULL != m_elevatorEncoderA) 
-    // {
-    //     m_elevatorEncoderA->SetPositionConversionFactor(k_encoderPosConversionFactor);
-    // }
-
-    m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
-    // if(NULL != m_elevatorEncoderB) 
-    // {
-    //     m_elevatorEncoderB->SetPositionConversionFactor(k_encoderPosConversionFactor); 
-    // }
-
     m_elevatorPosition = 0.0;
     m_elevatorHomePosition = 0.0;
     m_elevatorTarget = 0.0;
@@ -55,7 +46,7 @@ Elevator::Elevator()
     m_targetSet = false;
 
     // May or may not use this
-    m_distancePerRotation = (k_numOfTeeth * k_teethSize)/k_gearRatio;
+    m_distancePerRotation = (k_numOfTeeth * k_teethSize) /k_gearRatio;
 }
 
 void Elevator::setTopConeTarget()
@@ -156,9 +147,9 @@ void Elevator::Periodic()
     m_isCone = true;
 
     // TESTING - simple stow elevator (for testing purposes)
-    if (m_operatorJoystick->GetYButton()) {
+    if (m_operatorJoystick->GetYButton()) 
+    {
         stowElevator();
-       // m_elevatorTarget = 0.0;
     }
 
     // TESTING - testing pnuematics (d-pad UP)
@@ -186,17 +177,18 @@ void Elevator::Periodic()
     // {
     //     m_isCone = true;
     // }
-}
+
+
+    // Testing compressor
+    // bool status = m_compressor->Enabled();
+    // units::pressure::pounds_per_square_inch_t press = m_compressor->GetPressure();
+    // std::cout << "Comp Status: " << status << "  Comp Press: " << press << std::endl;
+}    
 
 void Elevator::Initialize() 
 {
     m_elevatorEncoderA->SetPosition(0.0);
     m_elevatorEncoderB->SetPosition(0.0);
-    
-    // #ifdef _DEBUGME
-    // std::cout << "Elevator Initialized" << std::endl;
-    // #endif
-
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
 }
 
@@ -234,8 +226,6 @@ void Elevator::runElevator()
         // Manual operation
         m_elevatorFunction = Elevator_Off;
         m_elevatorStowState = Stow_Off;
-        // set to position to prevent returning to 0 when exiting manual case
-        //m_elevatorTarget = m_elevatorPosition;
         elevatorSpeedCmd = m_operatorJoystick->GetRightY();
         if(k_jsDeadband > std::fabs(elevatorSpeedCmd))
         {
@@ -291,7 +281,7 @@ void Elevator::runElevator()
                 }
                 break;
             case Elevator_Hold:
-                setElevator(0.015);
+                setElevator(k_elevatorHoldSpeed);
                 break;
         }
     }
@@ -304,7 +294,6 @@ bool Elevator::moveToCurrentTarget()
 {
     double speedCmd = 0.0;
     bool retVal = false;
-    static int loop_count = 0;
     static double lastSpeedCmd = 0.0;
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
@@ -312,7 +301,6 @@ bool Elevator::moveToCurrentTarget()
     double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
     if(k_delta < delta)
     {
-        loop_count = 0;
         if(pidOut > 0.0)
         {
             if (lastSpeedCmd < 0.0)

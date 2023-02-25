@@ -78,7 +78,7 @@ void SwerveDrive::Initialize()
     m_pointPod->Initialize();
 
     // TODO: configure pigeon (?)
-    // m_pigeon->ConfigMountPosePitch();
+    m_pigeon->ConfigMountPose(ctre::phoenix::sensors::AxisDirection::NegativeZ, ctre::phoenix::sensors::AxisDirection::PositiveY);
 }
 
 // Put code here to be run every loop
@@ -86,15 +86,20 @@ void SwerveDrive::Periodic()
 {
     // // TESTING Pigeon 2.0 
     // #ifdef _TESTPIGEON
-    // std::cout << "yaw: " << m_pigeon->GetYaw() << 
-    //     "   pitch: " << m_pigeon->GetPitch() <<
-    //     "   roll: " << m_pigeon->GetRoll() << std::endl;
+    std::cout << "yaw: " << m_pigeon->GetYaw() << 
+        "   pitch: " << m_pigeon->GetPitch() <<
+        "   roll: " << m_pigeon->GetRoll() << std::endl;
     // #endif
 }
 
 void SwerveDrive::SimulationPeriodic() 
 {
     // This method will be called once per scheduler run when in simulation
+}
+
+double SwerveDrive::GetPigeonPitch()
+{
+    return m_pigeon->GetPitch();
 }
 
 void SwerveDrive::UpdatePodOffsetAngles() 

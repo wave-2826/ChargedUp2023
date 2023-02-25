@@ -23,6 +23,7 @@
 #include "frc2/command/PIDSubsystem.h"
 #include "frc/PneumaticHub.h"
 #include "frc/Solenoid.h"
+#include "frc/Compressor.h"
 
 #include "Globals.h"
 
@@ -69,6 +70,7 @@ private:
     frc::DigitalInput m_detectConeLimitSwitch{k_detectConeLimitSwitch};
 
     frc::PneumaticHub m_pneumaticHub{k_pneumaticHub};
+    frc::Compressor *m_compressor;
 
     // EndEffector solenoid to move up. Spring to down
     frc::Solenoid m_endEffectorSolenoid = m_pneumaticHub.MakeSolenoid(k_endEffectorOut);
@@ -129,6 +131,7 @@ private:
 
     // Constants used for Elevator functions
     static constexpr const double k_maxElevatorSpeed = 0.2;
+    static constexpr const double k_elevatorHoldSpeed = 0.05;
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
     static constexpr const double k_P = 0.3;
     static constexpr const double k_I = 0.1;
@@ -144,7 +147,6 @@ private:
     // static constexpr const double k_maxElevatorPosition = 60.0; // in inches
     // TESTING: half the max extension to prevent snapping elevator!
     static constexpr const double k_maxElevatorPosition = 50.0; // in inches
-    static constexpr const double k_encoderPosConversionFactor = 0.5; // TBD: Need the conversion factor
     // Pre-set elevator scoring position for the elevator
     // static constexpr const double k_elevatorTargetTopCone = 54.5;
     // static constexpr const double k_elevatorTargetMiddleCone = 30.5;

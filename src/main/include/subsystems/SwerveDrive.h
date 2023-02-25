@@ -117,6 +117,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         */
         double GetPodCurrent(int pod, bool motor);
 
+        double GetPigeonPitch();
+
         void SetLeftPodOffsetAngle(double offsetAngle);
         void SetRightPodOffsetAngle(double offsetAngle);
         void SetPointPodOffsetAngle(double offsetAngle);  
