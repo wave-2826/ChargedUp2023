@@ -84,14 +84,12 @@ void SwerveDrive::Initialize()
 // Put code here to be run every loop
 void SwerveDrive::Periodic() 
 {
-    // TESTING Pigeon 2.0 
-    #ifdef _TESTPIGEON
-    // std::cout << "yaw: " << m_pigeon->GetYaw() << 
-    //     "   pitch: " << m_pigeon->GetPitch() <<
-    //     "   roll: " << m_pigeon->GetRoll() << std::endl;
-    // m_pigeon->GetRawGyro(m_gyroHeadings);
-    // std::cout << "x: " << m_gyroHeadings[0] << "    y: " << m_gyroHeadings[1] << "    z: " << m_gyroHeadings[2] << std::endl;
-    #endif
+    // // TESTING Pigeon 2.0 
+    // #ifdef _TESTPIGEON
+    std::cout << "yaw: " << m_pigeon->GetYaw() << 
+        "   pitch: " << m_pigeon->GetPitch() <<
+        "   roll: " << m_pigeon->GetRoll() << std::endl;
+    // #endif
 }
 
 void SwerveDrive::SimulationPeriodic() 
@@ -99,7 +97,13 @@ void SwerveDrive::SimulationPeriodic()
     // This method will be called once per scheduler run when in simulation
 }
 
-double SwerveDrive::GetRobotYaw() {
+double SwerveDrive::GetPigeonPitch()
+{
+    return m_pigeon->GetPitch();
+}
+
+double SwerveDrive::GetRobotYaw() 
+{
     return m_pigeon->GetYaw();
 }
 
