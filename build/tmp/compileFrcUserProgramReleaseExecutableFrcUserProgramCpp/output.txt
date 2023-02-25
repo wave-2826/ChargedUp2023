@@ -7,6 +7,8 @@ compiling Elevator.cpp successful.
 
 compiling Robot.cpp successful.
 
+compiling SwerveInitializeCommand.cpp successful.
+
 compiling RobotContainer.cpp successful.
 
 compiling SwerveDrive.cpp successful.

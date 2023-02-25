@@ -99,29 +99,54 @@ void Robot::TeleopPeriodic()
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
   // joystick inputs for swerve - scaling / ramp speed
-  double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
-  double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.1);
-  double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.1);
-  m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
-  m_container->SetPreviousJoystickInputLX(currentJoystickLX);
-  m_container->SetPreviousJoystickInputLY(currentJoystickLY);
-  m_container->SetPreviousJoystickInputRX(currentJoystickRX);
+  // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.5);
+  // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
+  // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
+  // m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+  // m_container->SetPreviousJoystickInputLX(currentJoystickLX);
+  // m_container->SetPreviousJoystickInputLY(currentJoystickLY);
+  // m_container->SetPreviousJoystickInputRX(currentJoystickRX);
 
   // #ifdef _TESTJOYSTICK
   // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
   // std::cout << "LY: " << targetJoystickLY << 
   //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
   //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
-  // #endif  
+  // #endif
 
-  // joystick inputs for swerve - NO scaling / ramp
-  // m_container->m_swerveDrive.DrivePods(joystickLX, joystickLY, joystickRX);
+  bool lockSwerve = m_container->getDriver()->GetYButton();
+  if (!lockSwerve) {
+    // joystick inputs for swerve - NO scaling / ramp
+    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
 
-  // TESTING - lock swerve drive
-  // bool lockSwerve = m_container->getDriver()->GetAButton();
-  // if (lockSwerve) {
-  //   m_container->m_swerveDrive.LockSwerve();
-  // }
+    // Initial Swerve State
+    bool initialSwerveState = m_container->getDriver()->GetStartButton();
+    if (initialSwerveState) {
+      m_container->m_swerveDrive.InitialSwerve();
+    }
+    
+    // Swerve Diagnostics State
+    bool testRightPod = m_container->getDriver()->GetBButton();
+    bool testLeftPod = m_container->getDriver()->GetXButton();
+    bool testPointPod = m_container->getDriver()->GetAButton();
+    int testMotor = m_container->getDriver()->GetPOV();
+    if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
+    {
+      std::string podInput;
+      std::string motorInput; 
+      podInput = testRightPod ? "RIGHT" : podInput;
+      podInput = testLeftPod ? "LEFT" : podInput;
+      podInput = testPointPod ? "POINT" : podInput;
+      motorInput = testMotor == 0 ? "TOP" : motorInput; 
+      motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
+
+      // set motors for testing
+      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.7);
+    }
+  } else {
+    m_container->m_swerveDrive.LockSwerve();
+  }
+  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
 
   // Elevator Operations
   m_container->m_elevator.runElevator();

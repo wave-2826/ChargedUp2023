@@ -9,9 +9,10 @@
 #define _DEBUGME                    
 #define _TESTJOYSTICK               
 #define _TESTPIGEON                 
-#define _TESTELEVATOR                   1
+#define _TESTELEVATOR         
+           
 
-double const k_jsDeadband =             0.07;
+double const k_jsDeadband =             0.08;
 
 // Swerve Drive Motors
 int const k_swervePointBottom =         2;

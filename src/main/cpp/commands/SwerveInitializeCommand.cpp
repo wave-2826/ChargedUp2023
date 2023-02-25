@@ -10,65 +10,42 @@
 
 // ROBOTBUILDER TYPE: Command.
 
+#include "commands/SwerveInitializeCommand.h"
 
-#include <iostream>
-#include "commands/ExtendElevatorMidCone.h"
-
-ExtendElevatorMidCone::ExtendElevatorMidCone(Elevator* m_elevator)
-:m_elevator(m_elevator)
+SwerveInitializeCommand::SwerveInitializeCommand(SwerveDrive* swerveDrive)
+                      : m_swerveDrive(swerveDrive)
 {
-
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
-    SetName("ExtendElevatorMidCone");
-    AddRequirements({m_elevator});
+    SetName("SwerveInitializeCommand");
+    AddRequirements(m_swerveDrive);
 
-    m_targetReached = false;
-
+    m_isInitialized = false;
 }
 
 // Called just before this Command runs the first time
-void ExtendElevatorMidCone::Initialize() 
-{
-
-    m_targetReached = false;
-    m_elevator->setMidConeTarget();
+void SwerveInitializeCommand::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ExtendElevatorMidCone::Execute() {
-    
-    if(!m_elevator->isTargetSet())
-    {
-        m_elevator->setMidConeTarget();
-    }
-
-    m_targetReached = m_elevator->moveToCurrentTarget();
+void SwerveInitializeCommand::Execute() {
+    m_isInitialized = m_swerveDrive->InitialSwerve();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ExtendElevatorMidCone::IsFinished() 
-{
-    if(m_targetReached)
-    {
-        // Top Target reached
-        // std::cout << "Mid Target Reached" << std::endl;
+bool SwerveInitializeCommand::IsFinished() {
+    if (m_isInitialized) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
 // Called once after isFinished returns true
-void ExtendElevatorMidCone::End(bool interrupted) 
-{
-    m_targetReached = false;
+void SwerveInitializeCommand::End(bool interrupted) {
+    m_swerveDrive->DrivePods(0, 0, 0);
 }
 
-bool ExtendElevatorMidCone::RunsWhenDisabled() const 
-{
+bool SwerveInitializeCommand::RunsWhenDisabled() const {
     return false;
-
 }

@@ -13,7 +13,6 @@
 #include "RobotContainer.h"
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-
 #include "commands/ExtendElevatorTopCone.h"
 #include "commands/ExtendElevatorMidCone.h"
 #include "commands/SequentialScoreTopCone.h"
@@ -22,25 +21,26 @@ RobotContainer* RobotContainer::m_robotContainer = NULL;
 
 RobotContainer::RobotContainer() : m_autonomousCommand()
 {
-    // Smartdashboard Subsystems
+    // Smartdashboard Swerve Drive Offsets
     frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
 
-    frc::SmartDashboard::PutData("Score Top Cone", new ExtendElevatorTopCone(&m_elevator));
-    frc::SmartDashboard::PutData("Score Mid Cone", new ExtendElevatorMidCone(&m_elevator));
-
     // SmartDashboard Buttons
-    frc::SmartDashboard::PutData("Autonomous Command", new AutonomousCommand());
+    frc::SmartDashboard::PutData("Extend Elevator Top Cone", new ExtendElevatorTopCone(&m_elevator));
+    frc::SmartDashboard::PutData("Extend Elevator Mid Cone", new ExtendElevatorMidCone(&m_elevator));
+    frc::SmartDashboard::PutData("Score Top Cone", new ScoreConeTop(&m_elevator));
+    frc::SmartDashboard::PutData("Score Mid Cone", new ScoreConeMid(&m_elevator));
+    frc::SmartDashboard::PutData("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
 
-    // add options to the auto chooser
-    m_chooser.SetDefaultOption("Drive Timed", new AutonomousCommand());
+    // add options + setup auto chooser
+     m_chooser.SetDefaultOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
+   
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
     m_chooser.AddOption("Auto Balance", new AutoBalance(&m_swerveDrive, 0.0, 0.0, 0.0, units::second_t(1.0)));
-
-    m_chooser.SetDefaultOption("Autonomous Command", new AutonomousCommand());
     m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
-
+    m_chooser.AddOption("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
+    
     frc::SmartDashboard::PutData("Auto Mode", &m_chooser);
 
     ConfigureButtonBindings();
@@ -54,10 +54,7 @@ RobotContainer* RobotContainer::GetInstance()
     return(m_robotContainer);
 }
 
-void RobotContainer::ConfigureButtonBindings() 
-{
-
-}
+void RobotContainer::ConfigureButtonBindings() {}
 
 // The selected command will be run in autonomous
 frc2::Command* RobotContainer::GetAutonomousCommand() 
@@ -77,7 +74,8 @@ frc::XboxController* RobotContainer::getOperator()
    return &m_operator;
 }
 
-double RobotContainer::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) {
+double RobotContainer::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) 
+{
     double newSpeed = currentSpeed;
     // current speed is less than target speed
     if (currentSpeed < targetSpeed)
@@ -99,26 +97,32 @@ double RobotContainer::LinearInterpolate(double currentSpeed, double targetSpeed
     return std::clamp(newSpeed, -1.0, 1.0);
 }
 
-double RobotContainer::GetPreviousJoystickInputLX() {
+double RobotContainer::GetPreviousJoystickInputLX() 
+{
     return m_previousJoystickInputLX;
 }
 
-void RobotContainer::SetPreviousJoystickInputLX(double input) {
+void RobotContainer::SetPreviousJoystickInputLX(double input) 
+{
     m_previousJoystickInputLX = input;
 }
 
-double RobotContainer::GetPreviousJoystickInputLY() {
+double RobotContainer::GetPreviousJoystickInputLY() 
+{
     return m_previousJoystickInputLY;
 }
 
-void RobotContainer::SetPreviousJoystickInputLY(double input) {
+void RobotContainer::SetPreviousJoystickInputLY(double input) 
+{
     m_previousJoystickInputLY = input;
 }
 
-double RobotContainer::GetPreviousJoystickInputRX() {
+double RobotContainer::GetPreviousJoystickInputRX() 
+{
     return m_previousJoystickInputRX;
 }
 
-void RobotContainer::SetPreviousJoystickInputRX(double input) {
+void RobotContainer::SetPreviousJoystickInputRX(double input) 
+{
     m_previousJoystickInputRX = input;
 }

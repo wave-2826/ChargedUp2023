@@ -34,6 +34,7 @@ class SwerveDrive: public frc2::SubsystemBase {
     private:        
 
         ctre::phoenix::sensors::Pigeon2 *m_pigeon;
+        double m_gyroHeadings[3] = {0, 0, 0};
 
         rev::CANSparkMax *m_rightBottomMotor;
         rev::CANSparkMax *m_rightTopMotor;
@@ -61,24 +62,30 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
-        double m_leftPodOffsetAngle = 209.0;
-        double m_rightPodOffsetAngle = -50.0;
-        double m_pointPodOffsetAngle = 64.0;
+        double m_leftPodOffsetAngle = 102.0;
+        double m_rightPodOffsetAngle = -45.0;
+        double m_pointPodOffsetAngle = 172.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
 
+        double m_lockedLeftAngle = 135.0; // 45 
+        double m_lockedRightAngle = 225.0; // 315
+        double m_lockedPointAngle = 90.0; // 0
+
     public:
+
+        SwerveDrive();
     
         // length of the intake side
         const double robotWidth = 0.717;
         // length of the point to the midpoint of the intake side
         const double robotHeight = 0.617;
 
-        SwerveDrive();
-
         void Periodic() override;
         void SimulationPeriodic() override;
+
+        void DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement);
 
         /**
          * Function that updates a pod offset angle based on input from the smartdashboard
@@ -96,9 +103,14 @@ class SwerveDrive: public frc2::SubsystemBase {
         void DrivePods(double forward, double strafe, double rotation);
 
         /**
-         * Function that orients the swerve pods into opposing angles for a "locked" position
+         * Function that orients the swerve drive into opposing angles for a "locked" position
         */
         void LockSwerve();
+
+        /**
+         * Function that orients the swerve drive into aligned angles for a "straight" position
+        */
+        bool InitialSwerve();
 
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
@@ -117,7 +129,9 @@ class SwerveDrive: public frc2::SubsystemBase {
         */
         double GetPodCurrent(int pod, bool motor);
 
+        // pigeon gyro getters
         double GetPigeonPitch();
+        double GetRobotYaw();
 
         void SetLeftPodOffsetAngle(double offsetAngle);
         void SetRightPodOffsetAngle(double offsetAngle);
