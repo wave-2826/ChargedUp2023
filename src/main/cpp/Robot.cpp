@@ -114,14 +114,17 @@ void Robot::TeleopPeriodic()
   //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
   // #endif
 
+  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
   bool lockSwerve = m_container->getDriver()->GetYButton();
   if (!lockSwerve) {
     // joystick inputs for swerve - NO scaling / ramp
+    // std::cout << "SWERVE DRIVE NO SCALING - drive pods" << std::endl;
     m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
 
     // Initial Swerve State
     bool initialSwerveState = m_container->getDriver()->GetStartButton();
     if (initialSwerveState) {
+      std::cout << "INITIALIZE DRIVE - drive pods" << std::endl;
       m_container->m_swerveDrive.InitialSwerve();
     }
     
@@ -132,6 +135,7 @@ void Robot::TeleopPeriodic()
     int testMotor = m_container->getDriver()->GetPOV();
     if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
     {
+      std::cout << "TESTING HARNESS DRIVE - drive pods" << std::endl;
       std::string podInput;
       std::string motorInput; 
       podInput = testRightPod ? "RIGHT" : podInput;
@@ -144,10 +148,10 @@ void Robot::TeleopPeriodic()
       m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.7);
     }
   } else {
+    std::cout << "LOCK DRIVE - drive pods" << std::endl;
     m_container->m_swerveDrive.LockSwerve();
   }
-  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
-
+  
   // Elevator Operations
   m_container->m_elevator.runElevator();
 }

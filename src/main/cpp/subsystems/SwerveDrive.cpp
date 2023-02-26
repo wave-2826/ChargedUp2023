@@ -86,9 +86,9 @@ void SwerveDrive::Periodic()
 {
     // // TESTING Pigeon 2.0 
     // #ifdef _TESTPIGEON
-    std::cout << "yaw: " << m_pigeon->GetYaw() << 
-        "   pitch: " << m_pigeon->GetPitch() <<
-        "   roll: " << m_pigeon->GetRoll() << std::endl;
+    // std::cout << "yaw: " << m_pigeon->GetYaw() << 
+    //     "   pitch: " << m_pigeon->GetPitch() <<
+    //     "   roll: " << m_pigeon->GetRoll() << std::endl;
     // #endif
 }
 
@@ -179,9 +179,9 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
     // represents the velocity of the robot chassis
     // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
     // foward (LX) is considered the POINT
-    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(forward*transform),
-        (units::velocity::meters_per_second_t)(-strafe*transform),
-        (units::angular_velocity::radians_per_second_t)(-2*rotation*transform)};
+    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)((1.35)*forward*transform),
+        (units::velocity::meters_per_second_t)((-1.35)*strafe*transform),
+        (units::angular_velocity::radians_per_second_t)((-4.5)*rotation*transform)};
     
     // returns each pods state (speed, angle)
     // Desired state -- velocity of wheel in RPM, angle in degrees

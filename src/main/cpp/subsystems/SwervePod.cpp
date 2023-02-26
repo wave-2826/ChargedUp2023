@@ -283,13 +283,15 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
 
     ///////////////////////////////// TESTING PRINTOUTS ///////////////////////////////////////////////
 
-    if (GetCounter() > 50)
+    if (GetCounter() > 0)
     {
 
         // TESTING
-        if (swerveCase == "ROTATE" && m_podName == "Right") {
-            std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << std::endl; 
-        }    
+        // if (swerveCase == "ROTATE" && m_podName == "Right") {
+        //     std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << std::endl; 
+        // }  
+        std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << "   CMD: " << commanded_speed << std::endl; 
+          
 
         // SWERVE CASE
         // std::cout << swerveCase << std::endl;
@@ -300,12 +302,12 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
         // std::cout << m_podName << " current angle: " << current_angle << std::endl;
         // std::cout << "target angle: " << target_angle << std::endl << std::endl;
         // std::cout << m_podName << " offset: " << m_offsetAngle << std::endl;
-        std::cout << "angle delta: " << angle_delta << std::endl;
+        // std::cout << "angle delta: " << angle_delta << std::endl;
 
         // MOTOR SPEEDS
         // std::cout << topMotorSpeed <<  std::endl;
         // std::cout << bottomMotorSpeed << std::endl <<  std::endl;
-        std::cout << "commanded: " << commanded_speed << std::endl << std::endl;
+        // std::cout << "commanded: " << commanded_speed << std::endl << std::endl;
         
         SetCounter(0);
         return true;
