@@ -13,9 +13,6 @@
 #include "RobotContainer.h"
 #include <frc2/command/ParallelRaceGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-#include "commands/ExtendElevatorTopCone.h"
-#include "commands/ExtendElevatorMidCone.h"
-#include "commands/SequentialScoreTopCone.h"
 
 RobotContainer* RobotContainer::m_robotContainer = NULL;
 
@@ -27,18 +24,14 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
 
     // SmartDashboard Buttons
-    frc::SmartDashboard::PutData("Extend Elevator Top Cone", new ExtendElevatorTopCone(&m_elevator));
-    frc::SmartDashboard::PutData("Extend Elevator Mid Cone", new ExtendElevatorMidCone(&m_elevator));
+    frc::SmartDashboard::PutData("Score Top Cone", new ScoreConeTop(&m_elevator));
+    frc::SmartDashboard::PutData("Score Mid Cone", new ScoreConeMid(&m_elevator));
     frc::SmartDashboard::PutData("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
 
     // add options + setup auto chooser
-     m_chooser.SetDefaultOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
-   
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
-    m_chooser.AddOption("Auto Balance", new AutoBalance(&m_swerveDrive, 0.0, 0.0, 0.0, units::second_t(1.0)));
-    m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
     m_chooser.AddOption("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
-    
+    m_chooser.SetDefaultOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
     frc::SmartDashboard::PutData("Auto Mode", &m_chooser);
 
     ConfigureButtonBindings();

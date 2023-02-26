@@ -38,4 +38,5 @@ public:
 private:
 
     units::second_t m_timeout;
+
 };
