@@ -42,7 +42,23 @@ int const k_endEffectorGrabber =        1;
 int const k_elevatorAtHomeLimitSwitch = 5;
 int const k_detectConeLimitSwitch =     9;
 
-// Pneumatic
+// Pneumatics
 int const k_pneumaticHub =              8;
+
+// Motor constants
+double const max_motor_temp =           90.0;
+
+typedef enum 
+{
+    RIGHT_POD,
+    LEFT_POD,
+    POINT_POD
+} PodOrientation;
+
+typedef enum
+{
+    TOP_MOTOR,
+    BOTTOM_MOTOR
+} PodMotor;
 
 #endif

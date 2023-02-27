@@ -33,13 +33,12 @@ typedef enum
  *
  * @author 2826WaveRobotics
  */
-class AutoBalance: public frc2::WaitCommand 
+class AutoBalance: public frc2::CommandHelper<frc2::CommandBase, AutoBalance> 
 {
 
 public:
 
-    explicit AutoBalance(SwerveDrive* swerveDrive, double inputLX, double inputLY, double inputRX, 
-                        units::second_t timeout = (units::second_t)0);
+    explicit AutoBalance(SwerveDrive* swerveDrive);
 
     void Initialize() override;
     void Execute() override;
@@ -53,9 +52,5 @@ private:
     ctre::phoenix::sensors::Pigeon2* m_pigeon;
     BalanceState m_balanceState;
     bool m_isBalanced;
-    double m_inputLX;
-    double m_inputLY;
-    double m_inputRX;
-    units::second_t m_timeout;
 
 };

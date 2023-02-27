@@ -269,7 +269,11 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
         // }
 
         topMotorSpeed = -commanded_speed * angle_delta * normalizer;
-        bottomMotorSpeed = commanded_speed * angle_delta * normalizer;            
+        bottomMotorSpeed = commanded_speed * angle_delta * normalizer;   
+
+        // TESTING - static rotate speed    
+        // topMotorSpeed = -0.15;
+        // bottomMotorSpeed = 0.15;        
     }
 
     // speed safety - ensure not commanding more than 100% motor speed

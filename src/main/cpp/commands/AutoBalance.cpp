@@ -14,51 +14,69 @@
 #include "commands/WaveWaitCommand.h"
 #include "Globals.h"
 
-AutoBalance::AutoBalance(SwerveDrive* swerveDrive, double inputLX, double inputLY, double inputRX, units::second_t timeout)
-                      : WaitCommand(timeout), m_swerveDrive(swerveDrive), m_inputLX(inputLX),
-                        m_inputLY(inputLY), m_inputRX(inputRX), m_timeout(timeout)
+AutoBalance::AutoBalance(SwerveDrive* swerveDrive)
+                      : m_swerveDrive(swerveDrive)
 {
 
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
     SetName("AutoBalance");
     // m_timeout = timeout;
-    // m_pigeon = new ctre::phoenix::sensors::Pigeon2(k_pigeonID, k_canbus);
 }
 
 // Called just before this Command runs the first time
 void AutoBalance::Initialize() {
     // WaitCommand::Initialize();
+    m_balanceState = Before_Balance;
     m_isBalanced = false;
-    // initialize swerve drive
+    m_swerveDrive->InitialSwerve();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoBalance::Execute() {
     // m_swerveDrive->DrivePods(m_inputLX, m_inputLY, m_inputRX);
 
-    
     switch(m_balanceState) {
         case Before_Balance:
             // CASE: before charging station ramp
-            // drive straight
-            m_swerveDrive->DrivePods(0, 0.5, 0);
+            // drive straight            
+            if (m_swerveDrive->GetRobotPitch() < -2.0) {
+                m_balanceState = Tilted_Up;
+            }
+            m_swerveDrive->DrivePods(0.3, 0, 0);
             break;
         case Tilted_Up:
             // CASE: tilted driving up station
-            // pitch is negative - keep driving straight
-            m_swerveDrive->DrivePods(0, 0.5, 0);
+            // pitch is negative - keep driving straight            
+            if (fabs(m_swerveDrive->GetRobotPitch()) <= 2.0) {
+                m_balanceState = Level_Balance;
+            } else if (m_swerveDrive->GetRobotPitch() > 2.0 ) {
+                m_balanceState = Tilted_Down;
+            }
+            m_swerveDrive->DrivePods(0.2, 0, 0);
             break;
         case Tilted_Down:
             // CASE: tilted driving down station
             // pitch is positive - reverse, reverse!!
-            m_swerveDrive->DrivePods(0, -0.5, 0);
+            if (fabs(m_swerveDrive->GetRobotPitch()) <= 2.0) {
+                m_balanceState = Level_Balance;
+            } else if (m_swerveDrive->GetRobotPitch() < -2.0) {
+                m_balanceState = Tilted_Up;
+            }
+            m_swerveDrive->DrivePods(-0.2, 0, 0);
             break;
         case Level_Balance:
             // CASE: balanced on station
             // stay put + end auto
             m_swerveDrive->DrivePods(0, 0, 0);
-            m_isBalanced = true;
+            if (m_swerveDrive->GetRobotPitch() < -2.0) {
+                m_balanceState = Tilted_Up;
+            } else if (m_swerveDrive->GetRobotPitch() > 2.0) {
+                m_balanceState = Tilted_Down;
+            } else {
+                m_swerveDrive->LockSwerve();
+                m_isBalanced = true;
+            }            
             break;
     }
 }
