@@ -118,7 +118,7 @@ void Robot::TeleopPeriodic()
   double targetJoystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
-  std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
+  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
   bool lockSwerve = m_container->getDriver()->GetYButton();
   if (!lockSwerve) {
     // joystick inputs for swerve - NO scaling / ramp

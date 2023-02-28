@@ -73,6 +73,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_lockedRightAngle = 225.0; // 315
         double m_lockedPointAngle = 90.0; // 0
 
+        bool m_allAligned = false;
+
     public:
 
         SwerveDrive();

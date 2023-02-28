@@ -126,7 +126,7 @@ void SwervePod::FlipIsReversed(bool state)
  * 
  * @param SwerveModuleState state (speed, angle)
 */
-bool SwervePod::Drive(frc::SwerveModuleState state)
+bool SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
 {
     // TODO: set max motor speeds
     double topMotorSpeed = 0.0;
@@ -181,40 +181,44 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
         // check aligned
         swerveCase = "ALIGNED";
 
-        // station keep alg
-        double stationKeepTop;
-        double stationKeepBottom;
-        double divisor;
-        if (GetIsReversed())
+        if (allAligned)
         {
-            stationKeepTop = (1.0 - angle_delta * normalizer);
-            stationKeepBottom = (1.0 + angle_delta * normalizer);
-        }
-        else
-        {            
-            // stationKeepTop = (1 + tunedAngleDelta * normalizer);
-            // stationKeepBottom = (1 - tunedAngleDelta * normalizer);
-            stationKeepTop = (1.0 + angle_delta * normalizer);
-            stationKeepBottom = (1.0 - angle_delta * normalizer);
-        }
-        if (fabs(stationKeepTop) > fabs(stationKeepBottom))
-        {
-            divisor = stationKeepTop / stationKeepBottom;
-        }
-        else
-        {
-            divisor = stationKeepBottom / stationKeepTop;
-        }
 
-        if (!GetIsReversed())
-        {
-            topMotorSpeed = -commanded_speed * (stationKeepTop / divisor);
-            bottomMotorSpeed = -commanded_speed * (stationKeepBottom / divisor);
-        }
-        else
-        {
-            topMotorSpeed = commanded_speed * (stationKeepTop / divisor);
-            bottomMotorSpeed = commanded_speed * (stationKeepBottom / divisor);
+            // station keep alg
+            double stationKeepTop;
+            double stationKeepBottom;
+            double divisor;
+            if (GetIsReversed())
+            {
+                stationKeepTop = (1.0 - angle_delta * normalizer);
+                stationKeepBottom = (1.0 + angle_delta * normalizer);
+            }
+            else
+            {            
+                // stationKeepTop = (1 + tunedAngleDelta * normalizer);
+                // stationKeepBottom = (1 - tunedAngleDelta * normalizer);
+                stationKeepTop = (1.0 + angle_delta * normalizer);
+                stationKeepBottom = (1.0 - angle_delta * normalizer);
+            }
+            if (fabs(stationKeepTop) > fabs(stationKeepBottom))
+            {
+                divisor = stationKeepTop / stationKeepBottom;
+            }
+            else
+            {
+                divisor = stationKeepBottom / stationKeepTop;
+            }
+
+            if (!GetIsReversed())
+            {
+                topMotorSpeed = -commanded_speed * (stationKeepTop / divisor);
+                bottomMotorSpeed = -commanded_speed * (stationKeepBottom / divisor);
+            }
+            else
+            {
+                topMotorSpeed = commanded_speed * (stationKeepTop / divisor);
+                bottomMotorSpeed = commanded_speed * (stationKeepBottom / divisor);
+            }
         }
     }
     else if (angle_delta < -90.0)
@@ -284,17 +288,18 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
     m_topMotor->Set(topMotorSpeed);
     m_bottomMotor->Set(bottomMotorSpeed);
 
+    return std::strcmp(swerveCase.c_str(), "ALIGNED") == 0;
 
     ///////////////////////////////// TESTING PRINTOUTS ///////////////////////////////////////////////
 
-    if (GetCounter() > 0)
-    {
+    // if (GetCounter() > 0)
+    // {
 
         // TESTING
         // if (swerveCase == "ROTATE" && m_podName == "Right") {
         //     std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << std::endl; 
         // }  
-        std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << "   CMD: " << commanded_speed << std::endl; 
+        // std::cout << m_podName << "   -->   T: " << topMotorSpeed << "   B: " << bottomMotorSpeed << "   CMD: " << commanded_speed << std::endl; 
           
 
         // SWERVE CASE
@@ -313,15 +318,15 @@ bool SwervePod::Drive(frc::SwerveModuleState state)
         // std::cout << bottomMotorSpeed << std::endl <<  std::endl;
         // std::cout << "commanded: " << commanded_speed << std::endl << std::endl;
         
-        SetCounter(0);
-        return true;
-    }
-    else
-    {
-        int current_count = GetCounter();
-        SetCounter(current_count + 1);
-    }
-    return false;
+    //     SetCounter(0);
+    //     return true;
+    // }
+    // else
+    // {
+    //     int current_count = GetCounter();
+    //     SetCounter(current_count + 1);
+    // }
+    // return false;
 }
 
 /**

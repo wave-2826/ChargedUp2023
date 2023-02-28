@@ -58,10 +58,10 @@ class SwervePod {
          * 
          * @param state the Swerve Module state containing speed and angle,
          * with angle: -180 - 180, speed: -1.00 - 1.00
-         * @param offsetAngle defines the absolute encoder 0 position in relation to 
-         * the "front" or 0 of the robot 
+         * @param allAligned the boolean stating if all 3 pods are aligned,
+         * if they are, pods can drive forward
          **/
-        bool Drive(frc::SwerveModuleState state);
+        bool Drive(frc::SwerveModuleState state, bool allAligned);
 
         /**
          * Function to orientate swerve pod to a "locked" position
