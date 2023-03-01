@@ -12,16 +12,20 @@
 
 #include "Robot.h"
 #include "Globals.h"
-
-#include <iostream> 
-
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <iostream>
+#include <cameraserver/CameraServer.h>
+#include <cstdio>
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
   m_container->m_elevator.Initialize();
+  m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0);
+
+  // Get the USB camera from CameraServer
+  cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
+  camera.SetResolution(640,480);
 }
 
 /**
@@ -36,7 +40,6 @@ void Robot::RobotPeriodic()
 { 
   frc2::CommandScheduler::GetInstance().Run(); 
 
-  // TODO: check redundant with SwerveDrive::UpdatePodOffsetAngles 
   // SET pod offset angles with values from dashboard
   double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
   double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
@@ -44,6 +47,23 @@ void Robot::RobotPeriodic()
   m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
   m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
   m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+
+  // SmartDashboard Swerve Drive Motor Temperatures + indicators
+  frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
+  frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
+  frc::SmartDashboard::PutNumber("Right Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR));
+  frc::SmartDashboard::PutBoolean("Right Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR) > max_motor_temp);
+  frc::SmartDashboard::PutNumber("Left Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR));
+  frc::SmartDashboard::PutBoolean("Left Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR) > max_motor_temp);
+  frc::SmartDashboard::PutNumber("Left Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR));
+  frc::SmartDashboard::PutBoolean("Left Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR) > max_motor_temp);
+  frc::SmartDashboard::PutNumber("Point Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR));
+  frc::SmartDashboard::PutBoolean("Point Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR) > max_motor_temp);
+  frc::SmartDashboard::PutNumber("Point Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR));
+  frc::SmartDashboard::PutBoolean("Point Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR) > max_motor_temp);
+
+  // SmartDashboard Swerve Drive Test Motor Speeds
+  frc::SmartDashboard::PutNumber("Test Motor Speed", m_diagnosticSpeed);
 }
 
 /**
@@ -98,26 +118,40 @@ void Robot::TeleopPeriodic()
   double targetJoystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
-  // joystick inputs for swerve - scaling / ramp speed
-  // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.5);
-  // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
-  // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
-  // m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
-  // m_container->SetPreviousJoystickInputLX(currentJoystickLX);
-  // m_container->SetPreviousJoystickInputLY(currentJoystickLY);
-  // m_container->SetPreviousJoystickInputRX(currentJoystickRX);
-
-  // #ifdef _TESTJOYSTICK
-  // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
-  // std::cout << "LY: " << targetJoystickLY << 
-  //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
-  //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
-  // #endif
-
+  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
   bool lockSwerve = m_container->getDriver()->GetYButton();
   if (!lockSwerve) {
     // joystick inputs for swerve - NO scaling / ramp
-    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+    // std::cout << "SWERVE DRIVE NO SCALING - drive pods" << std::endl;
+    // m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+
+    // joystick inputs for swerve - scaling / ramp speed
+    double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.5);
+    double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
+    double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
+    int dPadValue = m_container->getDriver()->GetPOV();
+    
+    // TESTING FOR SWERVE ANGLE OFFSETS
+    // if (dPadValue == 0)
+    // {
+    //   m_container->m_swerveDrive.DrivePods(0.0, 0.5, 0.0);
+    // }else if (dPadValue == 180)
+    // {
+    //   m_container->m_swerveDrive.DrivePods(0.0, -0.5, 0.0);
+    // }else
+    // {
+    m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+    // }
+    m_container->SetPreviousJoystickInputLX(currentJoystickLX);
+    m_container->SetPreviousJoystickInputLY(currentJoystickLY);
+    m_container->SetPreviousJoystickInputRX(currentJoystickRX);
+
+    // #ifdef _TESTJOYSTICK
+    // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
+    // std::cout << "LY: " << targetJoystickLY << 
+    //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
+    //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
+    // #endif
 
     // Initial Swerve State
     bool initialSwerveState = m_container->getDriver()->GetStartButton();
@@ -141,13 +175,31 @@ void Robot::TeleopPeriodic()
       motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
 
       // set motors for testing
-      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.7);
+      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, m_diagnosticSpeed);
     }
   } else {
     m_container->m_swerveDrive.LockSwerve();
   }
-  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
 
+  // set swerve test harness motor speed
+  int testMotorSpeed = m_container->getDriver()->GetPOV();
+  if (testMotorSpeed == 90 || testMotorSpeed == 270) {
+      if (!m_dPadLastFrame) {
+        if (testMotorSpeed == 90 && m_diagnosticSpeed < 1.0) {
+          m_diagnosticSpeed += 0.1;
+        }else if (testMotorSpeed == 270 && m_diagnosticSpeed > 0.0) {
+          m_diagnosticSpeed -= 0.1;
+        }
+        if (m_diagnosticSpeed < 0.0)
+          m_diagnosticSpeed = 0.0;
+        else if (m_diagnosticSpeed > 1.0)
+          m_diagnosticSpeed = 1.0;
+      }
+      m_dPadLastFrame = true;
+    }else {
+      m_dPadLastFrame = false;
+    }
+  
   // Elevator Operations
   m_container->m_elevator.runElevator();
 }
