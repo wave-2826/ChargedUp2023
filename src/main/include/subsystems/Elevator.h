@@ -124,7 +124,9 @@ private:
     double getPIDSpeed(double pidCommnd);
 
     // Constants used for Elevator functions
-    static constexpr const double k_maxElevatorSpeed = 1.0;
+    static constexpr const double k_maxElevatorSpeed = 0.2;
+    // static constexpr const double k_elevatorHoldSpeed = 0.05; // mid
+    static constexpr const double k_elevatorHoldSpeed = 0.07; // top
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
     static constexpr const double k_P = 0.5;
     static constexpr const double k_I = 0.0;
@@ -135,15 +137,22 @@ private:
     static constexpr const double k_teethSize = 0.25;  // in inches
     static constexpr const double k_gearRatio = 4; // Ratio 4:1
 
-    static constexpr const double k_maxElevatorPosition = 100.0; // in inches
-    static constexpr const double k_encoderPosConversionFactor = 0.5; // TBD: Need the conversion factor
-
-    // Pre-set elevator scoing position for the elevator
+    static constexpr const double k_maxElevatorPosition = 60.0; // in inches
+    // TESTING: half the max extension to prevent snapping elevator!
+    // static constexpr const double k_maxElevatorPosition = 50.0; // in inches
+    // Pre-set elevator scoring position for the elevator
     static constexpr const double k_elevatorTargetTopCone = 54.5;
     static constexpr const double k_elevatorTargetMiddleCone = 30.5;
     static constexpr const double k_elevatorTargetTopCube = 46.5;
     static constexpr const double k_elevatorTargetMiddleCube = 22.5;
     static constexpr const double k_elevatorHumanStation = 10.25;
+
+    // TESTING VALUES - Pre-set scoring positions for elevator (avoid snapping elevator AGAIN)
+    // static constexpr const double k_elevatorTargetTopCone = 45.5;
+    // static constexpr const double k_elevatorTargetMiddleCone = 30.5;
+    // static constexpr const double k_elevatorTargetTopCube = 22.5;
+    // static constexpr const double k_elevatorTargetMiddleCube = 19.5;
+    // static constexpr const double k_elevatorHumanStation = 10.25;
 
 public:
     Elevator();

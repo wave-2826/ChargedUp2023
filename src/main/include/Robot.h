@@ -32,4 +32,6 @@ class Robot : public frc::TimedRobot {
   // doesn't have undefined behavior and potentially crash.
   frc2::Command* m_autonomousCommand = nullptr;
   RobotContainer* m_container = RobotContainer::GetInstance();
+  double m_diagnosticSpeed = 0.5;
+  bool m_dPadLastFrame = false;
 };

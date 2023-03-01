@@ -36,9 +36,28 @@ int const k_elevatorMotorB =        12;
 int const k_endofactorMotor =       13;
 
 // EndEffector Solenoid
-int const k_endEffectorOut = 7;
+int const k_endEffectorOut =            1;
+int const k_endEffectorGrabber =        0;
 int const k_elevatorAtHomeLimitSwitch = 5;
-int const k_detectConeLimitSwitch = 9;
-int const k_endEffectorGrabber = 8;
+int const k_detectConeLimitSwitch =     6;
+
+// Pneumatics
+int const k_pneumaticHub =              8;
+
+// Motor constants
+double const max_motor_temp =           90.0;
+
+typedef enum 
+{
+    RIGHT_POD,
+    LEFT_POD,
+    POINT_POD
+} PodOrientation;
+
+typedef enum
+{
+    TOP_MOTOR,
+    BOTTOM_MOTOR
+} PodMotor;
 
 #endif

@@ -47,6 +47,7 @@ Elevator::Elevator()
     m_elevatorHomePosition = 0.0;
     m_elevatorTarget = 0.0;
     m_isStowing = false;
+
     m_targetSet = false;
 
     // May or may not use this
@@ -116,6 +117,28 @@ void Elevator::setElevator(double speed)
 // Put code here to be run every loop
 void Elevator::Periodic() 
 { 
+    m_elevatorPosition = getElevatorPosition();
+    // if(isElevatorAtHome())
+    // {
+    //     m_elevatorEncoderA->SetPosition(0.0);
+    //     m_elevatorEncoderB->SetPosition(0.0);
+    //     m_elevatorHomePosition = m_elevatorHomePosition;
+    // }
+
+    // TESTING - switch between cone and cube
+    // if (m_operatorJoystick->GetRightBumper()) {
+    //     m_isCone = m_isCone ? false : true;
+    //     std::cout << "set m_isCone: " << m_isCone << std::endl;
+    // }
+
+    m_isCone = true;
+
+    // TESTING - simple stow elevator (for testing purposes)
+    if (m_operatorJoystick->GetAButton()) 
+    {
+        stowElevator();
+    }      
+
     // Set zero position (temporary for testing)
     if(m_operatorJoystick->GetStartButton())
     {
@@ -141,6 +164,8 @@ void Elevator::Initialize()
     #endif
 
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
+    // safety - do not move elevator when enabled without controller input
+    m_elevatorFunction = Elevator_Off;
 }
 
 // This method will be called once per scheduler run when in simulation
@@ -198,7 +223,7 @@ void Elevator::runElevator()
     else 
     {
         // Get the target command
-        if(m_operatorJoystick->GetAButton()) 
+        if(m_operatorJoystick->GetYButtonPressed()) 
         {
             if(m_isCone) 
             {
@@ -208,7 +233,9 @@ void Elevator::runElevator()
             {
                 setTopCubeTarget();
             }
-        } else if(m_operatorJoystick->GetBButton()) 
+            m_elevatorFunction = Elevator_Deploy;
+        } 
+        else if(m_operatorJoystick->GetXButtonPressed()) 
         {
             if(m_isCone) 
             {
@@ -219,7 +246,7 @@ void Elevator::runElevator()
                 setMidCubeTarget();
             }
         } 
-        else if(m_operatorJoystick->GetXButton()) 
+        else if(m_operatorJoystick->GetBButtonPressed()) 
         {
             setHumanStationTarget();
         } 
@@ -317,21 +344,21 @@ void Elevator::runEndEffector()
     {
         closeGrabber();
     }
+
+    if(0.5 < m_operatorJoystick->GetRightTriggerAxis())
+    {
+        moveEndEffector(true);
+    }
+    else
+    {
+        moveEndEffector(false);
+    }
 }
 
 bool Elevator::moveToCurrentTarget()
 {
-    double speedCmd = 0.0;
-    bool retVal = false;
-
-    double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-
-    #ifdef _TESTELEVATOR
-    // std::cout << "PIDOut: " << pidOut << std::endl;
-    #endif
-
-    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
-    if(k_delta <= delta)
+    m_elevatorFunction = Elevator_Off;
+    if(m_operatorJoystick->GetAButton())
     {
         speedCmd = pidOut;
     }

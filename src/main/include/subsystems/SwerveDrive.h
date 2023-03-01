@@ -62,8 +62,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
-        double m_leftPodOffsetAngle = 102.0;
-        double m_rightPodOffsetAngle = -45.0;
+        double m_leftPodOffsetAngle = 278.0;
+        double m_rightPodOffsetAngle = 134.0;
         double m_pointPodOffsetAngle = 172.0;
         double leftOffset;
         double rightOffset;
@@ -72,6 +72,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_lockedLeftAngle = 135.0; // 45 
         double m_lockedRightAngle = 225.0; // 315
         double m_lockedPointAngle = 90.0; // 0
+
+        bool m_allAligned = false;
 
     public:
 
@@ -85,6 +87,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         void Periodic() override;
         void SimulationPeriodic() override;
 
+        double GetMotorTemperature(int pod, int motor);
+
         void DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement);
 
         /**
@@ -96,11 +100,11 @@ class SwerveDrive: public frc2::SubsystemBase {
          * Function that takes inputs from the joysticks and transforms
          * the inputs into states (speed, angle) that individual swerve modules will utilize
          * 
-         * @param foward joystick input from left x-axis (LX)
-         * @param strafe joystick input from left y-axis (LY)
+         * @param move joystick input from left y-axis (LY)
+         * @param strafe joystick input from left x-axis (LX)
          * @param rotation joystick input from right x-axis (RX)
         */
-        void DrivePods(double forward, double strafe, double rotation);
+        void DrivePods(double move, double strafe, double rotation);
 
         /**
          * Function that orients the swerve drive into opposing angles for a "locked" position
@@ -129,6 +133,9 @@ class SwerveDrive: public frc2::SubsystemBase {
         */
         double GetPodCurrent(int pod, bool motor);
 
+        // pigeon gyro getters
+        double GetRobotPitch();
+        double GetRobotRoll();
         double GetRobotYaw();
 
         void SetLeftPodOffsetAngle(double offsetAngle);

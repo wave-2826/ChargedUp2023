@@ -29,15 +29,26 @@ SwerveDrive::SwerveDrive()
     m_pigeon = new ctre::phoenix::sensors::Pigeon2(k_pigeonID, k_canbus);
 
     // All swerve module motors
-    // B = bottom , A = top
+    // A = bottom , B = top
     m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
     m_rightBottomMotor = new CANSparkMax(k_swerveRightBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
-    // B = bottom , A = top
+    // A = bottom , B = top
     m_leftTopMotor = new CANSparkMax(k_swerveLeftTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
     m_leftBottomMotor = new CANSparkMax(k_swerveLeftBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
     // right = bottom , left = top
     m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
+
+    // TESTING: Voltage Compensation
+    // m_rightTopMotor->EnableVoltageCompensation(10.0);
+    // m_rightBottomMotor->EnableVoltageCompensation(10.0);
+    // m_leftTopMotor->EnableVoltageCompensation(10.0);
+    // m_leftBottomMotor->EnableVoltageCompensation(10.0);
+    // m_pointTopMotor->EnableVoltageCompensation(10.0);
+    // m_pointBottomMotor->EnableVoltageCompensation(10.0);
+
+    // TESTING: motor temperatures
+    // m_pointTopMotor->GetMotorTemperature();
 
     // explicitly set all motors to coast
     m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
@@ -84,14 +95,12 @@ void SwerveDrive::Initialize()
 // Put code here to be run every loop
 void SwerveDrive::Periodic() 
 {
-    // TESTING Pigeon 2.0 
-    #ifdef _TESTPIGEON
+    // // TESTING Pigeon 2.0 
+    // #ifdef _TESTPIGEON
     // std::cout << "yaw: " << m_pigeon->GetYaw() << 
     //     "   pitch: " << m_pigeon->GetPitch() <<
     //     "   roll: " << m_pigeon->GetRoll() << std::endl;
-    // m_pigeon->GetRawGyro(m_gyroHeadings);
-    // std::cout << "x: " << m_gyroHeadings[0] << "    y: " << m_gyroHeadings[1] << "    z: " << m_gyroHeadings[2] << std::endl;
-    #endif
+    // #endif
 }
 
 void SwerveDrive::SimulationPeriodic() 
@@ -99,7 +108,48 @@ void SwerveDrive::SimulationPeriodic()
     // This method will be called once per scheduler run when in simulation
 }
 
-double SwerveDrive::GetRobotYaw() {
+double SwerveDrive::GetMotorTemperature(int pod, int motor)
+{
+    switch(pod) {
+        case RIGHT_POD:
+            if (motor == TOP_MOTOR) {
+                return m_rightTopMotor->GetMotorTemperature();
+            } else {
+                return m_rightBottomMotor->GetMotorTemperature();
+            }
+            break;
+        case LEFT_POD:
+            if (motor == TOP_MOTOR) {
+                return m_leftTopMotor->GetMotorTemperature();
+            } else {
+                return m_leftBottomMotor->GetMotorTemperature();
+            }
+            break;
+        case POINT_POD:
+            if (motor == TOP_MOTOR) {
+                return m_pointTopMotor->GetMotorTemperature();
+            } else {
+                return m_pointBottomMotor->GetMotorTemperature();
+            }
+            break;
+        default:
+            return 0.0;
+    }
+    return 0.0;
+}
+
+double SwerveDrive::GetRobotPitch()
+{
+    return m_pigeon->GetPitch();
+}
+
+double SwerveDrive::GetRobotRoll()
+{
+    return m_pigeon->GetRoll();
+}
+
+double SwerveDrive::GetRobotYaw() 
+{
     return m_pigeon->GetYaw();
 }
 
@@ -167,7 +217,7 @@ void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
     m_pointPodOffsetAngle = offsetAngle;
 }
 
-void SwerveDrive::DrivePods(double forward, double strafe, double rotation) 
+void SwerveDrive::DrivePods(double move, double strafe, double rotation) 
 {
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
@@ -175,17 +225,30 @@ void SwerveDrive::DrivePods(double forward, double strafe, double rotation)
     // represents the velocity of the robot chassis
     // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
     // foward (LX) is considered the POINT
-    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(forward*transform),
-        (units::velocity::meters_per_second_t)(-strafe*transform),
-        (units::angular_velocity::radians_per_second_t)(-2*rotation*transform)};
+    frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)((1.35)*move*transform),
+        (units::velocity::meters_per_second_t)((-1.35)*strafe*transform),
+        (units::angular_velocity::radians_per_second_t)((-4.5)*rotation*transform)};
+    // frc::ChassisSpeeds speeds{(units::velocity::meters_per_second_t)(move*transform),
+    //     (units::velocity::meters_per_second_t)(-strafe*transform),
+    //     (units::angular_velocity::radians_per_second_t)((-2)*rotation*transform)};
     
     // returns each pods state (speed, angle)
     // Desired state -- velocity of wheel in RPM, angle in degrees
     auto [right, left, point] = m_kinematics->ToSwerveModuleStates(speeds);
 
-    m_rightPod->Drive(right);
-    m_leftPod->Drive(left);
-    m_pointPod->Drive(point);
+    // TESTING SWERVE POD ALL ALIGNED ORCHESTRATION
+    // bool rightAligned = m_rightPod->Drive(right, m_allAligned);
+    // bool leftAligned = m_leftPod->Drive(left, m_allAligned);
+    // bool pointAligned = m_pointPod->Drive(point, m_allAligned);
+    m_rightPod->Drive(right, true);
+    m_leftPod->Drive(left, true);
+    m_pointPod->Drive(point, true);
+    
+    // m_allAligned = rightAligned && leftAligned && pointAligned;
+    
+    // std::cout << "RIGHT POD ALIGNED: " << rightAligned<< std::endl;
+    // std::cout << "LEFT POD ALIGNED:  " << leftAligned << std::endl;
+    // std::cout << "POINT POD ALIGNED: " << pointAligned << std::endl;
 
     // Runs pod drives and prints out each pod's current
     // if (m_rightPod->Drive(right) || m_leftPod->Drive(left) || m_pointPod->Drive(point)) {
