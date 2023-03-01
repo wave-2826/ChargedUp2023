@@ -129,7 +129,19 @@ void Robot::TeleopPeriodic()
     double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.5);
     double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
     double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
+    int dPadValue = m_container->getDriver()->GetPOV();
+    
+    // TESTING FOR SWERVE ANGLE OFFSETS
+    // if (dPadValue == 0)
+    // {
+    //   m_container->m_swerveDrive.DrivePods(0.0, 0.5, 0.0);
+    // }else if (dPadValue == 180)
+    // {
+    //   m_container->m_swerveDrive.DrivePods(0.0, -0.5, 0.0);
+    // }else
+    // {
     m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+    // }
     m_container->SetPreviousJoystickInputLX(currentJoystickLX);
     m_container->SetPreviousJoystickInputLY(currentJoystickLY);
     m_container->SetPreviousJoystickInputRX(currentJoystickRX);
@@ -148,45 +160,45 @@ void Robot::TeleopPeriodic()
     }
     
     // Swerve Diagnostics State
-    // bool testRightPod = m_container->getDriver()->GetBButton();
-    // bool testLeftPod = m_container->getDriver()->GetXButton();
-    // bool testPointPod = m_container->getDriver()->GetAButton();
-    // int testMotor = m_container->getDriver()->GetPOV();
-    // if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
-    // {
-    //   std::string podInput;
-    //   std::string motorInput; 
-    //   podInput = testRightPod ? "RIGHT" : podInput;
-    //   podInput = testLeftPod ? "LEFT" : podInput;
-    //   podInput = testPointPod ? "POINT" : podInput;
-    //   motorInput = testMotor == 0 ? "TOP" : motorInput; 
-    //   motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
+    bool testRightPod = m_container->getDriver()->GetBButton();
+    bool testLeftPod = m_container->getDriver()->GetXButton();
+    bool testPointPod = m_container->getDriver()->GetAButton();
+    int testMotor = m_container->getDriver()->GetPOV();
+    if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
+    {
+      std::string podInput;
+      std::string motorInput; 
+      podInput = testRightPod ? "RIGHT" : podInput;
+      podInput = testLeftPod ? "LEFT" : podInput;
+      podInput = testPointPod ? "POINT" : podInput;
+      motorInput = testMotor == 0 ? "TOP" : motorInput; 
+      motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
 
-    //   // set motors for testing
-    //   m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, m_diagnosticSpeed);
-    // }
+      // set motors for testing
+      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, m_diagnosticSpeed);
+    }
   } else {
     m_container->m_swerveDrive.LockSwerve();
   }
 
   // set swerve test harness motor speed
-  // int testMotorSpeed = m_container->getDriver()->GetPOV();
-  // if (testMotorSpeed == 90 || testMotorSpeed == 270) {
-  //     if (!m_dPadLastFrame) {
-  //       if (testMotorSpeed == 90 && m_diagnosticSpeed < 1.0) {
-  //         m_diagnosticSpeed += 0.1;
-  //       }else if (testMotorSpeed == 270 && m_diagnosticSpeed > 0.0) {
-  //         m_diagnosticSpeed -= 0.1;
-  //       }
-  //       if (m_diagnosticSpeed < 0.0)
-  //         m_diagnosticSpeed = 0.0;
-  //       else if (m_diagnosticSpeed > 1.0)
-  //         m_diagnosticSpeed = 1.0;
-  //     }
-  //     m_dPadLastFrame = true;
-  //   }else {
-  //     m_dPadLastFrame = false;
-  //   }
+  int testMotorSpeed = m_container->getDriver()->GetPOV();
+  if (testMotorSpeed == 90 || testMotorSpeed == 270) {
+      if (!m_dPadLastFrame) {
+        if (testMotorSpeed == 90 && m_diagnosticSpeed < 1.0) {
+          m_diagnosticSpeed += 0.1;
+        }else if (testMotorSpeed == 270 && m_diagnosticSpeed > 0.0) {
+          m_diagnosticSpeed -= 0.1;
+        }
+        if (m_diagnosticSpeed < 0.0)
+          m_diagnosticSpeed = 0.0;
+        else if (m_diagnosticSpeed > 1.0)
+          m_diagnosticSpeed = 1.0;
+      }
+      m_dPadLastFrame = true;
+    }else {
+      m_dPadLastFrame = false;
+    }
   
   // Elevator Operations
   m_container->m_elevator.runElevator();

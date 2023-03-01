@@ -1,21 +1,27 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling DriveHeading.cpp successful.
-
 compiling SwerveInitializeCommand.cpp successful.
+
+compiling DriveHeading.cpp successful.
 
 compiling DriveTimed.cpp successful.
 
 compiling AutoBalance.cpp successful.
 
-compiling ScoreMidConeWithBalance.cpp successful.
-
-compiling Elevator.cpp successful.
-
 compiling ScoreTopConeWithBalance.cpp successful.
 
+compiling ScoreMidConeWithBalance.cpp successful.
+
 compiling Robot.cpp successful.
+C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp: In member function 'virtual void Robot::TeleopPeriodic()':
+C:\Wave2826\ChargedUp2023\src\main\cpp\Robot.cpp:132:9: warning: unused variable 'dPadValue' [-Wunused-variable]
+  132 |     int dPadValue = m_container->getDriver()->GetPOV();
+      |         ^~~~~~~~~
+
+compiling SwervePod.cpp successful.
 
 compiling RobotContainer.cpp successful.
+
+compiling Elevator.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 
