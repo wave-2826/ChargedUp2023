@@ -190,15 +190,17 @@ bool SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
             double divisor;
             if (GetIsReversed())
             {
-                stationKeepTop = (1.0 - angle_delta * normalizer);
-                stationKeepBottom = (1.0 + angle_delta * normalizer);
+                stationKeepTop = (1.0 - 1.2 * angle_delta * normalizer);
+                stationKeepBottom = (1.0 + 1.2 * angle_delta * normalizer);
+                // stationKeepTop = (1.0 - angle_delta * normalizer);
+                // stationKeepBottom = (1.0 + angle_delta * normalizer);
             }
             else
             {            
-                // stationKeepTop = (1 + tunedAngleDelta * normalizer);
-                // stationKeepBottom = (1 - tunedAngleDelta * normalizer);
-                stationKeepTop = (1.0 + angle_delta * normalizer);
-                stationKeepBottom = (1.0 - angle_delta * normalizer);
+                stationKeepTop = (1.0 + 1.2 * angle_delta * normalizer);                
+                stationKeepBottom = (1.0 - 1.2 * angle_delta * normalizer);
+                // stationKeepTop = (1.0 + angle_delta * normalizer);                
+                // stationKeepBottom = (1.0 - angle_delta * normalizer);
             }
             if (fabs(stationKeepTop) > fabs(stationKeepBottom))
             {
@@ -281,12 +283,21 @@ bool SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
     }
 
     // speed safety - ensure not commanding more than 100% motor speed
-    topMotorSpeed = std::clamp(topMotorSpeed, -1.0, 1.0);
-    bottomMotorSpeed = std::clamp(bottomMotorSpeed, -1.0, 1.0);
+    // topMotorSpeed = std::clamp(topMotorSpeed, -1.0, 1.0);
+    // bottomMotorSpeed = std::clamp(bottomMotorSpeed, -1.0, 1.0);
 
-    // assign motor speeds
+    // SCALE motor speeds
+    double scaledTopMotorSpeed = LinearInterpolate(GetPreviousTopMotorSpeed(), topMotorSpeed, 0.3);
+    double scaledBottomMotorSpeed = LinearInterpolate(GetPreviousBottomMotorSpeed(), bottomMotorSpeed, 0.3);
+    m_topMotor->Set(scaledTopMotorSpeed);
+    m_bottomMotor->Set(scaledBottomMotorSpeed);
+    SetPreviousTopMotorSpeed(scaledTopMotorSpeed);
+    SetPreviousBottomMotorSpeed(scaledBottomMotorSpeed);
+
+    // assign motor speeds - NO SCALING
     m_topMotor->Set(topMotorSpeed);
     m_bottomMotor->Set(bottomMotorSpeed);
+    // std::cout << "CASE: " << swerveCase << "         T: " << target_angle << " C: " << current_angle <<  std::endl;
 
     return std::strcmp(swerveCase.c_str(), "ALIGNED") == 0;
 
@@ -307,7 +318,7 @@ bool SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
         // std::cout << "reversed? " << GetIsReversed() << std::endl; 
 
         // ANGLES
-        // std::cout << "CASE: " << swerveCase << "         T: " << target_angle << " C: " << current_angle <<  std::endl;
+        std::cout << "CASE: " << swerveCase << "         T: " << target_angle << " C: " << current_angle <<  std::endl;
         // std::cout << m_podName << " current angle: " << current_angle << std::endl;
         // std::cout << "target angle: " << target_angle << std::endl << std::endl;
         // std::cout << m_podName << " offset: " << m_offsetAngle << std::endl;
@@ -416,4 +427,45 @@ bool SwervePod::InitialState()
     m_topMotor->Set(topMotorSpeed);
     m_bottomMotor->Set(bottomMotorSpeed);
     return false;
+}
+
+    // MOTOR SCALING FUNCTIONS
+    double SwervePod::GetPreviousTopMotorSpeed()
+    {
+        return m_previousTopMotorSpeed;
+    }
+    void SwervePod::SetPreviousTopMotorSpeed(double input)
+    {
+        m_previousTopMotorSpeed = input;
+    }
+    double SwervePod::GetPreviousBottomMotorSpeed()
+    {
+        return m_previousBottomMotorSpeed;
+    }
+    void SwervePod::SetPreviousBottomMotorSpeed(double input)
+    {
+        m_previousBottomMotorSpeed = input;
+    }
+
+    double SwervePod::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) 
+{
+    double newSpeed = currentSpeed;
+    // current speed is less than target speed
+    if (currentSpeed < targetSpeed)
+    {
+        newSpeed = currentSpeed + std::fabs(targetSpeed - currentSpeed) * movePercentage;
+        // newSpeed = speed + std::pow(std::fabs(targetSpeed - speed), 2);
+    }
+    // current speed is greater than target speed
+    else if (currentSpeed > targetSpeed)
+    {
+        newSpeed = currentSpeed - std::fabs(targetSpeed - currentSpeed) * movePercentage;
+        // newSpeed = speed - std::pow(std::fabs(targetSpeed - speed), 2);
+    }
+    // adding a buffer between newSpeed and targetSpeed
+    if (std::fabs(targetSpeed - newSpeed) < 0.01f) {
+        newSpeed = targetSpeed;
+    }
+    // prevent newSpeed from going outside of physical boundaries
+    return std::clamp(newSpeed, -1.0, 1.0);
 }

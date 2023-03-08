@@ -16,20 +16,20 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
 #include "subsystems/Elevator.h"
-#include "frc2/command/SequentialCommandGroup.h"
 #include "frc2/command/ParallelCommandGroup.h"
+#include <frc2/command/SequentialCommandGroup.h>
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-// class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
-SequentialScoreMidCone>{
+class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
+// class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
+SequentialScoreTopCone>{
 public:
 
-    explicit SequentialScoreMidCone(Elevator* m_elevator);
+    explicit SequentialScoreTopCone(Elevator* m_elevator);
 
     bool RunsWhenDisabled() const override;
 
@@ -37,4 +37,3 @@ private:
 
     Elevator* m_elevator;
 };
-

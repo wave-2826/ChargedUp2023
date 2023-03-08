@@ -46,6 +46,9 @@ class SwervePod {
         // variable for testing printouts
         int m_counter;
 
+        double m_previousTopMotorSpeed;
+        double m_previousBottomMotorSpeed;
+
     public:
     
         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double turnTuningFactor, double offsetAngle, int encoderChannel);
@@ -105,4 +108,11 @@ class SwervePod {
         void UpdateOffsetAngle();
         void Periodic(); 
         void SimulationPeriodic();
+
+        // joystick input smoothing functions
+        double LinearInterpolate(double speed, double targetSpeed, double movePercentage);
+        double GetPreviousTopMotorSpeed();
+        void SetPreviousTopMotorSpeed(double input);
+        double GetPreviousBottomMotorSpeed();
+        void SetPreviousBottomMotorSpeed(double input);
 };

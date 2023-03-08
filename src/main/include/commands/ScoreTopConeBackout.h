@@ -15,26 +15,27 @@
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
+
 #include "subsystems/Elevator.h"
-#include "frc2/command/SequentialCommandGroup.h"
-#include "frc2/command/ParallelCommandGroup.h"
+#include "subsystems/SwerveDrive.h"
+
+#include <frc2/command/SequentialCommandGroup.h>
 
 /**
  *
  *
  * @author ExampleAuthor
  */
-class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-// class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
-SequentialScoreMidCone>{
+class ScoreTopConeBackout: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
+ScoreTopConeBackout>{
 public:
 
-    explicit SequentialScoreMidCone(Elevator* m_elevator);
+    explicit ScoreTopConeBackout(Elevator* m_elevator, SwerveDrive* m_drive);
 
     bool RunsWhenDisabled() const override;
 
 private:
 
     Elevator* m_elevator;
+    SwerveDrive* m_drive;
 };
-

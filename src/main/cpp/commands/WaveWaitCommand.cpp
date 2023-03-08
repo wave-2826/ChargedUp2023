@@ -11,8 +11,10 @@
 // ROBOTBUILDER TYPE: Command.
 
 #include "commands/WaveWaitCommand.h"
+#include "frc2/command/WaitCommand.h"
+#include <iostream>
 
-WaveWaitCommand::WaveWaitCommand(units::second_t timeout) : WaitCommand(timeout) {
+WaveWaitCommand::WaveWaitCommand(units::second_t timeout): WaitCommand(timeout) {
 
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
@@ -22,7 +24,7 @@ WaveWaitCommand::WaveWaitCommand(units::second_t timeout) : WaitCommand(timeout)
 
 // Called just before this Command runs the first time
 void WaveWaitCommand::Initialize() {
-    WaitCommand::Initialize();
+    
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -37,6 +39,7 @@ bool WaveWaitCommand::IsFinished() {
 
 // Called once after isFinished returns true
 void WaveWaitCommand::End(bool interrupted) {
+    std::cout << "Wave Wait" << std::endl;
     WaitCommand::End(interrupted);
 }
 

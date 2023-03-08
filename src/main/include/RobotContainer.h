@@ -30,6 +30,11 @@
 #include "commands/SequentialScoreMidCone.h"
 #include "commands/ScoreTopConeWithBalance.h"
 #include "commands/ScoreMidConeWithBalance.h"
+#include "commands/AutoBalance.h"
+#include "commands/StowElevator.h"
+#include "commands/EndEffectorDown.h"
+#include "commands/EndEffectorUp.h"
+#include "commands/OpenGrabber.h"
 
 class RobotContainer {
 
@@ -72,6 +77,9 @@ private:
 
     // the chooser for the autonoumous routines
     frc::SendableChooser<frc2::Command*> m_chooser;
+
+    // THIS IS EXTREMELY EXPERIMENTAL, I AM LITERALLY IN DULUTH MINNESOTA
+    // frc::SendableChooser<frc2::Command*> m_customCommandChoosers[5];
 
     AutonomousCommand m_autonomousCommand;
     static RobotContainer* m_robotContainer;

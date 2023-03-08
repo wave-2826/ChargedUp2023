@@ -24,8 +24,8 @@ void Robot::RobotInit() {
   m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0);
 
   // Get the USB camera from CameraServer
-  cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
-  camera.SetResolution(640,480);
+  // cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
+  // camera.SetResolution(640,480);
 }
 
 /**
@@ -87,7 +87,10 @@ void Robot::AutonomousInit() {
   }
 }
 
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+  //spaghetti
+  m_container->m_elevator.moveGrabber();
+}
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when
@@ -126,12 +129,12 @@ void Robot::TeleopPeriodic()
     // m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
 
     // joystick inputs for swerve - scaling / ramp speed
-    double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.5);
+    double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
     double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
     double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
-    int dPadValue = m_container->getDriver()->GetPOV();
     
     // TESTING FOR SWERVE ANGLE OFFSETS
+    // int dPadValue = m_container->getDriver()->GetPOV();
     // if (dPadValue == 0)
     // {
     //   m_container->m_swerveDrive.DrivePods(0.0, 0.5, 0.0);
