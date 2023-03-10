@@ -48,6 +48,30 @@ void Robot::RobotPeriodic()
   m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
   m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
 
+  // SET p_PID values from the dashboard
+  double pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 1.0);
+  double pRight = frc::SmartDashboard::GetNumber("Right p_PID", 1.0);
+  double pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 1.0);
+  m_container->m_swerveDrive.SetLeftPodPPID(pLeft);
+  m_container->m_swerveDrive.SetRightPodPPID(pRight);
+  m_container->m_swerveDrive.SetPointPodPPID(pPoint);
+
+  // SET motor scaling values from the dashboard
+  double leftScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.01);
+  double rightScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.01);
+  double pointScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", 0.01);
+  m_container->m_swerveDrive.SetLeftPodPPID(leftScaling);
+  m_container->m_swerveDrive.SetRightPodPPID(rightScaling);
+  m_container->m_swerveDrive.SetPointPodPPID(pointScaling);
+
+  // SET aligned angle values from the dashboard
+  double leftAligned = frc::SmartDashboard::GetNumber("Left Aligned Angle", 404.0);
+  double rightAligned = frc::SmartDashboard::GetNumber("Right Aligned Angle", 404.0);
+  double pointAligned = frc::SmartDashboard::GetNumber("Point Aligned Angle", 404.0);
+  m_container->m_swerveDrive.SetLeftPodPPID(leftAligned);
+  m_container->m_swerveDrive.SetRightPodPPID(rightAligned);
+  m_container->m_swerveDrive.SetPointPodPPID(pointAligned);
+
   // SmartDashboard Swerve Drive Motor Temperatures + indicators
   frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
   frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
@@ -115,10 +139,16 @@ void Robot::TeleopPeriodic()
 {  
   // updates pod angle offsets (on dashboard)
   m_container->m_swerveDrive.UpdatePodOffsetAngles();
+  // updates pod p_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodPPID();
+  // updates pod motor scaling vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodMotorScaling();
+  // updates pod aligned angles vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodAlignedAngle();
 
   // Drive Operations
-  double targetJoystickLX =  Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
-  double targetJoystickLY =  Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
+  double targetJoystickLX = Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
+  double targetJoystickLY = Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
 
   // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
@@ -126,13 +156,13 @@ void Robot::TeleopPeriodic()
   if (!lockSwerve) {
     // joystick inputs for swerve - NO scaling / ramp
     // std::cout << "SWERVE DRIVE NO SCALING - drive pods" << std::endl;
-    // m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
 
     // joystick inputs for swerve - scaling / ramp speed
-    double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
-    double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
-    double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
-    
+    // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
+    // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
+    // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
+
     // TESTING FOR SWERVE ANGLE OFFSETS
     // int dPadValue = m_container->getDriver()->GetPOV();
     // if (dPadValue == 0)
@@ -143,11 +173,12 @@ void Robot::TeleopPeriodic()
     //   m_container->m_swerveDrive.DrivePods(0.0, -0.5, 0.0);
     // }else
     // {
-    m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+    // m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
+    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
     // }
-    m_container->SetPreviousJoystickInputLX(currentJoystickLX);
-    m_container->SetPreviousJoystickInputLY(currentJoystickLY);
-    m_container->SetPreviousJoystickInputRX(currentJoystickRX);
+    // m_container->SetPreviousJoystickInputLX(currentJoystickLX);
+    // m_container->SetPreviousJoystickInputLY(currentJoystickLY);
+    // m_container->SetPreviousJoystickInputRX(currentJoystickRX);
 
     // #ifdef _TESTJOYSTICK
     // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
@@ -205,6 +236,11 @@ void Robot::TeleopPeriodic()
   
   // Elevator Operations
   m_container->m_elevator.runElevator();
+
+  frc::SmartDashboard::PutString("Right Pod Case", m_container->m_swerveDrive.GetRightPodCase());
+  frc::SmartDashboard::PutString("Left Pod Case", m_container->m_swerveDrive.GetLeftPodCase());
+  frc::SmartDashboard::PutString("Point Pod Case", m_container->m_swerveDrive.GetPointPodCase());
+  // frc::SmartDashboard::UpdateValues();
 }
 
 /**

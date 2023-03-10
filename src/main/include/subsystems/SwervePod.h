@@ -21,6 +21,8 @@ class SwervePod {
         rev::SparkMaxRelativeEncoder *m_topEncoder;
         rev::SparkMaxRelativeEncoder *m_bottomEncoder;
 
+        std::string m_currentCase;
+
         // The motor that drives the top gear.
         rev::CANSparkMax *m_topMotor;
 
@@ -34,8 +36,12 @@ class SwervePod {
         static constexpr const double kI = 0.0;
         static constexpr const double kD = 0.0;
 
+        // swerve tuning variables 
+        double m_p;
+        double m_alignedAngle;
+        double m_motorScaling;
         // Angles are measured counter-clockwise, with zero being "robot forward"
-        double m_offsetAngle; 
+        double m_offsetAngle;         
 
         bool m_isReversed = false;       
         int m_encoderChannel;
@@ -51,7 +57,7 @@ class SwervePod {
 
     public:
     
-        SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double turnTuningFactor, double offsetAngle, int encoderChannel);
+        SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
 
         // Initialize this module with the details provided by the robot-specific subclass.
         void Initialize(); 
@@ -64,7 +70,9 @@ class SwervePod {
          * @param allAligned the boolean stating if all 3 pods are aligned,
          * if they are, pods can drive forward
          **/
-        bool Drive(frc::SwerveModuleState state, bool allAligned);
+        void Drive(frc::SwerveModuleState state, bool allAligned);
+
+        std::string GetCurrentCase();
 
         /**
          * Function to orientate swerve pod to a "locked" position
@@ -105,7 +113,12 @@ class SwervePod {
          **/ 
         void FlipIsReversed(bool state);
 
+        // Swerve Dashboard Live Update Functions
         void UpdateOffsetAngle();
+        void UpdatePPID();
+        void UpdateMotorScaling();
+        void UpdateAlignedAngle();
+
         void Periodic(); 
         void SimulationPeriodic();
 
