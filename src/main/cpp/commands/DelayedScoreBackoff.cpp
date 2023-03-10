@@ -10,7 +10,7 @@
 
 // ROBOTBUILDER TYPE: SequentialCommandGroup.
 
-#include "commands/SequentialScoreMidCone.h"
+#include "commands/DelayedScoreBackoff.h"
 #include "commands/ExtendElevatorMidCone.h"
 #include "commands/EndEffectorDown.h"
 #include "commands/OpenGrabber.h"
@@ -18,37 +18,25 @@
 #include "commands/StowElevator.h"
 #include "commands/ScoreBackoff.h"
 #include "commands/EndEffectorUp.h"
-// #include "commands/ExtendElevatorBackoff.h"
-#include "commands/DelayedScoreBackoff.h"
-// #include "frc2/command/SequentialCommandGroup.h"
+#include "commands/ExtendElevatorBackoff.h"
 // #include "frc2/command/ParallelCommandGroup.h"
 
-SequentialScoreMidCone::SequentialScoreMidCone(Elevator* m_elevator)
+DelayedScoreBackoff::DelayedScoreBackoff(Elevator* m_elevator)
 :m_elevator(m_elevator)
 {
-    SetName("SequentialScoreMidCone");
+    SetName("DelayedScoreBackoff");
     AddRequirements({m_elevator});
 
     AddCommands(
         frc2::SequentialCommandGroup
         (
-            // place cone (mid)
-            ExtendElevatorMidCone(m_elevator),
-            EndEffectorDown(m_elevator),
-            OpenGrabber(m_elevator),
-            // pause 2 sec
-            // WaveWaitCommand(units::second_t(2.0)),
-            //retract 5 inches
-            // ScoreBackoff(m_elevator),
-
-            // stow sequence
-            EndEffectorUp(m_elevator),
-            StowElevator(m_elevator)
+            WaveWaitCommand(units::second_t(2.0)),
+            ExtendElevatorBackoff(m_elevator)            
         )
     );
 }
 
-bool SequentialScoreMidCone::RunsWhenDisabled() const 
+bool DelayedScoreBackoff::RunsWhenDisabled() const 
 {
     return false;
 }

@@ -27,31 +27,38 @@ Elevator::Elevator()
     m_elevatorMotorA->SetInverted(true);
     m_elevatorMotorB->SetInverted(true);
     m_endEffectorMotor->SetInverted(true);
-    
+    m_elevatorMotorA->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_elevatorMotorB->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
+    m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
+
+    m_compressor = new frc::Compressor(k_pneumaticHub, frc::PneumaticsModuleType::REVPH);
+    m_pneumaticHub.EnableCompressorAnalog(units::pressure::pounds_per_square_inch_t(90), 
+                                          units::pressure::pounds_per_square_inch_t(110));
+
     m_elevatorPID = new frc2::PIDController(k_P, k_I, k_D);
 
     m_elevatorFunction = Elevator_Off;
-    m_elevatorEncoderA = new rev::SparkMaxRelativeEncoder(m_elevatorMotorA->GetEncoder());
-    if(NULL != m_elevatorEncoderA) 
-    {
-        m_elevatorEncoderA->SetPositionConversionFactor(k_encoderPosConversionFactor);
-    }
-
-    m_elevatorEncoderB = new rev::SparkMaxRelativeEncoder(m_elevatorMotorB->GetEncoder());
-    if(NULL != m_elevatorEncoderB) 
-    {
-        m_elevatorEncoderB->SetPositionConversionFactor(k_encoderPosConversionFactor); 
-    }
-
     m_elevatorPosition = 0.0;
     m_elevatorHomePosition = 0.0;
     m_elevatorTarget = 0.0;
     m_isStowing = false;
-
     m_targetSet = false;
 
     // May or may not use this
-    m_distancePerRotation = (k_numOfTeeth * k_teethSize)/k_gearRatio;
+    m_distancePerRotation = (k_numOfTeeth * k_teethSize) /k_gearRatio;
+}
+
+void Elevator::setCustomTarget(double target)
+{
+    m_elevatorTarget = target;
+    m_targetSet = true;
+}
+
+void Elevator::setBackoffTarget()
+{
+    m_elevatorTarget = k_elevatorTargetBackoff;
+    m_targetSet = true;
 }
 
 void Elevator::setTopConeTarget()
@@ -92,10 +99,10 @@ void Elevator::resetTarget()
 
 bool Elevator::isElevatorAtHome() 
 {
-    if(m_elevatorAtHomeLimitSwitch.Get()) 
-    {
-        return true;
-    }
+    // if(m_elevatorAtHomeLimitSwitch.Get()) 
+    // {
+    //     return true;
+    // }
 
     return false;
 }
@@ -108,10 +115,28 @@ double Elevator::getElevatorPosition()
     return (m_distancePerRotation * numOfRotationA);
 }
 
+// TESTING
 void Elevator::setElevator(double speed) 
 {
+    bool overrideLimit = m_operatorJoystick->GetRightBumper();
+
+    if(!overrideLimit)
+    {
+        if (m_elevatorPosition >= k_maxElevatorPosition) {
+            // CASE: at max height - only allow retracting elevator
+            speed = speed > 0 ? 0 : speed;
+        } else if (m_elevatorPosition <= 0) {
+            // CASE: at min height - only allow extending elevator
+            speed = speed < 0 ? 0 : speed;
+        }
+    }
+
     m_elevatorMotorA->Set(speed);
-    m_elevatorMotorB->Set(speed);    
+    m_elevatorMotorB->Set(speed);
+
+    // std::cout << "ElevPosition: " << m_elevatorPosition << "    ElevSpeed: " << speed << "   Cone? " << m_isCone << std::endl;
+    std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   State: " << m_elevatorFunction << std::endl;
+
 }
 
 // Put code here to be run every loop
@@ -137,34 +162,44 @@ void Elevator::Periodic()
     if (m_operatorJoystick->GetAButton()) 
     {
         stowElevator();
-    }      
+    }
+
+    // TESTING - testing pnuematics (d-pad UP)
+    if (m_operatorJoystick->GetPOV() == 0) 
+    {
+        moveEndEffector(true);
+    } 
+
+    // TESTING - testing pnuematics (d-pad DOWN)
+    if (m_operatorJoystick->GetPOV() == 180) 
+    {
+        setGrabber(true);
+    }       
 
     // Set zero position (temporary for testing)
     if(m_operatorJoystick->GetStartButton())
     {
         m_elevatorEncoderA->SetPosition(0.0);
         m_elevatorEncoderB->SetPosition(0.0);
-    }
-    // Set scoring object (shall be based on the sensor)
-    if(m_operatorJoystick->GetBackButton())
-    {
-        // Toggle state (for testing)
-        m_isCone = !m_isCone;
+        // TESTING - manually set target to 0 when resetting position
+        m_elevatorTarget = 0.0;
     }
 
-    runElevator();
+    // Move grabber
+    moveGrabber();
 
-    runEndEffector();
-}
+    // Testing compressor
+    // bool status = m_compressor->Enabled();
+    // units::pressure::pounds_per_square_inch_t press = m_compressor->GetPressure();
+    // std::cout << "Comp Status: " << status << "  Comp Press: " << press << std::endl;
+}    
 
 void Elevator::Initialize() 
 {
-    #ifdef _DEBUGME
-    // std::cout << "Elevator Initialized" << std::endl;
-    #endif
-
+    setGrabber(false);
+    m_elevatorEncoderA->SetPosition(0.0);
+    m_elevatorEncoderB->SetPosition(0.0);
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
-    // safety - do not move elevator when enabled without controller input
     m_elevatorFunction = Elevator_Off;
 }
 
@@ -195,35 +230,25 @@ void Elevator::runElevator()
     //////////////  Routine ELEVATOR FUNCTIONS  /////////////////////
     double elevatorSpeedCmd = 0.0;
     bool elevatorOverride = m_operatorJoystick->GetLeftBumper();
-
-    m_elevatorPosition = getElevatorPosition();
-    if(isElevatorAtHome())
-    {
-        m_elevatorHomePosition = m_elevatorHomePosition;
-    }
+    
 
     if(elevatorOverride) 
     {
         // Manual operation
         m_elevatorFunction = Elevator_Off;
-        m_elevatorTarget = 0.0;
+        m_elevatorStowState = Stow_Off;
         elevatorSpeedCmd = m_operatorJoystick->GetRightY();
         if(k_jsDeadband > std::fabs(elevatorSpeedCmd))
         {
             elevatorSpeedCmd = 0.0;
         }
-        
-        setElevator(elevatorSpeedCmd);
 
-        #ifdef _TESTELEVATOR
-        // std::cout << "Manual Operation" << std::endl;
-        // std::cout << "ElevPosition: " << m_elevatorPosition << ";  ElevCmd: " << elevatorSpeedCmd << std::endl;
-        #endif
+        setElevator(-0.45 * elevatorSpeedCmd);
     } 
     else 
     {
         // Get the target command
-        if(m_operatorJoystick->GetYButtonPressed()) 
+        if(m_operatorJoystick->GetYButton()) 
         {
             if(m_isCone) 
             {
@@ -235,7 +260,7 @@ void Elevator::runElevator()
             }
             m_elevatorFunction = Elevator_Deploy;
         } 
-        else if(m_operatorJoystick->GetXButtonPressed()) 
+        else if(m_operatorJoystick->GetXButton()) 
         {
             if(m_isCone) 
             {
@@ -245,13 +270,13 @@ void Elevator::runElevator()
             {
                 setMidCubeTarget();
             }
+            m_elevatorFunction = Elevator_Deploy;
         } 
-        else if(m_operatorJoystick->GetBButtonPressed()) 
+        else if(m_operatorJoystick->GetBButton()) 
         {
             setHumanStationTarget();
+            m_elevatorFunction = Elevator_Deploy;
         } 
-
-        m_elevatorFunction = Elevator_Deploy;
 
         // Set the elevator function based on Joystick command
         switch(m_elevatorFunction) 
@@ -263,11 +288,94 @@ void Elevator::runElevator()
             case Elevator_Deploy:
                 if(moveToCurrentTarget())
                 {
-                    m_elevatorFunction = Elevator_Off;
+                    m_elevatorFunction = Elevator_Hold;
                 }
+                break;
+            case Elevator_Hold:
+                setElevator(k_elevatorHoldSpeed);
                 break;
         }
     }
+    
+    // endEffector operation
+    runEndEffector();
+}
+
+bool Elevator::moveToCurrentTarget()
+{
+    double speedCmd = 0.0;
+    bool retVal = false;
+    static double lastSpeedCmd = 0.0;
+
+    double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
+
+    double delta = std::fabs(m_elevatorTarget - m_elevatorPosition);
+    if(k_delta < delta)
+    {
+        if(pidOut > 0.0)
+        {
+            if (lastSpeedCmd < 0.0)
+                lastSpeedCmd = 0.0;
+
+            if(lastSpeedCmd < pidOut)
+            {
+                lastSpeedCmd += k_rampPerLoop;
+            }
+        }
+        else if(pidOut < 0.0)
+        {
+            if (lastSpeedCmd > 0.0)
+                lastSpeedCmd = 0.0;
+
+            if(lastSpeedCmd > pidOut)
+            {
+                lastSpeedCmd -= k_rampPerLoop * 1.2;
+            }
+        }
+        speedCmd = lastSpeedCmd;
+    }
+    else
+    {
+        lastSpeedCmd = 0.0;
+        retVal = true;
+    }
+
+    setElevator(speedCmd);
+
+    return retVal;
+}
+
+
+bool Elevator::moveElevatorToTargetManual(double target)
+{
+    bool retVal = false;
+    double speedCmd = 0.0;
+    const double k_manualElevatorCmd = 0.075; 
+    double delta = std::fabs(target - m_elevatorPosition);
+
+    if(k_delta < delta)
+    {
+        // Move the Elevator
+        if(target > m_elevatorPosition)
+        {
+            // Need to extend the elevator
+            speedCmd = k_manualElevatorCmd;
+        }
+        else if(target < m_elevatorPosition)
+        {
+            // Need to retract the elevator
+            speedCmd = -k_manualElevatorCmd * 1.2;
+        }
+    }
+    else
+    {
+        // Target reached
+        retVal = true;
+    }
+
+    setElevator(speedCmd);
+
+    return retVal;
 }
 
 //////////////// endEffector operation ////////////////////
@@ -279,31 +387,33 @@ void Elevator::setEndEffectorRoller(double speed)
 
 void Elevator::moveEndEffector(bool down)
 {
-    m_endEffectorOut.Set(down);
+    m_endEffectorSolenoid.Set(down);
 }
 
-void Elevator::closeGrabber()
+// Normally closed (true = closed)
+void Elevator::setGrabber(bool open)
 {
-    m_endEffectorGrabberOut.Set(false);
+    m_grabberClosed = open;
+    // m_endEffectorGrabberSolenoid.Set(close);
 }
 
-void Elevator::openGrabber()
-{
-    m_endEffectorGrabberOut.Set(true);
+void Elevator::moveGrabber() {
+    m_endEffectorGrabberSolenoid.Set(m_grabberClosed);
 }
 
 void Elevator::runEndEffector() 
 {
-    int endEffectorCmd = m_operatorJoystick->GetPOV(0);
+    int endEffectorCmd = m_operatorJoystick->GetPOV();
     switch(m_endEffectorFunction)    
     {
         case EF_Up:
         default:
             // EndEffectorUp, turn off the output
+            // std::cout << "end effector - UP" << std::endl;
             moveEndEffector(false);
 
             // EndEffector can go down only if the Elevator is above Human Station level
-            if((0 == endEffectorCmd) && (k_elevatorHumanStation < m_elevatorPosition))
+            if((180 == endEffectorCmd) && (k_elevatorHumanStation < m_elevatorPosition))
             {
                 m_endEffectorFunction = EF_Down;
             }
@@ -311,17 +421,18 @@ void Elevator::runEndEffector()
         case EF_Down:
             // EndEffector Down, turn on the output
             moveEndEffector(true);
+            // std::cout << "end effector - DOWN" << std::endl;
 
-            if((180 == endEffectorCmd) || (k_elevatorHumanStation > m_elevatorPosition))
+            if((0 == endEffectorCmd) || (k_elevatorHumanStation > m_elevatorPosition))
             {
                 m_endEffectorFunction = EF_Up;
             }
             break;
     }
 
-    #ifdef _TESTELEVATOR
+    // #ifdef _TESTELEVATOR
     // std::cout << "EFCmd: " << endEffectorCmd << "; Function: " << m_endEffectorFunction << std::endl;
-    #endif
+    // #endif
 
     /////////////// End Effector Operation ///////////////////
 
@@ -336,42 +447,95 @@ void Elevator::runEndEffector()
  
     ///////////////////// End Effector Grabber Operations ///////////////////////
 
-    if(0.5 < m_operatorJoystick->GetLeftTriggerAxis())
-    {
-        openGrabber();
-    }
-    else
-    {
-        closeGrabber();
+    if (m_operatorJoystick->GetRightTriggerAxis() > 0.5) {
+        setGrabber(true);
+    }else {
+        // bool detected = m_detectConeLimitSwitch.Get();
+        // if (detected) {
+        //     std::cout << "cone detected";
+        //     MoveGrabber(true);
+        // }else {
+        //     std::cout << "no cone";
+        //     MoveGrabber(false);
+        // }
+        // std::cout << " " << detected << std::endl;
+        setGrabber(false);
     }
 
-    if(0.5 < m_operatorJoystick->GetRightTriggerAxis())
-    {
-        moveEndEffector(true);
-    }
-    else
-    {
-        moveEndEffector(false);
-    }
+    moveEndEffector(m_operatorJoystick->GetLeftTriggerAxis() > 0.5);
 }
 
-bool Elevator::moveToCurrentTarget()
+
+//////////////////  STOW ELEVATOR  /////////////////////////////////
+bool Elevator::stowElevator()
 {
     m_elevatorFunction = Elevator_Off;
     if(m_operatorJoystick->GetAButton())
     {
-        speedCmd = pidOut;
+        return (moveElevatorToTargetManual(m_elevatorHomePosition));
     }
     else
     {
-        retVal = true;
+        return true;
+    }
+
+
+    // switch (m_elevatorStowState)
+    // {
+    //     case Stow_Off:
+    //         // Set target to Elevator Home Position
+    //         m_elevatorTarget = m_elevatorHomePosition;
+    //         moveEndEffector(false);
+    //         m_elevatorStowState = Stow_EndEffectorUp;
+    //         break;
+    //     case Stow_EndEffectorUp:
+    //         break;
+    //     case Stow_RetractElevator:
+    //         break;
+    //     case Stow_Finish:
+    //         break;    
+    //     default:
+    //      break;
+    // }
+
+    // return stowed;
+}
+
+bool Elevator::stowElevatorAuto()
+{
+    // return (moveElevatorToTargetManual(m_elevatorHomePosition));
+    double target = moveElevatorToTargetManual(m_elevatorHomePosition);
+
+    double speedCmd = 0.0;
+    const double k_manualElevatorCmd = 0.075; 
+    double delta = std::fabs(target - m_elevatorPosition);
+
+    if(delta > k_delta)
+    {
+        // Move the Elevator
+        if(target > m_elevatorPosition)
+        {
+            // Need to extend the elevator
+            speedCmd = k_manualElevatorCmd;
+        }
+        else if(target < m_elevatorPosition)
+        {
+            // Need to retract the elevator
+            speedCmd = -k_manualElevatorCmd;
+        }
+    }
+    else
+    {
+        return true;
     }
 
     setElevator(speedCmd);
 
-    #ifdef _TESTELEVATOR
-    // std::cout << "ElevPosition: " << m_elevatorPosition << "; Target: " << m_elevatorTarget << ";  ElevCmd: " << speedCmd << std::endl;
-    #endif
+    return false;
 
-    return retVal;
+}
+
+bool Elevator::backoffElevatorAuto()
+{
+    return moveElevatorToTargetManual(k_elevatorTargetBackoff);
 }

@@ -12,6 +12,7 @@
 
 #include "commands/DriveTimed.h"
 #include "commands/WaveWaitCommand.h"
+#include <iostream>
 
 DriveTimed::DriveTimed(SwerveDrive* swerveDrive, double inputLX, double inputLY, double inputRX, units::second_t timeout)
                       : WaitCommand(timeout), m_swerveDrive(swerveDrive), m_inputLX(inputLX),
@@ -27,6 +28,7 @@ DriveTimed::DriveTimed(SwerveDrive* swerveDrive, double inputLX, double inputLY,
 // Called just before this Command runs the first time
 void DriveTimed::Initialize() {
     WaitCommand::Initialize();
+    m_swerveDrive->InitialSwerve();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -42,6 +44,7 @@ void DriveTimed::Execute() {
 
 // Called once after isFinished returns true
 void DriveTimed::End(bool interrupted) {
+    std::cout << "Drive Timed" << std::endl;
     WaitCommand::End(interrupted);
     m_swerveDrive->DrivePods(0, 0, 0);
 }

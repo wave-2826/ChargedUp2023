@@ -8,33 +8,33 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-// ROBOTBUILDER TYPE: SequentialCommandGroup.
-
+// ROBOTBUILDER TYPE: Command.
 
 #pragma once
 
+
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
+
 #include "subsystems/Elevator.h"
-#include "frc2/command/SequentialCommandGroup.h"
-#include "frc2/command/ParallelCommandGroup.h"
+
 
 /**
  *
  *
- * @author ExampleAuthor
+ * @author Wave2826 
  */
-class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-// class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
-SequentialScoreMidCone>{
+class CloseGrabber: public frc2::CommandHelper<frc2::CommandBase, CloseGrabber> {
 public:
+    explicit CloseGrabber(Elevator* m_elevator);
 
-    explicit SequentialScoreMidCone(Elevator* m_elevator);
-
+    void Initialize() override;
+    void Execute() override;
+    bool IsFinished() override;
+    void End(bool interrupted) override;
     bool RunsWhenDisabled() const override;
 
-private:
 
+private:
     Elevator* m_elevator;
 };
-

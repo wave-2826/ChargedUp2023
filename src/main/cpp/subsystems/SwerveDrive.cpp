@@ -40,15 +40,12 @@ SwerveDrive::SwerveDrive()
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
     // TESTING: Voltage Compensation
-    // m_rightTopMotor->EnableVoltageCompensation(10.0);
-    // m_rightBottomMotor->EnableVoltageCompensation(10.0);
-    // m_leftTopMotor->EnableVoltageCompensation(10.0);
-    // m_leftBottomMotor->EnableVoltageCompensation(10.0);
-    // m_pointTopMotor->EnableVoltageCompensation(10.0);
-    // m_pointBottomMotor->EnableVoltageCompensation(10.0);
-
-    // TESTING: motor temperatures
-    // m_pointTopMotor->GetMotorTemperature();
+    m_rightTopMotor->EnableVoltageCompensation(10.0);
+    m_rightBottomMotor->EnableVoltageCompensation(10.0);
+    m_leftTopMotor->EnableVoltageCompensation(10.0);
+    m_leftBottomMotor->EnableVoltageCompensation(10.0);
+    m_pointTopMotor->EnableVoltageCompensation(10.0);
+    m_pointBottomMotor->EnableVoltageCompensation(10.0);
 
     // explicitly set all motors to coast
     m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
@@ -222,6 +219,7 @@ void SwerveDrive::DrivePods(double move, double strafe, double rotation)
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
 
+ 
     // represents the velocity of the robot chassis
     // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
     // foward (LX) is considered the POINT

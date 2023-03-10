@@ -11,13 +11,16 @@
 // ROBOTBUILDER TYPE: SequentialCommandGroup.
 
 #include "commands/ScoreMidConeWithBalance.h"
-#include "commands/ExtendElevatorMidCone.h"
-#include "commands/EndEffectorDown.h"
-#include "commands/OpenGrabber.h"
+// #include "commands/ExtendElevatorMidCone.h"
+// #include "commands/EndEffectorDown.h"
+// #include "commands/OpenGrabber.h"
 #include "commands/WaveWaitCommand.h"
-#include "commands/StowElevator.h"
+// #include "commands/StowElevator.h"
 #include "commands/AutoBalance.h"
+// #include "commands/ScoreBackoff.h"
+// #include "commands/EndEffectorUp.h"
 #include "frc2/command/SequentialCommandGroup.h"
+#include "commands/SequentialScoreMidCone.h"
 
 ScoreMidConeWithBalance::ScoreMidConeWithBalance(Elevator* m_elevator, SwerveDrive* m_drive)
 :m_elevator(m_elevator), m_drive(m_drive)
@@ -28,12 +31,20 @@ ScoreMidConeWithBalance::ScoreMidConeWithBalance(Elevator* m_elevator, SwerveDri
     AddCommands(
         frc2::SequentialCommandGroup
         (
-            ExtendElevatorMidCone(m_elevator),
-            EndEffectorDown(m_elevator),
-            OpenGrabber(m_elevator),
+            // ExtendElevatorMidCone(m_elevator),
+            // EndEffectorDown(m_elevator),
+            // OpenGrabber(m_elevator),
+            // WaveWaitCommand(units::second_t(1.0)),
+            // StowElevator(m_elevator),
+            // WaveWaitCommand(units::second_t(1.0)),
+            // ScoreBackoff(m_elevator),
+            // EndEffectorUp(m_elevator),
+
+            // score cone (mid)
+            SequentialScoreMidCone(m_elevator),
+            // pause 1 sec
             WaveWaitCommand(units::second_t(1.0)),
-            StowElevator(m_elevator),
-            WaveWaitCommand(units::second_t(1.0)),
+            // balance
             AutoBalance(m_drive)
         )
     );

@@ -62,9 +62,9 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
-        double m_leftPodOffsetAngle = 278.0;
-        double m_rightPodOffsetAngle = 134.0;
-        double m_pointPodOffsetAngle = 172.0;
+        double m_leftPodOffsetAngle = 274.0;
+        double m_rightPodOffsetAngle = 138.0;
+        double m_pointPodOffsetAngle = 1.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
