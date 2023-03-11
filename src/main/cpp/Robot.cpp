@@ -56,6 +56,14 @@ void Robot::RobotPeriodic()
   m_container->m_swerveDrive.SetRightPodPPID(pRight);
   m_container->m_swerveDrive.SetPointPodPPID(pPoint);
 
+  // SET d_PID values from the dashboard
+  double dLeft = frc::SmartDashboard::GetNumber("Left d_PID", 0.0);
+  double dRight = frc::SmartDashboard::GetNumber("Right d_PID", 0.0);
+  double dPoint = frc::SmartDashboard::GetNumber("Point d_PID", 0.0);
+  m_container->m_swerveDrive.SetLeftPodDPID(dLeft);
+  m_container->m_swerveDrive.SetRightPodDPID(dRight);
+  m_container->m_swerveDrive.SetPointPodDPID(dPoint);
+
   // SET motor scaling values from the dashboard
   double leftScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.01);
   double rightScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.01);
@@ -141,98 +149,89 @@ void Robot::TeleopPeriodic()
   m_container->m_swerveDrive.UpdatePodOffsetAngles();
   // updates pod p_PID vals (on dashboard)
   m_container->m_swerveDrive.UpdatePodPPID();
+  // updates pod d_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodDPID();
   // updates pod motor scaling vals (on dashboard)
   m_container->m_swerveDrive.UpdatePodMotorScaling();
   // updates pod aligned angles vals (on dashboard)
   m_container->m_swerveDrive.UpdatePodAlignedAngle();
 
-  // Drive Operations
+  // Controller Inputs - Driver Operations
   double targetJoystickLX = Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double targetJoystickLY = Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
-
-  // std::cout << "LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
+  // Initial Swerve State
+  bool initialSwerveState = m_container->getDriver()->GetStartButton();
+  // Lock Swerve State
   bool lockSwerve = m_container->getDriver()->GetYButton();
-  if (!lockSwerve) {
-    // joystick inputs for swerve - NO scaling / ramp
-    // std::cout << "SWERVE DRIVE NO SCALING - drive pods" << std::endl;
-    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+  // Swerve Diagnostics State
+  bool testRightPod = m_container->getDriver()->GetBButton();
+  bool testLeftPod = m_container->getDriver()->GetXButton();
+  bool testPointPod = m_container->getDriver()->GetAButton();
+  int dPadValue = m_container->getDriver()->GetPOV();
+  std::string driveCase = "NONE";
 
-    // joystick inputs for swerve - scaling / ramp speed
-    // double currentJoystickLX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLX(), targetJoystickLX, 0.1);
-    // double currentJoystickLY = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.5);
-    // double currentJoystickRX = m_container->LinearInterpolate(m_container->GetPreviousJoystickInputRX(), targetJoystickRX, 0.5);
-
-    // TESTING FOR SWERVE ANGLE OFFSETS
-    // int dPadValue = m_container->getDriver()->GetPOV();
-    // if (dPadValue == 0)
-    // {
-    //   m_container->m_swerveDrive.DrivePods(0.0, 0.5, 0.0);
-    // }else if (dPadValue == 180)
-    // {
-    //   m_container->m_swerveDrive.DrivePods(0.0, -0.5, 0.0);
-    // }else
-    // {
-    // m_container->m_swerveDrive.DrivePods(currentJoystickLX, currentJoystickLY, currentJoystickRX);
-    m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
-    // }
-    // m_container->SetPreviousJoystickInputLX(currentJoystickLX);
-    // m_container->SetPreviousJoystickInputLY(currentJoystickLY);
-    // m_container->SetPreviousJoystickInputRX(currentJoystickRX);
-
-    // #ifdef _TESTJOYSTICK
-    // std::cout << "LX: " << currentJoystickLX << "     " << "LY: " << currentJoystickLY << "     " << "RX: " << currentJoystickRX << std::endl;
-    // std::cout << "LY: " << targetJoystickLY << 
-    //   "   scaled: " << m_container->LinearInterpolate(m_container->GetPreviousJoystickInputLY(), targetJoystickLY, 0.001) << 
-    //   "   prev: " << m_container->GetPreviousJoystickInputLY() << std::endl;
-    // #endif
-
-    // Initial Swerve State
-    bool initialSwerveState = m_container->getDriver()->GetStartButton();
-    if (initialSwerveState) {
+  if (!lockSwerve) 
+  {
+    if (
+      std::fabs(targetJoystickLX) > k_jsDeadband || std::fabs(targetJoystickLY) > k_jsDeadband || std::fabs(targetJoystickRX) > k_jsDeadband) 
+    {
+      // joystick inputs for swerve - NO scaling / ramp
+      driveCase = "Drive No Scaling";
+      m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+    }
+    else if (initialSwerveState) 
+    {
+      // Initial Swerve State
+      driveCase = "Initial state";
       m_container->m_swerveDrive.InitialSwerve();
     }
-    
-    // Swerve Diagnostics State
-    bool testRightPod = m_container->getDriver()->GetBButton();
-    bool testLeftPod = m_container->getDriver()->GetXButton();
-    bool testPointPod = m_container->getDriver()->GetAButton();
-    int testMotor = m_container->getDriver()->GetPOV();
-    if ((testRightPod || testLeftPod || testPointPod) && (testMotor == 0 || testMotor == 180))
+    else if ((testRightPod || testLeftPod || testPointPod) && (dPadValue == 0 || dPadValue == 180))
     {
+      driveCase = "Pod diagnostic";
       std::string podInput;
       std::string motorInput; 
       podInput = testRightPod ? "RIGHT" : podInput;
       podInput = testLeftPod ? "LEFT" : podInput;
       podInput = testPointPod ? "POINT" : podInput;
-      motorInput = testMotor == 0 ? "TOP" : motorInput; 
-      motorInput = testMotor == 180 ? "BOTTOM" : motorInput;
+      motorInput = dPadValue == 0 ? "TOP" : motorInput; 
+      motorInput = dPadValue == 180 ? "BOTTOM" : motorInput;
 
       // set motors for testing
-      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, m_diagnosticSpeed);
+      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.6);
+    } else if ((!testRightPod && !testLeftPod && !testPointPod) && (dPadValue == 0 || dPadValue == 90 || dPadValue == 180 || dPadValue == 270)) {
+      // TESTING FOR SWERVE ANGLE OFFSETS
+      driveCase = "dpad offset testing";
+      if (dPadValue == 0)
+      {
+        // forward
+        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0);
+      } else if (dPadValue == 180)
+      {
+        // backward
+        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0);
+      } else if (dPadValue == 90) {
+        // right
+        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0);
+      } else if (dPadValue == 270) {
+        // left
+        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0);
+      }
     }
-  } else {
+    else {
+      driveCase = "STOPPED";
+      m_container->m_swerveDrive.DrivePods(0,0,0);
+    }
+
+  } 
+  else 
+  {
+    // lock swerve state
+    driveCase = "lock state";
     m_container->m_swerveDrive.LockSwerve();
   }
-
-  // set swerve test harness motor speed
-  int testMotorSpeed = m_container->getDriver()->GetPOV();
-  if (testMotorSpeed == 90 || testMotorSpeed == 270) {
-      if (!m_dPadLastFrame) {
-        if (testMotorSpeed == 90 && m_diagnosticSpeed < 1.0) {
-          m_diagnosticSpeed += 0.1;
-        }else if (testMotorSpeed == 270 && m_diagnosticSpeed > 0.0) {
-          m_diagnosticSpeed -= 0.1;
-        }
-        if (m_diagnosticSpeed < 0.0)
-          m_diagnosticSpeed = 0.0;
-        else if (m_diagnosticSpeed > 1.0)
-          m_diagnosticSpeed = 1.0;
-      }
-      m_dPadLastFrame = true;
-    }else {
-      m_dPadLastFrame = false;
-    }
+  // std::cout << "CASE: " << driveCase << "  LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
+  
   
   // Elevator Operations
   m_container->m_elevator.runElevator();

@@ -38,10 +38,16 @@ class SwervePod {
 
         // swerve tuning variables 
         double m_p;
+        double m_d;
         double m_alignedAngle;
         double m_motorScaling;
         // Angles are measured counter-clockwise, with zero being "robot forward"
-        double m_offsetAngle;         
+        double m_offsetAngle;
+
+        // track previous angle
+        double m_previousAngle = 0;
+        // track delta d_pid
+        double m_deltaD = 0;
 
         bool m_isReversed = false;       
         int m_encoderChannel;
@@ -116,8 +122,16 @@ class SwervePod {
         // Swerve Dashboard Live Update Functions
         void UpdateOffsetAngle();
         void UpdatePPID();
+        void UpdateDPID();
         void UpdateMotorScaling();
         void UpdateAlignedAngle();
+
+        // Track Position of Module
+        double GetPreviousAngle();
+        void SetPreviousAngle(double angle);
+        // Track delta D
+        double GetDeltaD();
+        void SetDeltaD(double delta);
 
         void Periodic(); 
         void SimulationPeriodic();

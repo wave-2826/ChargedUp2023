@@ -181,6 +181,14 @@ void SwerveDrive::UpdatePodPPID()
     m_pointPod->UpdatePPID();
 }
 
+void SwerveDrive::UpdatePodDPID()
+{
+    // UPDATE pod d_PID vals
+    m_leftPod->UpdateDPID();
+    m_rightPod->UpdateDPID();
+    m_pointPod->UpdateDPID();
+}
+
 void SwerveDrive::UpdatePodMotorScaling()
 {
     // UPDATE pod motor scaling vals
@@ -273,6 +281,32 @@ void SwerveDrive::SetRightPodPPID(double p)
 void SwerveDrive::SetPointPodPPID(double p)
 {
     m_pPoint = p;
+}
+
+// d_PID getters & setters
+double SwerveDrive::GetLeftPodDPID()
+{
+    return m_dLeft;
+}
+double SwerveDrive::GetRightPodDPID()
+{
+    return m_dRight;
+}
+double SwerveDrive::GetPointPodDPID()
+{
+    return m_dPoint;
+}
+void SwerveDrive::SetLeftPodDPID(double d)
+{
+    m_dLeft = d;
+}
+void SwerveDrive::SetRightPodDPID(double d)
+{
+    m_dRight = d;
+}
+void SwerveDrive::SetPointPodDPID(double d)
+{
+    m_dPoint = d;
 }
 
 // motor scaling getters & setters

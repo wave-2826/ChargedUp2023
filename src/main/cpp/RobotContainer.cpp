@@ -38,6 +38,11 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Right p_PID", m_swerveDrive.GetRightPodPPID());
     frc::SmartDashboard::PutNumber("Point p_PID", m_swerveDrive.GetPointPodPPID());
 
+    // Smartdashboard Swerve Drive d_PID
+    frc::SmartDashboard::PutNumber("Left d_PID", m_swerveDrive.GetLeftPodDPID());
+    frc::SmartDashboard::PutNumber("Right d_PID", m_swerveDrive.GetRightPodDPID());
+    frc::SmartDashboard::PutNumber("Point d_PID", m_swerveDrive.GetPointPodDPID());
+
     // Smartdashboard Swerve Drive Motor Scaling
     frc::SmartDashboard::PutNumber("Left Motor Scaling", m_swerveDrive.GetLeftPodMotorScaling());
     frc::SmartDashboard::PutNumber("Right Motor Scaling", m_swerveDrive.GetRightPodMotorScaling());

@@ -79,6 +79,14 @@ class SwerveDrive: public frc2::SubsystemBase {
         double pRight;
         double pPoint;
 
+        // Swerve smartdashboard inputs - d_PID
+        double m_dLeft = 0.0;
+        double m_dRight = 0.0;
+        double m_dPoint = 0.0;
+        double dLeft;
+        double dRight;
+        double dPoint;
+
         // Swerve smartdashboard inputs - scale top & bottom motor speeds
         double m_leftPodScaling = 0.3;
         double m_rightPodScaling = 0.3;
@@ -155,6 +163,15 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SetPointPodPPID(double p);
         // Function that updates a pod p_PID value based on input from the smartdashboard
         void UpdatePodPPID();
+
+        double GetLeftPodDPID();
+        double GetRightPodDPID();
+        double GetPointPodDPID();
+        void SetLeftPodDPID(double d);
+        void SetRightPodDPID(double d);
+        void SetPointPodDPID(double d);
+        // Function that updates a pod d_PID value based on input from the smartdashboard
+        void UpdatePodDPID();
 
         double GetLeftPodMotorScaling();
         double GetRightPodMotorScaling();
