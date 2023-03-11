@@ -11,6 +11,7 @@
 // ROBOTBUILDER TYPE: Subsystem.
 #pragma once
 
+#include <iostream>
 #include <frc2/command/SubsystemBase.h>
 #include "ctre/Phoenix.h"
 #include <frc/Encoder.h>
@@ -62,12 +63,45 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodTopMotorCurrent = 0.0;
         double m_pointPodBottomMotorCurrent = 0.0;
 
+        // Swerve smartdashboard inputs - offsets
         double m_leftPodOffsetAngle = 274.0;
         double m_rightPodOffsetAngle = 138.0;
         double m_pointPodOffsetAngle = 1.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
+
+        // Swerve smartdashboard inputs - p_PID
+        double m_pLeft = 1.2;
+        double m_pRight = 1.2;
+        double m_pPoint = 1.2;
+        double pLeft;
+        double pRight;
+        double pPoint;
+
+        // Swerve smartdashboard inputs - d_PID
+        double m_dLeft = 0.0;
+        double m_dRight = 0.0;
+        double m_dPoint = 0.0;
+        double dLeft;
+        double dRight;
+        double dPoint;
+
+        // Swerve smartdashboard inputs - scale top & bottom motor speeds
+        double m_leftPodScaling = 0.3;
+        double m_rightPodScaling = 0.3;
+        double m_pointPodScaling = 0.3;
+        double leftPodScaling;
+        double rightPodScaling;
+        double pointPodScaling;
+
+        // Swerve smartdashboard inputs - scale top & bottom motor speeds
+        double m_leftPodAlignedAngle = 30.0;
+        double m_rightPodAlignedAngle = 30.0;
+        double m_pointPodAlignedAngle = 30.0;
+        double leftPodAlignedAngle;
+        double rightPodAlignedAngle;
+        double pointPodAlignedAngle;
 
         double m_lockedLeftAngle = 135.0; // 45 
         double m_lockedRightAngle = 225.0; // 315
@@ -92,11 +126,6 @@ class SwerveDrive: public frc2::SubsystemBase {
         void DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement);
 
         /**
-         * Function that updates a pod offset angle based on input from the smartdashboard
-        */
-        void UpdatePodOffsetAngles();
-
-        /**
          * Function that takes inputs from the joysticks and transforms
          * the inputs into states (speed, angle) that individual swerve modules will utilize
          * 
@@ -116,9 +145,55 @@ class SwerveDrive: public frc2::SubsystemBase {
         */
         bool InitialSwerve();
 
+        // Swerve drive smartdashboard functions
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
         double GetPointPodOffsetAngle();
+        void SetLeftPodOffsetAngle(double offsetAngle);
+        void SetRightPodOffsetAngle(double offsetAngle);
+        void SetPointPodOffsetAngle(double offsetAngle);  
+        // Function that updates a pod offset angle based on input from the smartdashboard
+        void UpdatePodOffsetAngles();
+
+        double GetLeftPodPPID();
+        double GetRightPodPPID();
+        double GetPointPodPPID();
+        void SetLeftPodPPID(double p);
+        void SetRightPodPPID(double p);
+        void SetPointPodPPID(double p);
+        // Function that updates a pod p_PID value based on input from the smartdashboard
+        void UpdatePodPPID();
+
+        double GetLeftPodDPID();
+        double GetRightPodDPID();
+        double GetPointPodDPID();
+        void SetLeftPodDPID(double d);
+        void SetRightPodDPID(double d);
+        void SetPointPodDPID(double d);
+        // Function that updates a pod d_PID value based on input from the smartdashboard
+        void UpdatePodDPID();
+
+        double GetLeftPodMotorScaling();
+        double GetRightPodMotorScaling();
+        double GetPointPodMotorScaling();
+        void SetLeftPodMotorScaling(double scalingFactor);
+        void SetRightPodMotorScaling(double scalingFactor);
+        void SetPointPodMotorScaling(double scalingFactor);
+        // Function that updates a pod p_PID value based on input from the smartdashboard
+        void UpdatePodMotorScaling();
+
+        double GetLeftPodAlignedAngle();
+        double GetRightPodAlignedAngle();
+        double GetPointPodAlignedAngle();
+        void SetLeftPodAlignedAngle(double angle);
+        void SetRightPodAlignedAngle(double angle);
+        void SetPointPodAlignedAngle(double angle);
+        // Function that updates a pod p_PID value based on input from the smartdashboard
+        void UpdatePodAlignedAngle();
+
+        std::string GetRightPodCase();
+        std::string GetLeftPodCase();
+        std::string GetPointPodCase();
 
         /**
          * Function that gets the current of a given pod and motor in amps
@@ -137,10 +212,6 @@ class SwerveDrive: public frc2::SubsystemBase {
         double GetRobotPitch();
         double GetRobotRoll();
         double GetRobotYaw();
-
-        void SetLeftPodOffsetAngle(double offsetAngle);
-        void SetRightPodOffsetAngle(double offsetAngle);
-        void SetPointPodOffsetAngle(double offsetAngle);  
 
         void Initialize();
         

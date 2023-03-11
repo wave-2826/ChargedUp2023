@@ -33,6 +33,30 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
 
+    // Smartdashboard Swerve Drive p_PID
+    frc::SmartDashboard::PutNumber("Left p_PID", m_swerveDrive.GetLeftPodPPID());
+    frc::SmartDashboard::PutNumber("Right p_PID", m_swerveDrive.GetRightPodPPID());
+    frc::SmartDashboard::PutNumber("Point p_PID", m_swerveDrive.GetPointPodPPID());
+
+    // Smartdashboard Swerve Drive d_PID
+    frc::SmartDashboard::PutNumber("Left d_PID", m_swerveDrive.GetLeftPodDPID());
+    frc::SmartDashboard::PutNumber("Right d_PID", m_swerveDrive.GetRightPodDPID());
+    frc::SmartDashboard::PutNumber("Point d_PID", m_swerveDrive.GetPointPodDPID());
+
+    // Smartdashboard Swerve Drive Motor Scaling
+    frc::SmartDashboard::PutNumber("Left Motor Scaling", m_swerveDrive.GetLeftPodMotorScaling());
+    frc::SmartDashboard::PutNumber("Right Motor Scaling", m_swerveDrive.GetRightPodMotorScaling());
+    frc::SmartDashboard::PutNumber("Point Motor Scaling", m_swerveDrive.GetPointPodMotorScaling());
+
+    // Smartdashboard Swerve Drive Aligned Angle
+    frc::SmartDashboard::PutNumber("Left Aligned Angle", m_swerveDrive.GetLeftPodAlignedAngle());
+    frc::SmartDashboard::PutNumber("Right Aligned Angle", m_swerveDrive.GetRightPodAlignedAngle());
+    frc::SmartDashboard::PutNumber("Point Aligned Angle", m_swerveDrive.GetPointPodAlignedAngle());
+    
+    frc::SmartDashboard::PutString("Right Pod Case", m_swerveDrive.GetRightPodCase());
+    frc::SmartDashboard::PutString("Left Pod Case", m_swerveDrive.GetLeftPodCase());
+    frc::SmartDashboard::PutString("Point Pod Case", m_swerveDrive.GetPointPodCase());
+
     // SmartDashboard Buttons
     frc::SmartDashboard::PutData("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
     // frc::SmartDashboard::PutData("Extend Elevator Mid Cone", new ExtendElevatorMidCone(&m_elevator));
