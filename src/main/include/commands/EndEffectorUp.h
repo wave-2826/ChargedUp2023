@@ -16,7 +16,7 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
 
-#include "subsystems/Elevator.h"
+#include "subsystems/EndEffector.h"
 
 
 /**
@@ -26,7 +26,7 @@
  */
 class EndEffectorUp: public frc2::CommandHelper<frc2::CommandBase, EndEffectorUp> {
 public:
-    explicit EndEffectorUp(Elevator* m_elevator);
+    explicit EndEffectorUp(EndEffector* endEffector);
 
     void Initialize() override;
     void Execute() override;
@@ -36,6 +36,6 @@ public:
 
 
 private:
-    Elevator* m_elevator;
-    bool m_targetReached = false;
+    EndEffector* m_endEffector;
+    bool m_targetReached;
 };

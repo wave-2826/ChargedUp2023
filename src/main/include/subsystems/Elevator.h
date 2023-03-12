@@ -36,22 +36,6 @@ typedef enum
     Elevator_Hold
 } ElevatorFunction;
 
-// Steps to stow Elevator
-typedef enum
-{
-    Stow_Off,
-    Stow_EndEffectorUp,
-    Stow_RetractElevator,
-    Stow_Finish
-} StowState;
-
-// EndEffector functions
-typedef enum
-{
-    EF_Up,
-    EF_Down
-} EndEffectorFunction;
-
 /**
  * Elevator class shall be used to extend and retract the elevator. 
  * This class will also preform the functions of the EndEffector.
@@ -62,12 +46,6 @@ class Elevator: public frc2::SubsystemBase {
 private:
     // It's desirable that everything possible is private except
     // for methods that implement subsystem capabilities
-
-    // Limit switch to detect the elevator home position
-    // frc::DigitalInput m_elevatorAtHomeLimitSwitch{k_elevatorAtHomeLimitSwitch};
-
-    // IR sensor to detect if a cone is in the grabber
-    frc::DigitalInput m_detectConeLimitSwitch{k_detectConeLimitSwitch};
 
     frc::PneumaticHub m_pneumaticHub{k_pneumaticHub};
     frc::Compressor *m_compressor;
@@ -83,9 +61,6 @@ private:
 
     // Elevator Home position
     double m_elevatorHomePosition;
-
-    // The motor controller for the EndEffector intake motor
-    rev::CANSparkMax *m_endEffectorMotor;
 
     // Motor controller for the elevator
     rev::CANSparkMax *m_elevatorMotorB;
@@ -103,15 +78,8 @@ private:
 
     ElevatorFunction m_elevatorFunction;
 
-    StowState m_elevatorStowState;
-    
-    EndEffectorFunction m_endEffectorFunction;
-
     // Scoring object flag. True when scoring with Cone
     bool m_isCone;
-
-    // Flag for stowing the elevator
-    bool m_isStowing;
 
     bool m_targetSet;
 
@@ -183,15 +151,9 @@ public:
     // Periodic operation for the elevator
     void runElevator();
 
-    // Elevator EndEffector operations.
-    void runEndEffector();
-
     // Get current position of the elevator
-    // Returns 0 if k_maxDelta < (Pos A ~ Pos B), otherwise return Pos A
+    // Returns Pos A
     double getElevatorPosition();
-
-    // Returns true when elevator is at home position
-    bool isElevatorAtHome();
     
     //Set scoring target
     void setCustomTarget(double target);
@@ -203,17 +165,10 @@ public:
     void setHumanStationTarget();
     void resetTarget();
     bool isTargetSet(){ return m_targetSet; }
-    
-    // Activate (open/close) grabber. Normally close (true = closed)
-    void setGrabber(bool open);
-    void moveGrabber();
 
     bool moveToCurrentTarget();
     bool moveElevatorToTargetManual(double target);
-    void moveEndEffector(bool down);
     bool stowElevator();
     bool stowElevatorAuto();
     bool backoffElevatorAuto();
-
-    bool m_grabberClosed = false;
 };

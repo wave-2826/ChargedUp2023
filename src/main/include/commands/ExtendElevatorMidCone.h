@@ -25,7 +25,7 @@
 class ExtendElevatorMidCone: public frc2::CommandHelper<frc2::CommandBase, ExtendElevatorMidCone> 
 {
 public:
-    explicit ExtendElevatorMidCone(Elevator* m_elevator);
+    explicit ExtendElevatorMidCone(Elevator* elevator);
 
     void Initialize() override;
     void Execute() override;

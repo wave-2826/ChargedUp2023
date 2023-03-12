@@ -18,6 +18,7 @@
 
 #include "subsystems/SwerveDrive.h"
 #include "subsystems/Elevator.h"
+#include "subsystems/EndEffector.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Vision.h"
 
@@ -28,8 +29,8 @@
 #include "commands/SwerveInitializeCommand.h"
 #include "commands/SequentialScoreTopCone.h"
 #include "commands/SequentialScoreMidCone.h"
-#include "commands/ScoreTopConeWithBalance.h"
-#include "commands/ScoreMidConeWithBalance.h"
+// #include "commands/ScoreTopConeWithBalance.h"
+// #include "commands/ScoreMidConeWithBalance.h"
 #include "commands/AutoBalance.h"
 #include "commands/StowElevator.h"
 #include "commands/EndEffectorDown.h"
@@ -46,6 +47,7 @@ public:
     // The robot's subsystems
     SwerveDrive m_swerveDrive;
     Elevator m_elevator;
+    EndEffector m_endEffector;
     Intake m_intake;
     Vision m_vision;
 

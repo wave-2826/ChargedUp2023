@@ -24,7 +24,7 @@
  */
 class ExtendElevatorTopCone: public frc2::CommandHelper<frc2::CommandBase, ExtendElevatorTopCone> {
 public:
-    explicit ExtendElevatorTopCone(Elevator* m_elevator);
+    explicit ExtendElevatorTopCone(Elevator* elevator);
 
     void Initialize() override;
     void Execute() override;
