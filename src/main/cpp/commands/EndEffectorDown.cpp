@@ -34,7 +34,7 @@ void EndEffectorDown::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void EndEffectorDown::Execute() 
 {
-    std::cout << "EXECUTE end effector down - WAIT: " << m_waitCommand->IsFinished() << std::endl;
+    // std::cout << "EXECUTE end effector down - WAIT: " << m_waitCommand->IsFinished() << std::endl;
     m_elevator->moveEndEffector(true);
     if (!m_timerSet) {
         m_waitCommand->Initialize();
@@ -48,10 +48,10 @@ void EndEffectorDown::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool EndEffectorDown::IsFinished() 
 {
-    std::cout << "FINISHED - end effector down" << std::endl;
+    // std::cout << "FINISHED - end effector down" << std::endl;
     m_timerSet = false;
     if (m_targetReached) {
-        std::cout << "End Effector Down - TARGET REACHED" << std::endl;
+        // std::cout << "End Effector Down - TARGET REACHED" << std::endl;
     }
     return m_targetReached;
 }
@@ -59,7 +59,7 @@ bool EndEffectorDown::IsFinished()
 // Called once after isFinished returns true
 void EndEffectorDown::End(bool interrupted) 
 {
-    std::cout << "END - End Effector down" << std::endl;
+    // std::cout << "END - End Effector down" << std::endl;
     m_timerSet = false;
     m_targetReached = false;
 }

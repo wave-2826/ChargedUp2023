@@ -43,7 +43,7 @@ bool SwerveInitializeCommand::IsFinished() {
 
 // Called once after isFinished returns true
 void SwerveInitializeCommand::End(bool interrupted) {
-    m_swerveDrive->DrivePods(0, 0, 0);
+    m_swerveDrive->DrivePods(0, 0, 0, nullptr);
 }
 
 bool SwerveInitializeCommand::RunsWhenDisabled() const {

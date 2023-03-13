@@ -46,11 +46,11 @@ void ScoreBackoff::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool ScoreBackoff::IsFinished() {
-    std::cout << "FINISHED - Backoff" << std::endl;
+    // std::cout << "FINISHED - Backoff" << std::endl;
     if(m_targetReached)
     {
         // Top Target reached
-        std::cout << "Backoff" << std::endl;
+        // std::cout << "Backoff" << std::endl;
         return true;
     }
     else
@@ -62,7 +62,7 @@ bool ScoreBackoff::IsFinished() {
 // Called once after isFinished returns true
 void ScoreBackoff::End(bool interrupted) {
     // WaitCommand::End(interrupted);
-    std::cout << "END - Backoff" << std::endl;
+    // std::cout << "END - Backoff" << std::endl;
     m_targetReached = false;    
 }
 

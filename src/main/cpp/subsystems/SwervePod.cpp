@@ -186,16 +186,9 @@ bool SwervePod::GetIsReversed()
     return m_isReversed;
 }
 
-void SwervePod::FlipIsReversed(bool state)
+void SwervePod::FlipIsReversed()
 {
-    if (state == true)
-    {
-        m_isReversed = false;
-    }
-    else
-    {
-        m_isReversed = true;
-    }
+    m_isReversed = !m_isReversed;
 }
 
 std::string SwervePod::GetCurrentCase() {
@@ -227,7 +220,7 @@ void SwervePod::SetDeltaD(double delta)
  * 
  * @param SwerveModuleState state (speed, angle)
 */
-void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
+void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *returnArray)
 {
     // TODO: set max motor speeds
     double topMotorSpeed = 0.0;
@@ -280,7 +273,7 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
     double normalizer = 1 / 180.0;
     std::string swerveCase = "DID NOT ENTER";
 
-    if (fabs(angle_delta) < 30.0)
+    if (fabs(angle_delta) < m_alignedAngle)
     {
         // tuning factor is the P in PID (if we decide to use it)
         // double tunedAngleDelta = angle_delta * turnTuningFactor;
@@ -330,7 +323,7 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
         // check optimal path
         swerveCase = "OPTIMIZE < -90";
 
-        FlipIsReversed(m_isReversed);
+        FlipIsReversed();
         if (!GetIsReversed())
         {
             angle_delta_optimized = (angle_delta - 180.0);
@@ -348,7 +341,7 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
         // check optimal path
         swerveCase = "OPTIMIZE > 90";
 
-        FlipIsReversed(m_isReversed);
+        FlipIsReversed();
         if (!GetIsReversed())
         {
             angle_delta_optimized = (angle_delta - 180.0);
@@ -395,7 +388,12 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned)
     SetPreviousAngle(current_angle);
     m_currentCase = swerveCase;
 
-    std::cout << "m_p: " << m_p << " m_d: " << m_d << " aligned angle: " << m_alignedAngle << " scaling: " << m_motorScaling << std::endl;
+    returnArray[0] = angle_delta;
+    returnArray[1] = target_angle;
+
+    // auto balance test printouts
+    // std::cout << "drive pod - INITIALIZED" << std::endl;
+    // std::cout << m_podName << " -> target: " << target_angle << "  cur: " << current_angle << "  offset: " << m_offsetAngle << std::endl;
 
     // assign motor speeds - NO SCALING
     // m_topMotor->Set(topMotorSpeed);
@@ -503,7 +501,7 @@ bool SwervePod::InitialState()
     double current_angle = m_offsetAngle + ToDegree(m_podEncoder->GetAbsolutePosition());
     
     // conversion from input state speed (rpm) to a motor power % val (0-1)
-    double commanded_speed = 0.75;
+    double commanded_speed = 1.0;
     
     double angle_delta = initialAngle - current_angle;
     if (angle_delta > 180.0)
@@ -533,25 +531,25 @@ bool SwervePod::InitialState()
     return false;
 }
 
-    // MOTOR SCALING FUNCTIONS
-    double SwervePod::GetPreviousTopMotorSpeed()
-    {
-        return m_previousTopMotorSpeed;
-    }
-    void SwervePod::SetPreviousTopMotorSpeed(double input)
-    {
-        m_previousTopMotorSpeed = input;
-    }
-    double SwervePod::GetPreviousBottomMotorSpeed()
-    {
-        return m_previousBottomMotorSpeed;
-    }
-    void SwervePod::SetPreviousBottomMotorSpeed(double input)
-    {
-        m_previousBottomMotorSpeed = input;
-    }
+// MOTOR SCALING FUNCTIONS
+double SwervePod::GetPreviousTopMotorSpeed()
+{
+    return m_previousTopMotorSpeed;
+}
+void SwervePod::SetPreviousTopMotorSpeed(double input)
+{
+    m_previousTopMotorSpeed = input;
+}
+double SwervePod::GetPreviousBottomMotorSpeed()
+{
+    return m_previousBottomMotorSpeed;
+}
+void SwervePod::SetPreviousBottomMotorSpeed(double input)
+{
+    m_previousBottomMotorSpeed = input;
+}
 
-    double SwervePod::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) 
+double SwervePod::LinearInterpolate(double currentSpeed, double targetSpeed, double movePercentage) 
 {
     double newSpeed = currentSpeed;
     // current speed is less than target speed

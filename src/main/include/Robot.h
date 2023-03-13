@@ -14,6 +14,8 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/Command.h>
 #include "RobotContainer.h"
+#include <fstream>
+#include <iostream>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -34,4 +36,7 @@ class Robot : public frc::TimedRobot {
   RobotContainer* m_container = RobotContainer::GetInstance();
   double m_diagnosticSpeed = 0.5;
   bool m_dPadLastFrame = false;
+  // Previous value of GetPOV()
+  int m_dPadValueLastFrame = -1;
+  FILE * fileOut;
 };

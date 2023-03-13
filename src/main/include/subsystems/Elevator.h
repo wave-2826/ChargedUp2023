@@ -134,18 +134,13 @@ private:
     static constexpr const double k_maxElevatorSpeed = 1.0;
     static constexpr const double k_elevatorHoldSpeed = 0.05;
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
-    // static constexpr const double k_P = 0.3;
-    // static constexpr const double k_I = 0.1;
-    // static constexpr const double k_D = 0.0;
-    // static constexpr const double k_delta = 1.5;
-    // static constexpr const double k_rampPerLoop = 0.0005;
 
-    // TESTING VALUES
-    static constexpr const double k_P = 1.0;
-    static constexpr const double k_I = 0.1;
-    static constexpr const double k_D = 0.5;
-    static constexpr const double k_delta = 1.0;
-    static constexpr const double k_rampPerLoop = 0.001;
+    // Tuning PID values
+    double k_P = 4.0;
+    double k_I = 0.0;
+    double k_D = 1.0;
+    double k_delta = 1.0;
+    double k_rampPerLoop = 0.05;
 
 
     static constexpr const double k_numOfTeeth = 36.0;
@@ -155,21 +150,11 @@ private:
     static constexpr const double k_maxElevatorPosition = 56.0; // in inches
     
     // Pre-set elevator scoring position for the elevator
-    static constexpr const double k_elevatorTargetTopCone = 54.5;
-    static constexpr const double k_elevatorTargetBackoff = 45.5;
-    static constexpr const double k_elevatorTargetMiddleCone = 30.5;
-    static constexpr const double k_elevatorTargetTopCube = 46.5;
-    static constexpr const double k_elevatorTargetMiddleCube = 22.5;
-    static constexpr const double k_elevatorHumanStation = 10.25;
-
-    // TESTING: half the max extension to prevent snapping elevator!
-    // static constexpr const double k_maxElevatorPosition = 50.0; // in inches
-    // TESTING VALUES - Pre-set scoring positions for elevator (avoid snapping elevator AGAIN)
-    // static constexpr const double k_elevatorTargetTopCone = 45.5;
-    // static constexpr const double k_elevatorTargetMiddleCone = 30.5;
-    // static constexpr const double k_elevatorTargetTopCube = 22.5;
-    // static constexpr const double k_elevatorTargetMiddleCube = 19.5;
-    // static constexpr const double k_elevatorHumanStation = 10.25;
+    static constexpr const double k_elevatorTargetTopCone = 51.5;
+    static constexpr const double k_elevatorTargetMiddleCone = 31.0;
+    static constexpr const double k_elevatorTargetTopCube = 54.5;
+    static constexpr const double k_elevatorTargetMiddleCube = 36.0;
+    static constexpr const double k_elevatorHumanStation = 34.65;
 
 public:
     Elevator();
@@ -180,11 +165,14 @@ public:
     // Initialize Elevatorobject
     void Initialize();
 
+
     // Periodic operation for the elevator
     void runElevator();
 
     // Elevator EndEffector operations.
     void runEndEffector();
+
+    void updateValues();
 
     // Get current position of the elevator
     // Returns 0 if k_maxDelta < (Pos A ~ Pos B), otherwise return Pos A

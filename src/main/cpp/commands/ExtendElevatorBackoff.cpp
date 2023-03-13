@@ -41,9 +41,9 @@ bool ExtendElevatorBackoff::IsFinished()
 {
     if(m_targetReached)
     {
-        std::cout << "FINISHED - Backoff Target Reached" << std::endl;
+        // std::cout << "FINISHED - Backoff Target Reached" << std::endl;
         // Top Target reached
-        std::cout << "Backoff Target Reached" << std::endl;
+        // std::cout << "Backoff Target Reached" << std::endl;
         return true;
     }
     else
@@ -55,7 +55,7 @@ bool ExtendElevatorBackoff::IsFinished()
 // Called once after isFinished returns true
 void ExtendElevatorBackoff::End(bool interrupted) 
 {
-    std::cout << "END - Backoff Target Reached" << std::endl;
+    // std::cout << "END - Backoff Target Reached" << std::endl;
     m_targetReached = false;
 }
 

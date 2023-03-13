@@ -27,7 +27,7 @@ void StowElevator::Execute()
 bool StowElevator::IsFinished() 
 {
     if (m_targetReached)
-        std::cout << "Elevator Stowed" << std::endl;
+        // std::cout << "Elevator Stowed" << std::endl;
     return m_targetReached;
 }
 

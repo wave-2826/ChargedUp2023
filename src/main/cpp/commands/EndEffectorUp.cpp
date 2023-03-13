@@ -32,7 +32,7 @@ void EndEffectorUp::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool EndEffectorUp::IsFinished() 
 {
-    std::cout << "FINISHED - End Effector Up" << std::endl;
+    // std::cout << "FINISHED - End Effector Up" << std::endl;
     return true;
     // if(m_targetReached)
     // {
@@ -47,7 +47,7 @@ bool EndEffectorUp::IsFinished()
 // Called once after isFinished returns true
 void EndEffectorUp::End(bool interrupted) 
 {
-    std::cout << "END - End Effector Up" << std::endl;
+    // std::cout << "END - End Effector Up" << std::endl;
     m_targetReached = false;
 }
 

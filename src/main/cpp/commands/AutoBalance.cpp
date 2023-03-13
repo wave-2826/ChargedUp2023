@@ -29,54 +29,77 @@ void AutoBalance::Initialize() {
     // WaitCommand::Initialize();
     m_balanceState = Before_Balance;
     m_isBalanced = false;
-    m_swerveDrive->InitialSwerve();
+    while (!m_swerveDrive->InitialSwerve());
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoBalance::Execute() {
     // m_swerveDrive->DrivePods(m_inputLX, m_inputLY, m_inputRX);
 
+    double robotPitch = m_swerveDrive->GetRobotPitch();
+    std::cout << "PITCH: " << robotPitch << std::endl;
+    double averagePitchOld = 0;
+    double averagePitchNew = 0;
+
     switch(m_balanceState) {
         case Before_Balance:
             // CASE: before charging station ramp
             // drive straight            
-            if (m_swerveDrive->GetRobotPitch() < -2.0) {
+            if (robotPitch < -2.0) {
                 m_balanceState = Tilted_Up;
             }
-            m_swerveDrive->DrivePods(0.3, 0, 0);
+            m_swerveDrive->DrivePods(0*m_markiplier, 0.3*m_markiplier, 0*m_markiplier, nullptr);
+            std::cout << "BEFORE BALANCE" << std::endl;
             break;
         case Tilted_Up:
             // CASE: tilted driving up station
-            // pitch is negative - keep driving straight            
-            if (fabs(m_swerveDrive->GetRobotPitch()) <= 2.0) {
-                m_balanceState = Level_Balance;
-            } else if (m_swerveDrive->GetRobotPitch() > 2.0 ) {
-                m_balanceState = Tilted_Down;
+            // pitch is negative - keep driving straight
+            for (int i = 0; i < (int)previousPitches.size(); i++)
+            {
+                if (i < (int)previousPitches.size()/2)
+                    averagePitchOld += previousPitches[i];
+                else
+                    averagePitchNew += previousPitches[i];
             }
-            m_swerveDrive->DrivePods(0.2, 0, 0);
+            averagePitchOld /= (double)previousPitches.size();
+            averagePitchNew /= (double)previousPitches.size();
+            if (averagePitchNew - averagePitchOld > 0.1) {
+                m_balanceState = Level_Balance;
+            }
+            m_swerveDrive->DrivePods(0*m_markiplier, 0.3*m_markiplier, 0*m_markiplier, nullptr);
+            
+            std::cout << "TILTED UP" << std::endl;
+            previousPitches.insert(previousPitches.begin(), robotPitch);
+            if (previousPitches.size() > 10){
+                previousPitches.pop_back();
+            }
             break;
         case Tilted_Down:
             // CASE: tilted driving down station
             // pitch is positive - reverse, reverse!!
-            if (fabs(m_swerveDrive->GetRobotPitch()) <= 2.0) {
+            if (fabs(robotPitch) <= 2.0) {
                 m_balanceState = Level_Balance;
-            } else if (m_swerveDrive->GetRobotPitch() < -2.0) {
+            } else if (robotPitch < -2.0) {
                 m_balanceState = Tilted_Up;
             }
-            m_swerveDrive->DrivePods(-0.2, 0, 0);
+            m_swerveDrive->DrivePods(0*m_markiplier, -0.2*m_markiplier, 0*m_markiplier, nullptr);
+            std::cout << "TILTED DOWN" << std::endl;
             break;
         case Level_Balance:
             // CASE: balanced on station
             // stay put + end auto
-            m_swerveDrive->DrivePods(0, 0, 0);
-            if (m_swerveDrive->GetRobotPitch() < -2.0) {
+            m_swerveDrive->DrivePods(0*m_markiplier, 0*m_markiplier, 0*m_markiplier, nullptr);
+            if (robotPitch < -2.0) {
                 m_balanceState = Tilted_Up;
-            } else if (m_swerveDrive->GetRobotPitch() > 2.0) {
+            } else if (robotPitch > 2.0) {
                 m_balanceState = Tilted_Down;
             } else {
                 m_swerveDrive->LockSwerve();
                 m_isBalanced = true;
             }            
+            std::cout << "LEVEL BALANCE" << std::endl;
+            break;
+        default:
             break;
     }
 }
@@ -85,16 +108,17 @@ void AutoBalance::Execute() {
 bool AutoBalance::IsFinished() {
     // m_swerveDrive->DrivePods(0, 0, 0);
     // return false;
+    std::cout << "IS FINISHED: " << m_isBalanced << std::endl;
     if (m_isBalanced) {
-        return true;
+        m_swerveDrive->DrivePods(0, 0, 0, nullptr);
     }
-    return false;
+    return m_isBalanced;
 }
 
 // Called once after isFinished returns true
 void AutoBalance::End(bool interrupted) {
     // WaitCommand::End(interrupted);
-    m_swerveDrive->DrivePods(0, 0, 0);
+    m_swerveDrive->DrivePods(0, 0, 0, nullptr);
 }
 
 bool AutoBalance::RunsWhenDisabled() const {
