@@ -33,7 +33,7 @@ void DriveTimed::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveTimed::Execute() {
-    m_swerveDrive->DrivePods(m_inputLX, m_inputLY, m_inputRX);
+    m_swerveDrive->DrivePods(m_inputLX, m_inputLY, m_inputRX, nullptr);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -44,9 +44,9 @@ void DriveTimed::Execute() {
 
 // Called once after isFinished returns true
 void DriveTimed::End(bool interrupted) {
-    std::cout << "Drive Timed" << std::endl;
+    // std::cout << "Drive Timed" << std::endl;
     WaitCommand::End(interrupted);
-    m_swerveDrive->DrivePods(0, 0, 0);
+    m_swerveDrive->DrivePods(0, 0, 0, nullptr);
 }
 
 bool DriveTimed::RunsWhenDisabled() const {

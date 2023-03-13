@@ -53,4 +53,7 @@ private:
     BalanceState m_balanceState;
     bool m_isBalanced;
 
+    std::vector<double> previousPitches;
+
+    double m_markiplier = -1.5;
 };

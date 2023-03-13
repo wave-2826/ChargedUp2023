@@ -39,14 +39,6 @@ SwerveDrive::SwerveDrive()
     m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
     m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
 
-    // TESTING: Voltage Compensation
-    m_rightTopMotor->EnableVoltageCompensation(10.0);
-    m_rightBottomMotor->EnableVoltageCompensation(10.0);
-    m_leftTopMotor->EnableVoltageCompensation(10.0);
-    m_leftBottomMotor->EnableVoltageCompensation(10.0);
-    m_pointTopMotor->EnableVoltageCompensation(10.0);
-    m_pointBottomMotor->EnableVoltageCompensation(10.0);
-
     // explicitly set all motors to coast
     m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
@@ -55,25 +47,26 @@ SwerveDrive::SwerveDrive()
     m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
+    // TODO: FIGURE OUT SOMETHING FOR AUTO
     // set initial offset angles from the smart dashboard
-    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
-    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
-    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
+    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 275.0);
+    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 135.0);
+    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 185.0);
 
     // set initial p_PID values from the smart dashboard
-    pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 1.0);
-    pRight = frc::SmartDashboard::GetNumber("Right p_PID", 1.0);
-    pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 1.0);
+    pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 3.0);
+    pRight = frc::SmartDashboard::GetNumber("Right p_PID", 3.0);
+    pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 3.0);
 
     // set initial motor scaling factors from the smart dashboard
-    leftPodScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.01);
-    rightPodScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.01);
-    pointPodScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", 0.01);
+    leftPodScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.3);
+    rightPodScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.3);
+    pointPodScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", 0.3);
 
     // set initial aligned angles from the smart dashboard
-    leftPodAlignedAngle = frc::SmartDashboard::GetNumber("Left Aligned Angle", 404.0);
-    rightPodAlignedAngle = frc::SmartDashboard::GetNumber("Right Aligned Angle", 404.0);
-    pointPodAlignedAngle = frc::SmartDashboard::GetNumber("Point Aligned Angle", 404.0);
+    leftPodAlignedAngle = frc::SmartDashboard::GetNumber("Left Aligned Angle", 30.0);
+    rightPodAlignedAngle = frc::SmartDashboard::GetNumber("Right Aligned Angle", 30.0);
+    pointPodAlignedAngle = frc::SmartDashboard::GetNumber("Point Aligned Angle", 30.0);
 
     // Individual swerve pod instances
     m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
@@ -104,6 +97,19 @@ void SwerveDrive::Initialize()
     m_pigeon->ConfigMountPose(ctre::phoenix::sensors::AxisDirection::NegativeZ, ctre::phoenix::sensors::AxisDirection::PositiveY);
 }
 
+void SwerveDrive::SetVoltageCompensation() {
+    // TESTING: Voltage Compensation
+    double rightVoltageCompensation = frc::SmartDashboard::GetNumber("Right Pod Voltage Comp.", 10.0);
+    m_rightTopMotor->EnableVoltageCompensation(rightVoltageCompensation);
+    m_rightBottomMotor->EnableVoltageCompensation(rightVoltageCompensation);
+    double leftVoltageCompensation = frc::SmartDashboard::GetNumber("Left Pod Voltage Comp.", 10.0);
+    m_leftTopMotor->EnableVoltageCompensation(leftVoltageCompensation);
+    m_leftBottomMotor->EnableVoltageCompensation(leftVoltageCompensation);
+    double pointVoltageCompensation = frc::SmartDashboard::GetNumber("point Pod Voltage Comp.", 10.0);
+    m_pointTopMotor->EnableVoltageCompensation(pointVoltageCompensation);
+    m_pointBottomMotor->EnableVoltageCompensation(pointVoltageCompensation);
+}
+
 // Put code here to be run every loop
 void SwerveDrive::Periodic() 
 {
@@ -118,6 +124,18 @@ void SwerveDrive::Periodic()
 void SwerveDrive::SimulationPeriodic() 
 {
     // This method will be called once per scheduler run when in simulation
+}
+
+bool SwerveDrive::GetLeftPodReversed() {
+    return m_leftPod->GetIsReversed();
+}
+
+bool SwerveDrive::GetRightPodReversed() {
+    return m_rightPod->GetIsReversed();
+}
+
+bool SwerveDrive::GetPointPodReversed() {
+    return m_pointPod->GetIsReversed();
 }
 
 double SwerveDrive::GetMotorTemperature(int pod, int motor)
@@ -361,7 +379,7 @@ void SwerveDrive::SetPointPodAlignedAngle(double angle)
     m_pointPodAlignedAngle = angle;
 }
 
-void SwerveDrive::DrivePods(double move, double strafe, double rotation) 
+void SwerveDrive::DrivePods(double move, double strafe, double rotation, double *returnArray) 
 {
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
@@ -385,9 +403,27 @@ void SwerveDrive::DrivePods(double move, double strafe, double rotation)
     // bool rightAligned = m_rightPod->Drive(right, m_allAligned);
     // bool leftAligned = m_leftPod->Drive(left, m_allAligned);
     // bool pointAligned = m_pointPod->Drive(point, m_allAligned);
-    m_rightPod->Drive(right, true);
-    m_leftPod->Drive(left, true);
-    m_pointPod->Drive(point, true);
+    double tempArray[2];
+    m_rightPod->Drive(right, true, tempArray);
+    if (returnArray != nullptr)
+    {
+        returnArray[0] = tempArray[0];
+        returnArray[1] = tempArray[1];
+    }
+    double tempArray2[2];
+    m_leftPod->Drive(left, true, tempArray2);
+    if (returnArray != nullptr)
+    {
+        returnArray[2] = tempArray2[0];
+        returnArray[3] = tempArray2[1];
+    }
+    double tempArray3[2];
+    m_pointPod->Drive(point, true, tempArray3);
+    if (returnArray != nullptr)
+    {
+        returnArray[4] = tempArray3[0];
+        returnArray[5] = tempArray3[1];
+    }
     
     // m_allAligned = rightAligned && leftAligned && pointAligned;
     

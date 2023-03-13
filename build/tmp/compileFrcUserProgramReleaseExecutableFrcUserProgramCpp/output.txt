@@ -7,9 +7,9 @@ compiling DriveTimed.cpp successful.
 
 compiling ScoreConeMid.cpp successful.
 
-compiling ScoreMidConeWithBalance.cpp successful.
-
 compiling SwerveInitializeCommand.cpp successful.
+
+compiling ScoreMidConeWithBalance.cpp successful.
 
 compiling ScoreTopConeBackout.cpp successful.
 

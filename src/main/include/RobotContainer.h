@@ -78,7 +78,7 @@ private:
     // the chooser for the autonoumous routines
     frc::SendableChooser<frc2::Command*> m_chooser;
 
-    // THIS IS EXTREMELY EXPERIMENTAL, I AM LITERALLY IN DULUTH MINNESOTA
+    // THIS IS EXTREMELY EXPERIMENTAL
     // frc::SendableChooser<frc2::Command*> m_customCommandChoosers[5];
 
     AutonomousCommand m_autonomousCommand;

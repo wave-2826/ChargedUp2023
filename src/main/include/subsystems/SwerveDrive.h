@@ -64,17 +64,17 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodBottomMotorCurrent = 0.0;
 
         // Swerve smartdashboard inputs - offsets
-        double m_leftPodOffsetAngle = 274.0;
-        double m_rightPodOffsetAngle = 138.0;
-        double m_pointPodOffsetAngle = 1.0;
+        double m_leftPodOffsetAngle = 275.0;
+        double m_rightPodOffsetAngle = 135.0;
+        double m_pointPodOffsetAngle = 185.0;
         double leftOffset;
         double rightOffset;
         double pointOffset;
 
         // Swerve smartdashboard inputs - p_PID
-        double m_pLeft = 1.2;
-        double m_pRight = 1.2;
-        double m_pPoint = 1.2;
+        double m_pLeft  = 3.0;
+        double m_pRight = 3.0;
+        double m_pPoint = 3.0;
         double pLeft;
         double pRight;
         double pPoint;
@@ -125,6 +125,8 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         void DiagonosticSwerveRotate(std::string podInput, std::string motorInput, double speedIncrement);
 
+        void SetVoltageCompensation();
+
         /**
          * Function that takes inputs from the joysticks and transforms
          * the inputs into states (speed, angle) that individual swerve modules will utilize
@@ -133,7 +135,7 @@ class SwerveDrive: public frc2::SubsystemBase {
          * @param strafe joystick input from left x-axis (LX)
          * @param rotation joystick input from right x-axis (RX)
         */
-        void DrivePods(double move, double strafe, double rotation);
+        void DrivePods(double move, double strafe, double rotation, double *PP);
 
         /**
          * Function that orients the swerve drive into opposing angles for a "locked" position
@@ -181,6 +183,10 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SetPointPodMotorScaling(double scalingFactor);
         // Function that updates a pod p_PID value based on input from the smartdashboard
         void UpdatePodMotorScaling();
+
+        bool GetLeftPodReversed();
+        bool GetRightPodReversed();
+        bool GetPointPodReversed();
 
         double GetLeftPodAlignedAngle();
         double GetRightPodAlignedAngle();

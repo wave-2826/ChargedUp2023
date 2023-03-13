@@ -107,6 +107,14 @@ bool Elevator::isElevatorAtHome()
     return false;
 }
 
+void Elevator::updateValues()
+{
+    k_P = frc::SmartDashboard::GetNumber("Elevator P", 4.0);
+    k_I = frc::SmartDashboard::GetNumber("Elevator I", 0.0);
+    k_D = frc::SmartDashboard::GetNumber("Elevator D", 1.0);
+    k_rampPerLoop = frc::SmartDashboard::GetNumber("Elevator Ramp", 0.05);
+}
+
 double Elevator::getElevatorPosition() 
 {
     // Get the number of rotation of the motor
@@ -364,7 +372,7 @@ bool Elevator::moveElevatorToTargetManual(double target)
         else if(target < m_elevatorPosition)
         {
             // Need to retract the elevator
-            speedCmd = -k_manualElevatorCmd * 1.2;
+            speedCmd = -k_manualElevatorCmd * 3.0;
         }
     }
     else
@@ -443,6 +451,7 @@ void Elevator::runEndEffector()
         endEffectorRollerCmd = 0;
     } 
 
+    std::cout << "roller spd: " << endEffectorRollerCmd << std::endl;
     setEndEffectorRoller(endEffectorRollerCmd * k_endEffectorSpeedFactor);
  
     ///////////////////// End Effector Grabber Operations ///////////////////////

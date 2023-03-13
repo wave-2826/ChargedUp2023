@@ -15,13 +15,18 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
 #include <iostream>
+#include <fstream>
 #include <cameraserver/CameraServer.h>
 #include <cstdio>
+#include <iomanip>
+#include <ctime>
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
   m_container->m_elevator.Initialize();
-  m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0);
+  m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, nullptr);
+
+  m_container->m_swerveDrive.SetVoltageCompensation();
 
   // Get the USB camera from CameraServer
   // cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
@@ -47,6 +52,8 @@ void Robot::RobotPeriodic()
   m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
   m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
   m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+
+  m_container->m_elevator.updateValues();
 
   // SET p_PID values from the dashboard
   double pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 1.0);
@@ -133,6 +140,22 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
+  // auto t = std::time(nullptr);
+  // auto tm = *std::localtime(&t);
+  // auto filepath = "/home/lvuser/swerve-" + std::put_time(&tm, "%d-%m-%Y %H-%M-%S").str() + ".txt";
+  // auto time = std::chrono::system_clock::now();
+  // std::time_t t = std::chrono::system_clock::to_time_t(time);
+  // std::string ts = std::ctime(&t);
+  // ts.resize(ts.size()-1);
+  // auto timetypingpls = &ts;
+  
+  // std::string filepath = "/home/lvuser/swerve-" + std::rand(995298) + ".txt";
+  // std::string filepath = "/home/lvuser/swerve-";
+  // strcat(filepath, std::rand());
+  // strcat(filepath, ".txt");
+  // char* filepathfrtho = const_cast<char*>(filepath.c_str());
+  // fileOut = fopen(filepathfrtho, "a");
+  fileOut = fopen("/home/lvuser/swerve-test.txt", "a");
 }
 
 double Joystick(double input, double deadzone) 
@@ -160,6 +183,9 @@ void Robot::TeleopPeriodic()
   double targetJoystickLX = Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double targetJoystickLY = Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
+  frc::SmartDashboard::PutNumber("LX", targetJoystickLX);
+  frc::SmartDashboard::PutNumber("LY", targetJoystickLY);
+  frc::SmartDashboard::PutNumber("RX", targetJoystickRX);
   // Initial Swerve State
   bool initialSwerveState = m_container->getDriver()->GetStartButton();
   // Lock Swerve State
@@ -169,16 +195,37 @@ void Robot::TeleopPeriodic()
   bool testLeftPod = m_container->getDriver()->GetXButton();
   bool testPointPod = m_container->getDriver()->GetAButton();
   int dPadValue = m_container->getDriver()->GetPOV();
+
+  // When D-Pad is pressed, print if pods are reversed
+  if (dPadValue != m_dPadValueLastFrame && dPadValue != -1)
+  {
+    std::cout << "Left Pod Reversed: " << m_container->m_swerveDrive.GetLeftPodReversed() << std::endl;
+    std::cout << "Right Pod Reversed: " << m_container->m_swerveDrive.GetRightPodReversed() << std::endl;
+    std::cout << "Point Pod Reversed: " << m_container->m_swerveDrive.GetPointPodReversed() << std::endl;
+  }
+  m_dPadValueLastFrame = dPadValue;
+
   std::string driveCase = "NONE";
 
   if (!lockSwerve) 
   {
     if (
-      std::fabs(targetJoystickLX) > k_jsDeadband || std::fabs(targetJoystickLY) > k_jsDeadband || std::fabs(targetJoystickRX) > k_jsDeadband) 
+      std::fabs(targetJoystickLX) > k_jsDeadband ||
+      std::fabs(targetJoystickLY) > k_jsDeadband ||
+      std::fabs(targetJoystickRX) > k_jsDeadband
+    ) 
     {
       // joystick inputs for swerve - NO scaling / ramp
       driveCase = "Drive No Scaling";
-      m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX);
+      double PP[6];
+      m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX, PP);
+      for (int i = 0; i < 6; i++) {
+        fputs(std::to_string(PP[i]).c_str(), fileOut);
+        fputs(" ", fileOut);
+        // std::cout << std::to_string(PP[i]).c_str() << " " << std::endl;
+      }
+      fputs("\n", fileOut);
+      // std::cout << std::endl;
     }
     else if (initialSwerveState) 
     {
@@ -205,22 +252,22 @@ void Robot::TeleopPeriodic()
       if (dPadValue == 0)
       {
         // forward
-        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0);
+        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0, nullptr);
       } else if (dPadValue == 180)
       {
         // backward
-        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0);
+        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0, nullptr);
       } else if (dPadValue == 90) {
         // right
-        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0);
+        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0, nullptr);
       } else if (dPadValue == 270) {
         // left
-        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0);
+        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0, nullptr);
       }
     }
     else {
       driveCase = "STOPPED";
-      m_container->m_swerveDrive.DrivePods(0,0,0);
+      m_container->m_swerveDrive.DrivePods(0,0,0,nullptr);
     }
 
   } 

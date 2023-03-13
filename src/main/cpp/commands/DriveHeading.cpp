@@ -125,7 +125,7 @@ void DriveHeading::Execute() {
     //     // check optimal path
     //     swerveCase = "OPTIMIZE < -90";
 
-    //     FlipIsReversed(m_isReversed);
+    //     FlipIsReversed();
     //     if (!GetIsReversed())
     //     {
     //         angle_delta_optimized = (angle_delta - 180.0);
@@ -143,7 +143,7 @@ void DriveHeading::Execute() {
     //     // check optimal path
     //     swerveCase = "OPTIMIZE > 90";
 
-    //     FlipIsReversed(m_isReversed);
+    //     FlipIsReversed();
     //     if (!GetIsReversed())
     //     {
     //         angle_delta_optimized = (angle_delta - 180.0);
@@ -189,7 +189,7 @@ void DriveHeading::Execute() {
 // Called once after isFinished returns true
 void DriveHeading::End(bool interrupted) {
     WaitCommand::End(interrupted);
-    m_swerveDrive->DrivePods(0, 0, 0);
+    m_swerveDrive->DrivePods(0, 0, 0, nullptr);
 }
 
 bool DriveHeading::RunsWhenDisabled() const {

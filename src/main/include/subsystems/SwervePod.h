@@ -76,7 +76,7 @@ class SwervePod {
          * @param allAligned the boolean stating if all 3 pods are aligned,
          * if they are, pods can drive forward
          **/
-        void Drive(frc::SwerveModuleState state, bool allAligned);
+        void Drive(frc::SwerveModuleState state, bool allAligned, double *returnArray);
 
         std::string GetCurrentCase();
 
@@ -117,7 +117,7 @@ class SwervePod {
          * Function to flip swerve pod reversed state, used in optimizing swerve logic to
          * determine if delta angle should be minimized and speed reversed
          **/ 
-        void FlipIsReversed(bool state);
+        void FlipIsReversed();
 
         // Swerve Dashboard Live Update Functions
         void UpdateOffsetAngle();

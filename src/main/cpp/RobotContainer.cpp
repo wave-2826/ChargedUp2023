@@ -28,6 +28,17 @@ RobotContainer* RobotContainer::m_robotContainer = NULL;
 
 RobotContainer::RobotContainer() : m_autonomousCommand()
 {
+    // Smartdashboard Joystick Inputs
+    frc::SmartDashboard::PutNumber("LX", 0.0);
+    frc::SmartDashboard::PutNumber("LY", 0.0);
+    frc::SmartDashboard::PutNumber("RX", 0.0);
+
+    // Smartdashboard Elevator values
+    frc::SmartDashboard::PutNumber("Elevator P", 4.0);
+    frc::SmartDashboard::PutNumber("Elevator I", 0.0);
+    frc::SmartDashboard::PutNumber("Elevator D", 1.0);
+    frc::SmartDashboard::PutNumber("Elevator Ramp", 0.01);
+
     // Smartdashboard Swerve Drive Offsets
     frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
     frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
@@ -56,6 +67,10 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutString("Right Pod Case", m_swerveDrive.GetRightPodCase());
     frc::SmartDashboard::PutString("Left Pod Case", m_swerveDrive.GetLeftPodCase());
     frc::SmartDashboard::PutString("Point Pod Case", m_swerveDrive.GetPointPodCase());
+
+    frc::SmartDashboard::PutNumber("Left Pod Voltage Comp.", 10.0);
+    frc::SmartDashboard::PutNumber("Right Pod Voltage Comp.", 10.0);
+    frc::SmartDashboard::PutNumber("Point Pod Voltage Comp.", 10.0);
 
     // SmartDashboard Buttons
     frc::SmartDashboard::PutData("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
@@ -106,7 +121,7 @@ RobotContainer* RobotContainer::GetInstance()
     if (m_robotContainer == NULL) {
         m_robotContainer = new RobotContainer();
     }
-    return(m_robotContainer);
+    return m_robotContainer;
 }
 
 void RobotContainer::ConfigureButtonBindings() {}

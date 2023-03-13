@@ -36,11 +36,11 @@ void ExtendElevatorMidCone::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendElevatorMidCone::IsFinished() 
 {
-    std::cout << "FINISHED - Mid Target Reached" << std::endl;
+    // std::cout << "FINISHED - Mid Target Reached" << std::endl;
     if(m_targetReached)
     {
         // Top Target reached
-        std::cout << "Mid Target Reached" << std::endl;
+        // std::cout << "Mid Target Reached" << std::endl;
         return true;
     }
     else
@@ -52,7 +52,7 @@ bool ExtendElevatorMidCone::IsFinished()
 // Called once after isFinished returns true
 void ExtendElevatorMidCone::End(bool interrupted) 
 {
-    std::cout << "END - Mid Target Reached" << std::endl;
+    // std::cout << "END - Mid Target Reached" << std::endl;
     m_targetReached = false;
 }
 

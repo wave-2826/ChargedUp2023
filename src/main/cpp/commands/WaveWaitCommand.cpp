@@ -39,7 +39,7 @@ bool WaveWaitCommand::IsFinished() {
 
 // Called once after isFinished returns true
 void WaveWaitCommand::End(bool interrupted) {
-    std::cout << "Wave Wait" << std::endl;
+    // std::cout << "Wave Wait" << std::endl;
     WaitCommand::End(interrupted);
 }
 
