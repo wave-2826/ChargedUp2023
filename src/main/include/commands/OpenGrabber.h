@@ -16,7 +16,7 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
 #include <commands/WaveWaitCommand.h>
-#include "subsystems/Elevator.h"
+#include "subsystems/EndEffector.h"
 
 
 /**
@@ -28,7 +28,7 @@ class OpenGrabber: public frc2::CommandHelper<frc2::CommandBase, OpenGrabber>
 {
 
 public:
-    explicit OpenGrabber(Elevator* elevator);//, units::second_t timeout = (units::second_t)0);
+    explicit OpenGrabber(EndEffector* endEffector);//, units::second_t timeout = (units::second_t)0);
 
     void Initialize() override;
     void Execute() override;
@@ -38,9 +38,7 @@ public:
 
 
 private:
-    Elevator* m_elevator;
-    // WaveWaitCommand* m_waitCommand;
-    // units::second_t m_timeout;
-    // bool m_targetReached;  
-    // bool m_timerSet;      
+    EndEffector* m_endEffector;
+    bool m_targetReached;  
+    bool m_timerSet;      
 };

@@ -14,53 +14,52 @@
 #include "commands/EndEffectorDown.h"
 #include "commands/WaveWaitCommand.h"
 
-EndEffectorDown::EndEffectorDown(Elevator* m_elevator)
-:m_elevator(m_elevator), m_timerSet(false)
+EndEffectorDown::EndEffectorDown(EndEffector* endEffector)
+: m_endEffector(endEffector), m_targetReached(false)
 {
 
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
     SetName("EndEffectorDown");
-    AddRequirements({m_elevator});
-    m_waitCommand = new WaveWaitCommand(units::second_t(0.5));
+    AddRequirements({m_endEffector});
+    // m_waitCommand = new WaveWaitCommand(units::second_t(0.5));
 }
 
 // Called just before this Command runs the first time
 void EndEffectorDown::Initialize() 
 {
-    m_timerSet = false;
+    m_targetReached = false;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void EndEffectorDown::Execute() 
 {
-    // std::cout << "EXECUTE end effector down - WAIT: " << m_waitCommand->IsFinished() << std::endl;
-    m_elevator->moveEndEffector(true);
-    if (!m_timerSet) {
-        m_waitCommand->Initialize();
-        m_timerSet = true; 
-    }
-    if (m_waitCommand->IsFinished()) {
-        m_targetReached = true;
-    }
+   //  m_targetReached = m_endEffector->lowerEndEffector();
+    // m_endEffector->moveEndEffector(true);
+    // if (!m_timerSet) {
+    //     m_waitCommand->Initialize();
+    //     m_timerSet = true; 
+    // }
+    // if (m_waitCommand->IsFinished()) {
+    //     m_targetReached = true;
+    // }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool EndEffectorDown::IsFinished() 
 {
     // std::cout << "FINISHED - end effector down" << std::endl;
-    m_timerSet = false;
-    if (m_targetReached) {
-        // std::cout << "End Effector Down - TARGET REACHED" << std::endl;
-    }
+    // m_timerSet = false;
+    // if (m_targetReached) {
+    //     std::cout << "End Effector Down - TARGET REACHED" << std::endl;
+    // }
     return m_targetReached;
 }
 
 // Called once after isFinished returns true
 void EndEffectorDown::End(bool interrupted) 
 {
-    // std::cout << "END - End Effector down" << std::endl;
-    m_timerSet = false;
+    std::cout << "END - End Effector down" << std::endl;
     m_targetReached = false;
 }
 

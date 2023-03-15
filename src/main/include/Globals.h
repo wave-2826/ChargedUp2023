@@ -60,4 +60,9 @@ typedef enum
     BOTTOM_MOTOR
 } PodMotor;
 
+
+// Application Times based on loops (20 msec per loop)
+#define ONE_SECOND      50
+#define TWO_SECONDS     ONE_SECOND * 2
+#define FIVE_SECONDS    ONE_SECOND * 5
 #endif

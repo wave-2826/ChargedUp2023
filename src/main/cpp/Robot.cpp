@@ -27,6 +27,7 @@ void Robot::RobotInit() {
   m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, nullptr);
 
   m_container->m_swerveDrive.SetVoltageCompensation();
+  m_container->m_endEffector.Initialize();
 
   // Get the USB camera from CameraServer
   // cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
@@ -127,8 +128,7 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-  //spaghetti
-  m_container->m_elevator.moveGrabber();
+
 }
 
 void Robot::TeleopInit() {

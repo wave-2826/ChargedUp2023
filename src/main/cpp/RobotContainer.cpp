@@ -16,11 +16,11 @@
 #include "commands/ExtendElevatorTopCone.h"
 #include "commands/ExtendElevatorMidCone.h"
 #include "commands/SequentialScoreTopCone.h"
-#include "commands/SequentialScoreMidCone.h"
-#include "commands/ScoreTopConeWithBalance.h"
-#include "commands/ScoreMidConeWithBalance.h"
-#include "commands/ScoreMidConeBackout.h"
-#include "commands/ScoreTopConeBackout.h"
+// #include "commands/SequentialScoreMidCone.h"
+// #include "commands/ScoreTopConeWithBalance.h"
+// #include "commands/ScoreMidConeWithBalance.h"
+// #include "commands/ScoreMidConeBackout.h"
+// #include "commands/ScoreTopConeBackout.h"
 #include "commands/AutonomousCommand.h"
 // #include "commands/CustomCommand.h"
 
@@ -73,28 +73,28 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Point Pod Voltage Comp.", 10.0);
 
     // SmartDashboard Buttons
-    frc::SmartDashboard::PutData("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
+    frc::SmartDashboard::PutData("Score Top Cone", new SequentialScoreTopCone(&m_elevator, &m_endEffector));
     // frc::SmartDashboard::PutData("Extend Elevator Mid Cone", new ExtendElevatorMidCone(&m_elevator));
     // frc::SmartDashboard::PutData("Initialize Swerve", new SwerveInitializeCommand(&m_swerveDrive));
 
     // add options + setup auto chooser
     // m_chooser.SetDefaultOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
-    m_chooser.SetDefaultOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
+    m_chooser.SetDefaultOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator, &m_endEffector));
    
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
     m_chooser.AddOption("Auto Balance", new AutoBalance(&m_swerveDrive));
     
     m_chooser.AddOption("Stow Elevator", new StowElevator(&m_elevator));
-    m_chooser.AddOption("End Effector Down", new EndEffectorDown(&m_elevator));
-    m_chooser.AddOption("End Effector Up", new EndEffectorUp(&m_elevator));
-    m_chooser.AddOption("Stow Elevator", new StowElevator(&m_elevator));
+    m_chooser.AddOption("End Effector Down", new EndEffectorDown(&m_endEffector));
+    m_chooser.AddOption("End Effector Up", new EndEffectorUp(&m_endEffector));
+    // m_chooser.AddOption("Stow Elevator", new StowElevator(&m_elevator));
 
-    m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator));
-    m_chooser.AddOption("Score Mid Cone", new SequentialScoreMidCone(&m_elevator));
-    m_chooser.AddOption("Score Top Cone Backout", new ScoreTopConeBackout(&m_elevator, &m_swerveDrive));
-    m_chooser.AddOption("Score Mid Cone Backout", new ScoreMidConeBackout(&m_elevator, &m_swerveDrive));
-    m_chooser.AddOption("Score Top Cone Balance", new ScoreTopConeWithBalance(&m_elevator, &m_swerveDrive));
-    m_chooser.AddOption("Score Mid Cone Balance", new ScoreMidConeWithBalance(&m_elevator, &m_swerveDrive));
+    m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator, &m_endEffector));
+    // m_chooser.AddOption("Score Mid Cone", new SequentialScoreMidCone(&m_elevator, &m_endEffector));
+    // m_chooser.AddOption("Score Top Cone Backout", new ScoreTopConeBackout(&m_elevator, &m_swerveDrive));
+    // m_chooser.AddOption("Score Mid Cone Backout", new ScoreMidConeBackout(&m_elevator, &m_swerveDrive));
+    // m_chooser.AddOption("Score Top Cone Balance", new ScoreTopConeWithBalance(&m_elevator, &m_endEffector, &m_swerveDrive));
+    // m_chooser.AddOption("Score Mid Cone Balance", new ScoreMidConeWithBalance(&m_elevator, &m_swerveDrive));
     // m_chooser.AddOption("Custom - Experimental", new CustomCommand(&m_customCommandChoosers));
     frc::SmartDashboard::PutData("Auto Mode", &m_chooser);
 

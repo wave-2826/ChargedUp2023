@@ -3,33 +3,26 @@
 #include "commands/ExtendElevatorTopCone.h"
 #include "commands/EndEffectorDown.h"
 #include "commands/OpenGrabber.h"
-#include "commands/WaveWaitCommand.h"
 #include "commands/StowElevator.h"
-#include "commands/ScoreBackoff.h"
 #include "commands/EndEffectorUp.h"
-#include "commands/DelayedScoreBackoff.h"
-// #include "frc2/command/SequentialCommandGroup.h"
-// #include "frc2/command/ParallelCommandGroup.h"
 
-SequentialScoreTopCone::SequentialScoreTopCone(Elevator* m_elevator)
-:m_elevator(m_elevator)
+SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, EndEffector* endEffector)
+: m_elevator(elevator), m_endEffector(endEffector)
 {
     SetName("SequentialScoreTopCone");
     AddRequirements({m_elevator});
 
     AddCommands(
-        frc2::SequentialCommandGroup(
+        frc2::SequentialCommandGroup (
             // place cone (top)
             ExtendElevatorTopCone(m_elevator),
-            EndEffectorDown(m_elevator),
+            EndEffectorDown(m_endEffector),
             // open grabber
-            OpenGrabber(m_elevator),
-            // retract 5 inches
-            ScoreBackoff(m_elevator),
+            OpenGrabber(m_endEffector),
 
             // stow sequence
-            EndEffectorUp(m_elevator),
             StowElevator(m_elevator)
+            // EndEffectorUp(m_endEffector)
         )
     );
 }

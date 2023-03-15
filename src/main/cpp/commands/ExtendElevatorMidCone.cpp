@@ -1,23 +1,18 @@
 #include <iostream>
 #include "commands/ExtendElevatorMidCone.h"
 
-ExtendElevatorMidCone::ExtendElevatorMidCone(Elevator* m_elevator)
-:m_elevator(m_elevator)
+ExtendElevatorMidCone::ExtendElevatorMidCone(Elevator* elevator)
+:m_elevator(elevator)
 {
-
-    // Use AddRequirements() here to declare subsystem dependencies
-    // eg. AddRequirements(m_Subsystem);
     SetName("ExtendElevatorMidCone");
     AddRequirements({m_elevator});
 
     m_targetReached = false;
-
 }
 
 // Called just before this Command runs the first time
 void ExtendElevatorMidCone::Initialize() 
 {
-
     m_targetReached = false;
     m_elevator->setMidConeTarget();
 }
@@ -36,17 +31,7 @@ void ExtendElevatorMidCone::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ExtendElevatorMidCone::IsFinished() 
 {
-    // std::cout << "FINISHED - Mid Target Reached" << std::endl;
-    if(m_targetReached)
-    {
-        // Top Target reached
-        // std::cout << "Mid Target Reached" << std::endl;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return m_targetReached;
 }
 
 // Called once after isFinished returns true

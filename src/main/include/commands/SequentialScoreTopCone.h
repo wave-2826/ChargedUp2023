@@ -16,6 +16,7 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
 #include "subsystems/Elevator.h"
+#include "subsystems/EndEffector.h"
 #include "frc2/command/ParallelCommandGroup.h"
 #include <frc2/command/SequentialCommandGroup.h>
 
@@ -29,11 +30,12 @@ class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::SequentialComman
 SequentialScoreTopCone>{
 public:
 
-    explicit SequentialScoreTopCone(Elevator* m_elevator);
+    explicit SequentialScoreTopCone(Elevator* elevator, EndEffector* endEffector);
 
     bool RunsWhenDisabled() const override;
 
 private:
 
     Elevator* m_elevator;
+    EndEffector* m_endEffector;
 };

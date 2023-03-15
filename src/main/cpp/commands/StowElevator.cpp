@@ -2,7 +2,7 @@
 #include "commands/StowElevator.h"
 
 StowElevator::StowElevator(Elevator* m_elevator)
-:m_elevator(m_elevator), m_targetReached(false)
+: m_elevator(m_elevator), m_targetReached(false)
 {
 
     // Use AddRequirements() here to declare subsystem dependencies

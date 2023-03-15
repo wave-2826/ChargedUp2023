@@ -16,6 +16,11 @@
 Intake::Intake(){
     SetName("Intake");
     SetSubsystem("Intake");
+
+    // m_compressor = new frc::Compressor(k_pneumaticHub, frc::PneumaticsModuleType::REVPH);
+    // m_pneumaticHub.EnableCompressorAnalog(units::pressure::pounds_per_square_inch_t(90), 
+    //                                       units::pressure::pounds_per_square_inch_t(110));
+
 }
 
 // Put code here to be run every loop
