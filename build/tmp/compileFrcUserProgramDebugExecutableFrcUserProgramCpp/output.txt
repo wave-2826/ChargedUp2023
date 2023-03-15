@@ -1,30 +1,22 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
 compiling SwerveInitializeCommand.cpp successful.
 
-compiling DriveTimed.cpp successful.
-
 compiling DriveHeading.cpp successful.
+
+compiling DriveTimed.cpp successful.
 
 compiling AutoBalance.cpp successful.
 
 compiling ScoreConeMid.cpp successful.
 
-compiling ScoreMidConeWithBalance.cpp successful.
-
-compiling ScoreMidConeBackout.cpp successful.
-
-compiling Elevator.cpp successful.
+compiling Robot.cpp successful.
 
 compiling RobotContainer.cpp successful.
 
-compiling Robot.cpp successful.
+compiling EndEffector.cpp successful.
 
-compiling ScoreTopConeWithBalance.cpp successful.
-
-compiling ScoreTopConeBackout.cpp successful.
+compiling Elevator.cpp successful.
 
 compiling SwerveDrive.cpp successful.
-
-compiling EndEffectorUp.cpp successful.
 
 Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

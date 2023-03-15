@@ -5,25 +5,17 @@ compiling DriveHeading.cpp successful.
 
 compiling DriveTimed.cpp successful.
 
-compiling ScoreConeMid.cpp successful.
-
 compiling SwerveInitializeCommand.cpp successful.
 
-compiling ScoreMidConeWithBalance.cpp successful.
-
-compiling ScoreTopConeBackout.cpp successful.
-
-compiling ScoreTopConeWithBalance.cpp successful.
-
-compiling ScoreMidConeBackout.cpp successful.
+compiling ScoreConeMid.cpp successful.
 
 compiling Robot.cpp successful.
+
+compiling EndEffector.cpp successful.
 
 compiling Elevator.cpp successful.
 
 compiling RobotContainer.cpp successful.
-
-compiling SwervePod.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

@@ -117,7 +117,7 @@ private:
     static constexpr const double k_IFine = 0.1;
     static constexpr const double k_DFine = 0.0;
 
-    static constexpr const double k_fineLimit = 5.0;
+    static constexpr const double k_fineLimit = 0.0;
 
     static constexpr const double k_numOfTeeth = 36.0;
     static constexpr const double k_teethSize = 0.25;  // in inches
@@ -141,6 +141,7 @@ public:
     // Initialize Elevatorobject
     void Initialize();
 
+    void updateValues();
 
     // Periodic operation for the elevator
     void runElevator();
@@ -151,7 +152,6 @@ public:
     
     //Set scoring target
     void setCustomTarget(double target);
-    void setBackoffTarget();
     void setTopConeTarget();
     void setMidConeTarget();
     void setTopCubeTarget();
@@ -164,5 +164,4 @@ public:
     bool moveElevatorToTargetManual(double target);
     bool stowElevator();
     bool stowElevatorAuto();
-    bool backoffElevatorAuto();
 };

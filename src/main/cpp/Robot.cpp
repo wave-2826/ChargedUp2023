@@ -283,6 +283,9 @@ void Robot::TeleopPeriodic()
   // Elevator Operations
   m_container->m_elevator.runElevator();
 
+  // End Effector Operations
+  m_container->m_endEffector.runEndEffector();
+
   frc::SmartDashboard::PutString("Right Pod Case", m_container->m_swerveDrive.GetRightPodCase());
   frc::SmartDashboard::PutString("Left Pod Case", m_container->m_swerveDrive.GetLeftPodCase());
   frc::SmartDashboard::PutString("Point Pod Case", m_container->m_swerveDrive.GetPointPodCase());

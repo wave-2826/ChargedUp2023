@@ -13,14 +13,11 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-// #include <frc/DigitalInput.h>
-// #include <frc/motorcontrol/PWMSparkMax.h>
 #include <frc/XboxController.h>
 #include <rev/SparkMaxRelativeEncoder.h>
 #include <rev/CANSparkMax.h>
 #include <rev/CANSparkMaxLowLevel.h>
-// #include "frc2/command/PIDSubsystem.h"
-
+#include<frc/DigitalOutput.h>
 #include "Globals.h"
 
 /**
@@ -40,6 +37,15 @@ private:
 
     // Scoring object flag. True when scoring with Cone
     bool m_isCone;
+
+    // LED
+    frc::DigitalOutput *m_coneLED;
+    frc::DigitalOutput *m_cubeLED;
+    // frc::DigitalOutput::DigitalOutput m_coneLED{5}
+    // frc::DigitalOutput::DigitalOutput m_cubeLED{6}
+    // frc::DigitalOutput m_coneLED{7};
+    // frc::DigitalOutput m_coneLED{8};
+    // frc::DigitalOutput m_coneLED{9};
 
     uint16_t m_endEffectorTimer;
 

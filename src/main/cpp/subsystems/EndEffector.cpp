@@ -24,12 +24,29 @@ EndEffector::EndEffector()
     m_endEffectorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
     m_endEffectorMotor->SetInverted(true);
 
+    m_coneLED = new frc::DigitalOutput(5);
+    m_cubeLED = new frc::DigitalOutput(6);
 }
 
 // Put code here to be run every loop
 void EndEffector::Periodic() 
 { 
     runEndEffector();
+
+    // Check cone or cube
+    int checkConeOrCube = m_operatorJoystick->GetPOV();
+    if ((checkConeOrCube >= 0 && checkConeOrCube <= 90) || (checkConeOrCube > 270))
+    {
+        m_isCone = true;
+        m_cubeLED->Set(false);
+        m_coneLED->Set(true);
+    }
+    else if (checkConeOrCube > 90 && checkConeOrCube < 270)
+    {
+        m_isCone = false;
+        m_coneLED->Set(false);
+        m_cubeLED->Set(true); 
+    }
 }    
 
 void EndEffector::Initialize() 

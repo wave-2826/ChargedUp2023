@@ -42,6 +42,7 @@ Elevator::Elevator()
     m_elevatorTarget = 0.0;
     m_targetSet = false;
     m_fineLimit = k_fineLimit;
+    m_isCone = true;
 
     // May or may not use this
     m_distancePerRotation = (k_numOfTeeth * k_teethSize) /k_gearRatio;
@@ -50,12 +51,6 @@ Elevator::Elevator()
 void Elevator::setCustomTarget(double target)
 {
     m_elevatorTarget = target;
-    m_targetSet = true;
-}
-
-void Elevator::setBackoffTarget()
-{
-    m_elevatorTarget = k_elevatorTargetBackoff;
     m_targetSet = true;
 }
 
@@ -131,7 +126,7 @@ void Elevator::setElevator(double speed)
     m_elevatorMotorA->Set(speed);
     m_elevatorMotorB->Set(speed);
 
-    std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   State: " << m_elevatorFunction << std::endl;
+    std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   isCone: " << m_isCone << std::endl;
 }
 
 // Put code here to be run every loop
@@ -139,13 +134,16 @@ void Elevator::Periodic()
 { 
     m_elevatorPosition = getElevatorPosition();
 
-    // TESTING - switch between cone and cube
-    // if (m_operatorJoystick->GetRightBumper()) {
-    //     m_isCone = m_isCone ? false : true;
-    //     std::cout << "set m_isCone: " << m_isCone << std::endl;
-    // }
-
-    m_isCone = true;
+    // Check cone or cube
+    int checkConeOrCube = m_operatorJoystick->GetPOV();
+    if ((checkConeOrCube >= 0 && checkConeOrCube <= 90) || (checkConeOrCube > 270))
+    {
+        m_isCone = true;
+    }
+    else if (checkConeOrCube > 90 && checkConeOrCube < 270)
+    {
+        m_isCone = false;
+    }
 
     if(m_operatorJoystick->GetStartButton())
     {
@@ -175,7 +173,7 @@ double Elevator::getPIDSpeed(double pidCommand)
     // Convert PID output to speed command between -1.0 to 1.0
     double speedOut = 0;
 
-    speedOut = pidCommand / 10.0;    // temporary place holder
+    speedOut = pidCommand / 20.0;    // temporary place holder
 
     if(k_maxElevatorSpeed <= speedOut)
     {
@@ -312,7 +310,7 @@ bool Elevator::moveToCurrentTarget()
 
             if(lastSpeedCmd > pidOut)
             {
-                lastSpeedCmd -= k_rampPerLoop * 1.2;
+                lastSpeedCmd -= k_rampPerLoop;
             }
         }
         speedCmd = lastSpeedCmd;
@@ -348,7 +346,7 @@ bool Elevator::moveElevatorToTargetManual(double target)
         else if(target < m_elevatorPosition)
         {
             // Need to retract the elevator
-            speedCmd = -k_manualElevatorCmd * 3.0;
+            speedCmd = -k_manualElevatorCmd;
         }
     }
     else
@@ -379,9 +377,4 @@ bool Elevator::stowElevator()
 bool Elevator::stowElevatorAuto()
 {
     return (moveElevatorToTargetManual(m_elevatorHomePosition));
-}
-
-bool Elevator::backoffElevatorAuto()
-{
-    return moveElevatorToTargetManual(k_elevatorTargetBackoff);
 }
