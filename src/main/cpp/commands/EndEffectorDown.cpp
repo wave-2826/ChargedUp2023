@@ -34,7 +34,7 @@ void EndEffectorDown::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void EndEffectorDown::Execute() 
 {
-    m_targetReached = m_endEffector->lowerEndEffector();
+   //  m_targetReached = m_endEffector->lowerEndEffector();
     // m_endEffector->moveEndEffector(true);
     // if (!m_timerSet) {
     //     m_waitCommand->Initialize();

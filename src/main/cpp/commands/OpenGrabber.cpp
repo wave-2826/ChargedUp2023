@@ -13,18 +13,18 @@ OpenGrabber::OpenGrabber(EndEffector* endEffector)
 void OpenGrabber::Initialize() 
 {
     m_targetReached = false;
-    m_endEffector->setGrabber(true);
+    // m_endEffector->setGrabber(true);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void OpenGrabber::Execute() 
 {
     // std::cout << "EXECUTE grabber - WAIT: " << m_waitCommand->IsFinished() << std::endl;
-    if (!m_timerSet) {
-        m_endEffector->setGrabber(true);
-        m_timerSet = true; 
-    }
-    m_targetReached = m_endEffector->openGrabber();
+    // if (!m_timerSet) {
+    //     m_endEffector->setGrabber(true);
+    //     m_timerSet = true; 
+    // }
+    // // m_targetReached = m_endEffector->openGrabber();
 }
 
 // Make this return true when this Command no longer needs to run execute()

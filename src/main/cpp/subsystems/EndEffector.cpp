@@ -13,7 +13,7 @@
 #include <iostream>
 #include "subsystems/EndEffector.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-
+#include "Globals.h"
 #include "RobotContainer.h"
 
 EndEffector::EndEffector()
@@ -24,81 +24,17 @@ EndEffector::EndEffector()
     m_endEffectorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
     m_endEffectorMotor->SetInverted(true);
 
-    m_compressor = new frc::Compressor(k_pneumaticHub, frc::PneumaticsModuleType::REVPH);
-    m_pneumaticHub.EnableCompressorAnalog(units::pressure::pounds_per_square_inch_t(90), 
-                                          units::pressure::pounds_per_square_inch_t(110));
 }
 
 // Put code here to be run every loop
 void EndEffector::Periodic() 
 { 
-    double endEffectorRollerCmd = m_operatorJoystick->GetLeftY();
-
-    if(k_jsDeadband > std::fabs(endEffectorRollerCmd)) 
-    {
-        endEffectorRollerCmd = 0;
-    } 
-
-    setEndEffectorRoller(endEffectorRollerCmd * k_endEffectorSpeedFactor);
- 
-    if (m_operatorJoystick->GetRightTriggerAxis() > 0.5) 
-    {
-        setGrabber(true);
-        openGrabber();
-    }
-    else 
-    {
-        closeGrabber();
-    }
-
-
-    double endEffectorCmd = m_operatorJoystick->GetLeftTriggerAxis();
-    switch(m_endEffectorFunction)
-    {
-        case EF_Off:
-        default:
-            if(0.5 < endEffectorCmd)
-            {
-                m_endEffectorTimer = ONE_SECOND;
-                if(!m_endEffectorSolenoid.Get())
-                {
-                    // Solenoid is not active (EndEffector Up)
-                    m_endEffectorFunction = EF_Down;
-                }
-                else
-                {
-                    m_endEffectorFunction = EF_Up;
-                }
-            }
-            break;
-        case EF_Up:
-            if(raiseEndEffector())
-            {
-                if(0.2 > endEffectorCmd)
-                {
-                    m_endEffectorFunction = EF_Off;
-                }
-            }
-            break;
-        case EF_Down:
-            if(lowerEndEffector())
-            {
-                if(0.2 > endEffectorCmd)
-                {
-                    m_endEffectorFunction = EF_Off;
-                }
-            }
-            break;
-    }
-
-    std::cout << "EFCmd: " << endEffectorCmd << "; Function: " << m_endEffectorFunction << std::endl;
+    runEndEffector();
 }    
 
 void EndEffector::Initialize() 
 {
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
-    m_openGrabber = false;
-    m_grabberTimer = (uint16_t)ONE_SECOND;
     m_endEffectorTimer = (uint16_t)ONE_SECOND;
 }
 
@@ -106,113 +42,41 @@ void EndEffector::Initialize()
 void EndEffector::SimulationPeriodic() {}
 
 //////////////// endEffector operation ////////////////////
-bool EndEffector::raiseEndEffector()
-{
-    if(m_endEffectorTimer)
-    {
-        --m_endEffectorTimer;
-    }
-    m_endEffectorSolenoid.Set(false);
-    if(k_endEffectorActiveTime < m_endEffectorTimer)
-    {
-        return true;
-    }
 
-    return false;
+void EndEffector::runEndEffector()
+{
+    double endEffectorRollerIn = m_operatorJoystick->GetRightTriggerAxis();
+    double endEffectorRollerOut = m_operatorJoystick->GetLeftTriggerAxis();
+    double endEffectorSpeed = 0.0;
+
+    if(endEffectorRollerIn > k_jsDeadband)
+    {
+        if (m_isCone)
+        {
+            endEffectorSpeed = endEffectorRollerIn;
+        }
+        else
+        {
+            endEffectorSpeed = -endEffectorRollerIn; 
+        }
+    }
+    else if (endEffectorRollerOut > k_jsDeadband)
+    {
+        if (m_isCone)
+        {
+            endEffectorSpeed = -endEffectorRollerOut;
+        }
+        else
+        {
+            endEffectorSpeed = endEffectorRollerOut; 
+        }
+    }
+    setRoller(endEffectorSpeed);
 }
 
-bool EndEffector::lowerEndEffector()
-{
-    if(m_endEffectorTimer)
-    {
-        --m_endEffectorTimer;
-    }
-    m_endEffectorSolenoid.Set(true);
-
-    if(k_endEffectorActiveTime < m_endEffectorTimer)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-void EndEffector::setEndEffectorRoller(double speed) 
+void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed);
 }
 
-// Normally closed (true = open)
-void EndEffector::setGrabber(bool open)
-{
-    m_openGrabber = open;
-    m_grabberTimer = k_grabberActiveTime;
-}
-
-bool EndEffector::openGrabber()
-{
-    if(m_grabberTimer) 
-    {
-        --m_grabberTimer;
-    }
-    // Open the grabber
-    m_endEffectorGrabberSolenoid.Set(true);
-    if(m_grabberTimer == 0)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-bool EndEffector::closeGrabber()
-{
-    if(m_grabberTimer) 
-    {
-        --m_grabberTimer;
-    }
-
-    m_endEffectorGrabberSolenoid.Set(false);
-    if(m_grabberTimer == 0)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-// void EndEffector::runEndEffector() 
-// {
-//     int endEffectorCmd = m_operatorJoystick->GetPOV();
-//     switch(m_endEffectorFunction)    
-//     {
-//         case EF_Up:
-//         default:
-//             // EndEffectorUp, turn off the output
-//             // std::cout << "end effector - UP" << std::endl;
-//             moveEndEffector(false);
-
-//             // EndEffector can go down only if the Elevator is above Human Station level
-//             if(180 == endEffectorCmd) // && (k_elevatorHumanStation < m_elevatorPosition))
-//             {
-//                 m_endEffectorFunction = EF_Down;
-//             }
-//             break;
-//         case EF_Down:
-//             // EndEffector Down, turn on the output
-//             moveEndEffector(true);
-//             // std::cout << "end effector - DOWN" << std::endl;
-
-//             if(0 == endEffectorCmd)// || (k_elevatorHumanStation > m_elevatorPosition))
-//             {
-//                 m_endEffectorFunction = EF_Up;
-//             }
-//             break;
-//     }
-
-    // #ifdef _TESTELEVATOR
-    // std::cout << "EFCmd: " << endEffectorCmd << "; Function: " << m_endEffectorFunction << std::endl;
-    // #endif
-
-    /////////////// End Effector Operation ///////////////////
 

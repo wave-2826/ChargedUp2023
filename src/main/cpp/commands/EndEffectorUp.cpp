@@ -22,7 +22,7 @@ void EndEffectorUp::Initialize()
 // Called repeatedly when this Command is scheduled to run
 void EndEffectorUp::Execute() 
 {
-    m_targetReached = m_endEffector->raiseEndEffector();
+   // m_targetReached = m_endEffector->raiseEndEffector();
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -18,45 +18,10 @@
 #include <frc/XboxController.h>
 #include <rev/SparkMaxRelativeEncoder.h>
 #include <rev/CANSparkMax.h>
-#include<rev/CANSparkMaxLowLevel.h>
+#include <rev/CANSparkMaxLowLevel.h>
 // #include "frc2/command/PIDSubsystem.h"
-#include "frc/PneumaticHub.h"
-#include "frc/Solenoid.h"
-#include "frc/Compressor.h"
 
 #include "Globals.h"
-
-// // Elevator functions used to deploy the elevator in auto mode
-// typedef enum 
-// {
-//     Elevator_Off,
-//     // Deploy elevator to a target
-//     Elevator_Deploy,
-//     Elevator_Hold
-// } ElevatorFunction;
-
-// // Steps to stow Elevator
-// typedef enum
-// {
-//     Stow_Off,
-//     Stow_EndEffectorUp,
-//     Stow_RetractElevator,
-//     Stow_Finish
-// } StowState;
-
-// EndEffector functions
-typedef enum
-{
-    EF_Off,
-    EF_Up,
-    EF_Down
-} EndEffectorFunction;
-
-typedef enum
-{
-    Grabber_Close,
-    Grabber_Open
-} GrabberFunction;
 
 /**
  * Elevator class shall be used to extend and retract the elevator. 
@@ -66,45 +31,24 @@ typedef enum
 */
 class EndEffector: public frc2::SubsystemBase {
 private:
-    frc::PneumaticHub m_pneumaticHub{k_pneumaticHub};
-    frc::Compressor *m_compressor;
-
-    // EndEffector solenoid to move up. Spring to down
-    frc::Solenoid m_endEffectorSolenoid = m_pneumaticHub.MakeSolenoid(k_endEffectorOut);
-
-    // EndEffector grabber solenoid to grab and release the cone
-    frc::Solenoid m_endEffectorGrabberSolenoid = m_pneumaticHub.MakeSolenoid(k_endEffectorGrabber);
-
+  
     // The motor controller for the EndEffector intake motor
     rev::CANSparkMax *m_endEffectorMotor;
 
     // Pointer to the operator controller
     frc::XboxController *m_operatorJoystick;
-    
-    EndEffectorFunction m_endEffectorFunction;
-
-    // GrabberFunction m_grabberFuction;
 
     // Scoring object flag. True when scoring with Cone
     bool m_isCone;
 
-    // Set to true to open the grabber
-    bool m_openGrabber;
-
     uint16_t m_endEffectorTimer;
 
-    // Timer to keep the grabber open
-    uint16_t m_grabberTimer;
-
-    // uint16_t m_grabberOpenTime;
-    
     // Command speed to the endEffector motor if speed is within range.
     void setEndEffectorRoller(double speed);
 
     // Constants used for Elevator functions
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
     static constexpr const uint16_t k_endEffectorActiveTime = ONE_SECOND;
-    static constexpr const uint16_t k_grabberActiveTime = ONE_SECOND;
 
 public:
     EndEffector();
@@ -116,7 +60,8 @@ public:
     void Initialize();
 
     // Elevator EndEffector operations.
-    // void runEndEffector();
+    void runEndEffector();
+    void setRoller(double speed);
 
     void setGrabber(bool open);
     // bool moveGrabber(bool open);
@@ -127,5 +72,4 @@ public:
 
     bool lowerEndEffector();
     bool raiseEndEffector();
-
 };
