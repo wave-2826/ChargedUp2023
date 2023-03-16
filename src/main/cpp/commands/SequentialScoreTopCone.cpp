@@ -5,6 +5,7 @@
 #include "commands/OpenGrabber.h"
 #include "commands/StowElevator.h"
 #include "commands/EndEffectorUp.h"
+#include "commands/ElevatorHold.h"
 
 SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, EndEffector* endEffector)
 : m_elevator(elevator), m_endEffector(endEffector)
@@ -16,13 +17,12 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, EndEffector* 
         frc2::SequentialCommandGroup (
             // place cone (top)
             ExtendElevatorTopCone(m_elevator),
-            EndEffectorDown(m_endEffector),
-            // open grabber
-            OpenGrabber(m_endEffector),
-
+            frc2::ParallelCommandGroup (
+                ElevatorHold(m_elevator),
+                EndEffectorDown(m_endEffector)
+            ),          
             // stow sequence
             StowElevator(m_elevator)
-            // EndEffectorUp(m_endEffector)
         )
     );
 }

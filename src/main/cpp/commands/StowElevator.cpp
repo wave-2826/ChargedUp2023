@@ -26,8 +26,6 @@ void StowElevator::Execute()
 // Make this return true when this Command no longer needs to run execute()
 bool StowElevator::IsFinished() 
 {
-    if (m_targetReached)
-        // std::cout << "Elevator Stowed" << std::endl;
     return m_targetReached;
 }
 

@@ -114,7 +114,7 @@ private:
     double k_rampPerLoop = 0.005;
 
     static constexpr const double k_PFine = 0.1;
-    static constexpr const double k_IFine = 0.1;
+    static constexpr const double k_IFine = 0.5;
     static constexpr const double k_DFine = 0.0;
 
     static constexpr const double k_fineLimit = 0.0;
@@ -166,4 +166,5 @@ public:
     bool moveElevatorToTargetManual(double target);
     bool stowElevator();
     bool stowElevatorAuto();
+    void holdElevator();
 };

@@ -93,10 +93,10 @@ void Elevator::setStowTarget()
 
 void Elevator::updateValues()
 {
-    k_P = frc::SmartDashboard::GetNumber("Elevator P", 4.0);
-    k_I = frc::SmartDashboard::GetNumber("Elevator I", 0.0);
-    k_D = frc::SmartDashboard::GetNumber("Elevator D", 1.0);
-    k_rampPerLoop = frc::SmartDashboard::GetNumber("Elevator Ramp", 0.05);
+    k_P = frc::SmartDashboard::GetNumber("Elevator P", 0.5);
+    k_I = frc::SmartDashboard::GetNumber("Elevator I", 5.0);
+    k_D = frc::SmartDashboard::GetNumber("Elevator D", 0.1);
+    k_rampPerLoop = frc::SmartDashboard::GetNumber("Elevator Ramp", 0.005);
 }
 
 double Elevator::getElevatorPosition() 
@@ -129,6 +129,11 @@ void Elevator::setElevator(double speed)
     std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   isCone: " << m_isCone << std::endl;
 }
 
+void Elevator::holdElevator()
+{
+    setElevator(k_elevatorHoldSpeed);
+}
+
 // Put code here to be run every loop
 void Elevator::Periodic() 
 { 
@@ -153,7 +158,7 @@ void Elevator::Periodic()
 
     }
 
-    std::cout << "Kp: " << m_elevatorPID->GetP() << "  Ki: " << m_elevatorPID->GetI() << "  Kd: " << m_elevatorPID->GetD() << "  Fine: " << m_fineLimit << std::endl;
+    // std::cout << "Kp: " << m_elevatorPID->GetP() << "  Ki: " << m_elevatorPID->GetI() << "  Kd: " << m_elevatorPID->GetD() << "  Fine: " << m_fineLimit << std::endl;
 }    
 
 void Elevator::Initialize() 
@@ -255,15 +260,24 @@ void Elevator::runElevator()
                 break;
 
             case Elevator_Deploy:
-                if(moveToCurrentTarget())
+                if(m_isStowing)
                 {
-                    if(!m_isStowing)
+                    if(stowElevatorAuto())
+                    {
+                        m_elevatorFunction = Elevator_Off;
+                        m_isStowing = false;
+                    }
+                }
+                else
+                {
+                    if(moveToCurrentTarget())
                     {
                         m_elevatorFunction = Elevator_Hold;
                     }
                 }
                 break;
             case Elevator_Hold:
+                m_elevatorPID->Reset();
                 setElevator(k_elevatorHoldSpeed);
                 break;
         }
@@ -332,10 +346,10 @@ bool Elevator::moveElevatorToTargetManual(double target)
 {
     bool retVal = false;
     double speedCmd = 0.0;
-    const double k_manualElevatorCmd = 0.075; 
+    const double k_manualElevatorCmd = 0.2; 
     double delta = std::fabs(target - m_elevatorPosition);
 
-    if(k_delta < delta)
+    if(4.0 <= delta)
     {
         // Move the Elevator
         if(target > m_elevatorPosition)
@@ -347,6 +361,20 @@ bool Elevator::moveElevatorToTargetManual(double target)
         {
             // Need to retract the elevator
             speedCmd = -k_manualElevatorCmd;
+        }
+    }
+    else if(0.1 <= delta)
+    {
+        // Move the Elevator
+        if(target > m_elevatorPosition)
+        {
+            // Need to extend the elevator
+            speedCmd = k_manualElevatorCmd/2.0;
+        }
+        else if(target < m_elevatorPosition)
+        {
+            // Need to retract the elevator
+            speedCmd = -k_manualElevatorCmd/2.0;
         }
     }
     else

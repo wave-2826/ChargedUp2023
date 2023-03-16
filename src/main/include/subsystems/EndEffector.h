@@ -54,6 +54,9 @@ private:
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
     static constexpr const uint16_t k_endEffectorActiveTime = ONE_SECOND;
 
+    bool m_coneOut;
+    uint16_t m_coneOutTimer;
+
 public:
     EndEffector();
 
@@ -66,6 +69,15 @@ public:
     // Elevator EndEffector operations.
     void runEndEffector();
     void setRoller(double speed);
+
+    bool rollerOut();
+
+    void setConeOut();
+
+
+
+
+
 
     void setGrabber(bool open);
     // bool moveGrabber(bool open);

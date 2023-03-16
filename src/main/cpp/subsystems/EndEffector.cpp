@@ -56,6 +56,13 @@ void EndEffector::Periodic()
         m_coneLED->Set(false);
         m_cubeLED->Set(true); 
     }
+
+
+    // Auto operations
+    if(m_coneOut)
+    {
+        
+    }
 }    
 
 void EndEffector::Initialize() 
@@ -99,11 +106,36 @@ void EndEffector::runEndEffector()
         }
     }
     setRoller(endEffectorSpeed);
+
 }
 
 void EndEffector::setRoller(double speed)
 {
-    m_endEffectorMotor->Set(speed);
+    m_endEffectorMotor->Set(speed); 
+    
+    std::cout << "Cone: " << m_isCone << " Speed: " << speed << std::endl;
+
 }
 
 
+bool EndEffector::rollerOut()
+{
+    const double speedCmd = -0.5;
+    if(m_coneOut)
+    {
+        m_coneOutTimer++;
+        setRoller(speedCmd);
+        if(m_coneOutTimer > ONE_SECOND*2)
+        {
+            m_coneOut = false;
+            return true;
+        }
+    }
+    return false;
+}
+
+void EndEffector::setConeOut()
+{
+    m_coneOutTimer = 0;
+    m_coneOut = true;
+}
