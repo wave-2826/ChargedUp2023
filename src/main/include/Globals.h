@@ -47,6 +47,13 @@ int const k_pneumaticHub =              8;
 // Motor constants
 double const max_motor_temp =           90.0;
 
+// LED channel constants
+int const k_coneLED =              5;
+int const k_cubeLED =              6;
+int const k_alignedLED =           7;
+int const k_redLED =               8;
+int const k_blueLED =              9;
+
 typedef enum 
 {
     RIGHT_POD,
