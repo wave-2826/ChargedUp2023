@@ -11,53 +11,54 @@
 // ROBOTBUILDER TYPE: Command.
 
 #include <iostream>
-#include "commands/EndEffectorDown.h"
-#include "commands/WaveWaitCommand.h"
+#include "commands/ElevatorHold.h"
 
-EndEffectorDown::EndEffectorDown(EndEffector* endEffector)
-: m_endEffector(endEffector), m_targetReached(false)
+ElevatorHold::ElevatorHold(Elevator* elevator)
+: m_elevator(elevator), m_targetReached(false), m_timerSet(false)
 {
 
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
-    SetName("EndEffectorDown");
-    AddRequirements({m_endEffector});
+    SetName("ElevatorHold");
+    AddRequirements({m_elevator});
 }
 
 // Called just before this Command runs the first time
-void EndEffectorDown::Initialize() 
+void ElevatorHold::Initialize() 
 {
     m_targetReached = false;
     m_timerSet = false;
+    m_timer = 0;
 }
 
 // Called repeatedly when this Command is scheduled to run
-void EndEffectorDown::Execute() 
+void ElevatorHold::Execute() 
 {
     if(!m_timerSet)
     {
-        m_endEffector->setConeOut();
+        m_timer = 0;
+        m_elevator->holdElevator();
         m_timerSet = true;
     }
-
-    m_targetReached = m_endEffector->rollerOut();
+    m_timer++;
+    m_targetReached = (m_timer > TWO_SECONDS);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool EndEffectorDown::IsFinished() 
+bool ElevatorHold::IsFinished() 
 {
     return m_targetReached;
 }
 
 // Called once after isFinished returns true
-void EndEffectorDown::End(bool interrupted) 
+void ElevatorHold::End(bool interrupted) 
 {
-    std::cout << "END - End Effector down" << std::endl;
     m_targetReached = false;
     m_timerSet = false;
+    m_timer = 0;
 }
 
-bool EndEffectorDown::RunsWhenDisabled() const 
+bool ElevatorHold::RunsWhenDisabled() const 
 {
     return false;
 }
