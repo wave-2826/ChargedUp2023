@@ -17,8 +17,9 @@
 #include <frc2/command/CommandBase.h>
 #include "subsystems/Elevator.h"
 #include "subsystems/EndEffector.h"
-#include "frc2/command/SequentialCommandGroup.h"
+#include "subsystems/SwerveDrive.h"
 #include "frc2/command/ParallelCommandGroup.h"
+#include <frc2/command/SequentialCommandGroup.h>
 
 /**
  *
@@ -26,17 +27,16 @@
  * @author ExampleAuthor
  */
 class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-// class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
 SequentialScoreMidCone>{
 public:
 
-    explicit SequentialScoreMidCone(Elevator* elevator, EndEffector* endEffector);
+    explicit SequentialScoreMidCone(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector);
 
     bool RunsWhenDisabled() const override;
 
 private:
 
     Elevator* m_elevator;
+    SwerveDrive* m_drive;
     EndEffector* m_endEffector;
 };
-

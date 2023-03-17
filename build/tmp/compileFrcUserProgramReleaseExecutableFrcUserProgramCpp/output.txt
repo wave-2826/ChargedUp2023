@@ -1,11 +1,25 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
 compiling AutoBalance.cpp successful.
 
+compiling DriveHeading.cpp successful.
+
+compiling ExtendElevatorMidCone.cpp successful.
+
+compiling ExtendElevatorTopCone.cpp successful.
+
 compiling DriveTimed.cpp successful.
+
+compiling ElevatorHold.cpp successful.
+
+compiling ScoreConeTop.cpp successful.
 
 compiling ScoreConeMid.cpp successful.
 
-compiling DriveHeading.cpp successful.
+compiling StowElevator.cpp successful.
+
+compiling SequentialScoreTopCone.cpp successful.
+
+compiling SwerveInitializeCommand.cpp successful.
 
 compiling Robot.cpp successful.
 
@@ -15,7 +29,7 @@ compiling Elevator.cpp successful.
 
 compiling EndEffector.cpp successful.
 
-compiling SwerveInitializeCommand.cpp successful.
+compiling SequentialScoreMidCone.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

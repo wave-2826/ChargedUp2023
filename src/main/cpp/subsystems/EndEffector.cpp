@@ -48,12 +48,6 @@ void EndEffector::Periodic()
         m_cubeLED->Set(true); 
     }
 
-
-    // Auto operations
-    if(m_coneOut)
-    {
-        
-    }
 }    
 
 void EndEffector::Initialize() 
@@ -69,8 +63,8 @@ void EndEffector::SimulationPeriodic() {}
 
 void EndEffector::runEndEffector()
 {
-    double endEffectorRollerIn = m_operatorJoystick->GetRightTriggerAxis();
-    double endEffectorRollerOut = m_operatorJoystick->GetLeftTriggerAxis();
+    double endEffectorRollerIn = m_operatorJoystick->GetLeftTriggerAxis();
+    double endEffectorRollerOut = m_operatorJoystick->GetRightTriggerAxis();
     double endEffectorSpeed = 0.0;
 
     if(endEffectorRollerIn > k_jsDeadband)
@@ -81,7 +75,7 @@ void EndEffector::runEndEffector()
         }
         else
         {
-            endEffectorSpeed = -endEffectorRollerIn; 
+            endEffectorSpeed = -endEffectorRollerIn*0.5; 
         }
     }
     else if (endEffectorRollerOut > k_jsDeadband)
@@ -92,7 +86,7 @@ void EndEffector::runEndEffector()
         }
         else
         {
-            endEffectorSpeed = endEffectorRollerOut; 
+            endEffectorSpeed = endEffectorRollerOut*0.5; 
         }
     }
     setRoller(endEffectorSpeed);
@@ -103,19 +97,19 @@ void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed); 
     
-    std::cout << "Cone: " << m_isCone << " Speed: " << speed << std::endl;
+    // std::cout << "Cone: " << m_isCone << " Speed: " << speed << std::endl;
 
 }
 
 
 bool EndEffector::rollerOut()
 {
-    const double speedCmd = -0.5;
+    const double speedCmd = 0.5;
     if(m_coneOut)
     {
         m_coneOutTimer++;
         setRoller(speedCmd);
-        if(m_coneOutTimer > ONE_SECOND*2)
+        if(m_coneOutTimer > ONE_SECOND*0.5)
         {
             m_coneOut = false;
             return true;

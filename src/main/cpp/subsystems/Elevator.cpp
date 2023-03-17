@@ -80,7 +80,14 @@ void Elevator::setMidCubeTarget()
 
 void Elevator::setHumanStationTarget()
 {
-    m_elevatorTarget = k_elevatorHumanStation;
+    if(m_isCone)
+    {
+        m_elevatorTarget = k_elevatorHumanStationCone;
+    }
+    else
+    {
+        m_elevatorTarget = k_elevatorHumanStationCube;
+    }
     m_targetSet = true;
 }
 
@@ -303,7 +310,7 @@ bool Elevator::moveToCurrentTarget()
     }
 
     double pidOut = getPIDSpeed(m_elevatorPID->Calculate(m_elevatorPosition, m_elevatorTarget));
-    std::cout << "PID Out: " << pidOut << std::endl;
+    // std::cout << "PID Out: " << pidOut << std::endl;
 
     if(k_delta < delta)
     {

@@ -1,6 +1,5 @@
-
-#include "commands/SequentialScoreTopCone.h"
-#include "commands/ExtendElevatorTopCone.h"
+#include "commands/SequentialScoreMidCone.h"
+#include "commands/ExtendElevatorMidCone.h"
 #include "commands/EndEffectorDown.h"
 #include "commands/OpenGrabber.h"
 #include "commands/StowElevator.h"
@@ -8,16 +7,16 @@
 #include "commands/ElevatorHold.h"
 #include "commands/DriveTimed.h"
 
-SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector)
+SequentialScoreMidCone::SequentialScoreMidCone(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector)
 : m_elevator(elevator), m_drive(drive), m_endEffector(endEffector)
 {
-    SetName("SequentialScoreTopCone");
+    SetName("SequentialScoreMidCone");
     AddRequirements({m_elevator});
 
     AddCommands(
         frc2::SequentialCommandGroup (
             // place cone (top)
-            ExtendElevatorTopCone(m_elevator),
+            ExtendElevatorMidCone(m_elevator),
             frc2::ParallelCommandGroup (
                 ElevatorHold(m_elevator),
                 EndEffectorDown(m_endEffector)
@@ -29,4 +28,4 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, SwerveDrive* 
     );
 }
 
-bool SequentialScoreTopCone::RunsWhenDisabled() const { return false; }
+bool SequentialScoreMidCone::RunsWhenDisabled() const { return false; }
