@@ -24,13 +24,22 @@ EndEffector::EndEffector()
     m_endEffectorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
     m_endEffectorMotor->SetInverted(true);
 
-    m_coneLED = new frc::DigitalOutput(5);
-    m_cubeLED = new frc::DigitalOutput(6);
+    m_coneLED = new frc::DigitalOutput(k_coneLED);
+    m_cubeLED = new frc::DigitalOutput(k_cubeLED);
+    m_alignedLED = new frc::DigitalOutput(k_alignedLED);
 }
 
 // Put code here to be run every loop
 void EndEffector::Periodic() 
 { 
+    if (m_allianceLEDID == -1)
+    {
+        bool isRed = frc::SmartDashboard::GetBoolean("FMSInfo/IsRedAlliance", false);
+        m_allianceLEDID = isRed ? k_redLED : k_blueLED;
+        m_allianceLED = new frc::DigitalOutput(m_allianceLEDID);
+        m_allianceLED->Set(true);
+    }
+    
     runEndEffector();
 
     // Check cone or cube
@@ -52,6 +61,7 @@ void EndEffector::Periodic()
 
 void EndEffector::Initialize() 
 {
+    m_allianceLEDID = -1;
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
     m_endEffectorTimer = (uint16_t)ONE_SECOND;
 }

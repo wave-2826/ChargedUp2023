@@ -41,11 +41,9 @@ private:
     // LED
     frc::DigitalOutput *m_coneLED;
     frc::DigitalOutput *m_cubeLED;
-    // frc::DigitalOutput::DigitalOutput m_coneLED{5}
-    // frc::DigitalOutput::DigitalOutput m_cubeLED{6}
-    // frc::DigitalOutput m_coneLED{7};
-    // frc::DigitalOutput m_coneLED{8};
-    // frc::DigitalOutput m_coneLED{9};
+    frc::DigitalOutput *m_alignedLED;//{k_alignedLED};
+    frc::DigitalOutput *m_allianceLED;
+    int m_allianceLEDID = -1;
 
     uint16_t m_endEffectorTimer;
 

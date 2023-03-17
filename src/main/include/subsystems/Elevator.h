@@ -109,7 +109,7 @@ private:
     // Tuning PID values
     double k_P = 0.15;
     double k_I = 5.0;
-    double k_D = 0.1;
+    double k_D = 0.05;
     double k_delta = 1.0;
     double k_rampPerLoop = 0.005;
 

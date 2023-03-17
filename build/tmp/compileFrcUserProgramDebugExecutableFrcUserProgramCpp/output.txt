@@ -19,7 +19,7 @@ compiling SwerveInitializeCommand.cpp successful.
 
 compiling SequentialScoreTopCone.cpp successful.
 
-compiling Elevator.cpp successful.
+compiling ScoreConeMid.cpp successful.
 
 compiling Robot.cpp successful.
 
@@ -30,6 +30,8 @@ compiling ScoreConeTop.cpp successful.
 compiling EndEffector.cpp successful.
 
 compiling ScoreConeMid.cpp successful.
+
+compiling EndEffector.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 
