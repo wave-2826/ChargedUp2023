@@ -1,29 +1,29 @@
 See file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling DriveTimed.cpp successful.
-
 compiling DriveHeading.cpp successful.
+
+compiling DriveToChargingStation.cpp successful.
+
+compiling DriveTimed.cpp successful.
 
 compiling AutoBalance.cpp successful.
 
 compiling ScoreConeMid.cpp successful.
 
-compiling SequentialScoreMidCone.cpp successful.
+compiling SequentialAutoBalance.cpp successful.
 
 compiling SequentialScoreTopCone.cpp successful.
 
-compiling RobotContainer.cpp successful.
-
-compiling EndEffector.cpp failed.
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\EndEffector.cpp: In member function 'void EndEffector::Initialize()':
-C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\EndEffector.cpp:79:26: error: 'RobotContainer' has not been declared
-   79 |     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
-      |                          ^~~~~~~~~~~~~~
-
 compiling SwerveInitializeCommand.cpp successful.
+
+compiling EndEffector.cpp successful.
 
 compiling Elevator.cpp successful.
 
 compiling Robot.cpp successful.
+
+compiling RobotContainer.cpp successful.
+
+compiling SequentialScoreMidCone.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

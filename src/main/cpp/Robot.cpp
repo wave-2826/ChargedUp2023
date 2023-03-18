@@ -140,7 +140,7 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
-  fileOut = fopen("/home/lvuser/swerve-test.txt", "a");
+  fileOut = fopen("/home/lvuser/swerve-test.txt", "w");
 }
 
 double Joystick(double input, double deadzone) 
@@ -191,6 +191,7 @@ void Robot::TeleopPeriodic()
   m_dPadValueLastFrame = dPadValue;
 
   std::string driveCase = "NONE";
+  double fileOutputs[6];
 
   if (!lockSwerve) 
   {
@@ -202,14 +203,7 @@ void Robot::TeleopPeriodic()
     {
       // joystick inputs for swerve - NO scaling / ramp
       driveCase = "Drive No Scaling";
-      double PP[6];
-      m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX, PP);
-      for (int i = 0; i < 6; i++) {
-        fputs(std::to_string(PP[i]).c_str(), fileOut);
-        fputs(" ", fileOut);
-        // std::cout << std::to_string(PP[i]).c_str() << " " << std::endl;
-      }
-      fputs("\n", fileOut);
+      m_container->m_swerveDrive.DrivePods(targetJoystickLX, targetJoystickLY, targetJoystickRX, fileOutputs);
       // std::cout << std::endl;
     }
     else if (initialSwerveState) 
@@ -237,22 +231,22 @@ void Robot::TeleopPeriodic()
       if (dPadValue == 0)
       {
         // forward
-        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0, nullptr);
+        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0, fileOutputs);
       } else if (dPadValue == 180)
       {
         // backward
-        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0, nullptr);
+        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0, fileOutputs);
       } else if (dPadValue == 90) {
         // right
-        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0, nullptr);
+        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0, fileOutputs);
       } else if (dPadValue == 270) {
         // left
-        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0, nullptr);
+        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0, fileOutputs);
       }
     }
     else {
       driveCase = "STOPPED";
-      m_container->m_swerveDrive.DrivePods(0,0,0,nullptr);
+      m_container->m_swerveDrive.DrivePods(0,0,0,fileOutputs);
     }
 
   } 
@@ -264,6 +258,12 @@ void Robot::TeleopPeriodic()
   }
   // std::cout << "CASE: " << driveCase << "  LX: " << targetJoystickLX << "     " << "LY: " << targetJoystickLY << "     " << "RX: " << targetJoystickRX << std::endl;
   
+  for (int i = 0; i < 6; i++) {
+    fputs(std::to_string(fileOutputs[i]).c_str(), fileOut);
+    fputs(" ", fileOut);
+    // std::cout << std::to_string(fileOutputs[i]).c_str() << " " << std::endl;
+  }
+  fputs("\n", fileOut);
   
   // Elevator Operations
   m_container->m_elevator.runElevator();
