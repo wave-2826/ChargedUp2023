@@ -17,6 +17,7 @@
 #include "commands/ExtendElevatorMidCone.h"
 #include "commands/SequentialScoreTopCone.h"
 #include "commands/AutonomousCommand.h"
+#include "commands/AutoBalanceSwerve.h"
 
 RobotContainer* RobotContainer::m_robotContainer = NULL;
 
@@ -32,6 +33,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Elevator I", 5.0);
     frc::SmartDashboard::PutNumber("Elevator D", 0.05);
     frc::SmartDashboard::PutNumber("Elevator Ramp", 0.005);
+
+    // Smartdashboard Balance Swerve PID values
+    frc::SmartDashboard::PutNumber("Balance_P", 1.0);
+    frc::SmartDashboard::PutNumber("Balance_I", 5.0);
+    frc::SmartDashboard::PutNumber("Balance_D", 0.5);
+    frc::SmartDashboard::PutNumber("Balance_Delta", 2.0);
 
     // Smartdashboard Swerve Drive Offsets
     frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
@@ -75,7 +82,9 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
    
     m_chooser.AddOption("Drive Timed", new DriveTimed(&m_swerveDrive, 0.50, 0.0, 0.0, units::second_t(1.0)));
     m_chooser.AddOption("Auto Balance", new AutoBalance(&m_swerveDrive));
-    
+   
+    m_chooser.AddOption("Balance Swerve", new AutoBalanceSwerve(&m_swerveDrive));
+
     m_chooser.AddOption("Score Top Cone", new SequentialScoreTopCone(&m_elevator, &m_swerveDrive, &m_endEffector));
     m_chooser.AddOption("Score Mid Cone", new SequentialScoreMidCone(&m_elevator, &m_swerveDrive, &m_endEffector));
     // m_chooser.AddOption("Score Top Cone Backout", new ScoreTopConeBackout(&m_elevator, &m_swerveDrive));
