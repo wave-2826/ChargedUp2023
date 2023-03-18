@@ -170,7 +170,6 @@ void Elevator::Periodic()
 
 void Elevator::Initialize() 
 {
-    // setGrabber(false);
     m_elevatorEncoderA->SetPosition(0.0);
     m_elevatorEncoderB->SetPosition(0.0);
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();

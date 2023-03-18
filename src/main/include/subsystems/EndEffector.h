@@ -17,7 +17,8 @@
 #include <rev/SparkMaxRelativeEncoder.h>
 #include <rev/CANSparkMax.h>
 #include <rev/CANSparkMaxLowLevel.h>
-#include<frc/DigitalOutput.h>
+#include <frc/DigitalOutput.h>
+#include <frc/DigitalInput.h>
 #include "Globals.h"
 
 /**
@@ -41,11 +42,12 @@ private:
     // LED
     frc::DigitalOutput *m_coneLED;
     frc::DigitalOutput *m_cubeLED;
-    frc::DigitalOutput *m_alignedLED;//{k_alignedLED};
+    frc::DigitalOutput *m_alignedLED;
     frc::DigitalOutput *m_allianceLED;
     int m_allianceLEDID = -1;
 
-    uint16_t m_endEffectorTimer;
+    frc::DigitalInput *m_cubeSensor;
+    bool m_cubeDetected;
 
     // Command speed to the endEffector motor if speed is within range.
     void setEndEffectorRoller(double speed);
@@ -56,6 +58,7 @@ private:
 
     bool m_coneOut;
     uint16_t m_coneOutTimer;
+    uint16_t m_endEffectorTimer;
 
 public:
     EndEffector();
@@ -63,29 +66,14 @@ public:
     void Periodic() override;
     void SimulationPeriodic() override;
 
-    // Initialize Elevatorobject
     void Initialize();
 
     // Elevator EndEffector operations.
     void runEndEffector();
+
     void setRoller(double speed);
 
     bool rollerOut();
 
     void setConeOut();
-
-
-
-
-
-
-    void setGrabber(bool open);
-    // bool moveGrabber(bool open);
-    // void moveEndEffector(bool down);
-
-    bool openGrabber();
-    bool closeGrabber();
-
-    bool lowerEndEffector();
-    bool raiseEndEffector();
 };

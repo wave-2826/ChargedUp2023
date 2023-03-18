@@ -27,6 +27,8 @@ EndEffector::EndEffector()
     m_coneLED = new frc::DigitalOutput(k_coneLED);
     m_cubeLED = new frc::DigitalOutput(k_cubeLED);
     m_alignedLED = new frc::DigitalOutput(k_alignedLED);
+
+    m_cubeSensor = new frc::DigitalInput(k_cubeSense);
 }
 
 // Put code here to be run every loop
@@ -55,6 +57,18 @@ void EndEffector::Periodic()
         m_isCone = false;
         m_coneLED->Set(false);
         m_cubeLED->Set(true); 
+    }
+
+    // Check the CUbe sensor
+    bool endEffectorOverride = m_operatorJoystick->GetRightBumper();
+    if(endEffectorOverride)
+    {
+        m_cubeDetected = false;
+    }
+    else
+    {
+        // Returns false when detected
+        m_cubeDetected = (false == m_cubeSensor->Get());
     }
 
 }    
@@ -96,19 +110,20 @@ void EndEffector::runEndEffector()
         }
         else
         {
-            endEffectorSpeed = endEffectorRollerOut*0.5; 
+            if(!m_cubeDetected)
+            {
+                endEffectorSpeed = endEffectorRollerOut*0.5; 
+            }
         }
     }
     setRoller(endEffectorSpeed);
-
 }
 
 void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed); 
     
-    // std::cout << "Cone: " << m_isCone << " Speed: " << speed << std::endl;
-
+    std::cout << "Cone: " << m_isCone << " Cube: " << m_cubeDetected << " Speed: " << speed << std::endl;
 }
 
 
@@ -119,7 +134,7 @@ bool EndEffector::rollerOut()
     {
         m_coneOutTimer++;
         setRoller(speedCmd);
-        if(m_coneOutTimer > ONE_SECOND*0.5)
+        if(m_coneOutTimer > ONE_SECOND)
         {
             m_coneOut = false;
             return true;

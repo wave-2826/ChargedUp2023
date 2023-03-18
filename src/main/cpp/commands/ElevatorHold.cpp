@@ -41,7 +41,7 @@ void ElevatorHold::Execute()
         m_timerSet = true;
     }
     m_timer++;
-    m_targetReached = (m_timer > TWO_SECONDS);
+    m_targetReached = (m_timer > ONE_SECOND);
 }
 
 // Make this return true when this Command no longer needs to run execute()

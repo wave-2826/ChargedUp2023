@@ -1,9 +1,7 @@
 #include "commands/SequentialScoreMidCone.h"
 #include "commands/ExtendElevatorMidCone.h"
 #include "commands/EndEffectorDown.h"
-#include "commands/OpenGrabber.h"
 #include "commands/StowElevator.h"
-#include "commands/EndEffectorUp.h"
 #include "commands/ElevatorHold.h"
 #include "commands/DriveTimed.h"
 

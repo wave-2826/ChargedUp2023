@@ -5,13 +5,11 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgra
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\2qtxrqcwne4zkkq001k7ahxs\\ExtendElevatorTopCone.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\2s6195xxtz9s1wpm1lz5gymqc\\CustomCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3fty9j32wipd6j30nsgdlmddn\\EndEffectorUp.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3ihf5dusj6zglk0wo615lai0m\\ScoreConeTop.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\45vqxio4pi9nbs4dcvmcpqo1r\\RobotContainer.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\4gjybek19j3sap9hk6k1iswrs\\StowElevator.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\4thua9hat0gea9vepalem5jhy\\EndEffectorDown.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5755hwy6zdvf3ckow229yxsu9\\SwerveInitializeCommand.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5a0c51r4p3nb0ns4i1sjlfsdy\\OpenGrabber.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6fcrwmqtq5sg0iihfjt67vp7r\\ElevatorHold.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6w9e30mzks111z3jlcfc141gi\\AutoBalance.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\76b1erbt8fr9r2w83wg4rkosr\\SequentialScoreMidCone.o

@@ -29,13 +29,9 @@
 #include "commands/SwerveInitializeCommand.h"
 #include "commands/SequentialScoreTopCone.h"
 #include "commands/SequentialScoreMidCone.h"
-// #include "commands/ScoreTopConeWithBalance.h"
-// #include "commands/ScoreMidConeWithBalance.h"
 #include "commands/AutoBalance.h"
 #include "commands/StowElevator.h"
 #include "commands/EndEffectorDown.h"
-#include "commands/EndEffectorUp.h"
-#include "commands/OpenGrabber.h"
 
 class RobotContainer {
 
