@@ -140,21 +140,6 @@ void Robot::TeleopInit() {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
   }
-  // auto t = std::time(nullptr);
-  // auto tm = *std::localtime(&t);
-  // auto filepath = "/home/lvuser/swerve-" + std::put_time(&tm, "%d-%m-%Y %H-%M-%S").str() + ".txt";
-  // auto time = std::chrono::system_clock::now();
-  // std::time_t t = std::chrono::system_clock::to_time_t(time);
-  // std::string ts = std::ctime(&t);
-  // ts.resize(ts.size()-1);
-  // auto timetypingpls = &ts;
-  
-  // std::string filepath = "/home/lvuser/swerve-" + std::rand(995298) + ".txt";
-  // std::string filepath = "/home/lvuser/swerve-";
-  // strcat(filepath, std::rand());
-  // strcat(filepath, ".txt");
-  // char* filepathfrtho = const_cast<char*>(filepath.c_str());
-  // fileOut = fopen(filepathfrtho, "a");
   fileOut = fopen("/home/lvuser/swerve-test.txt", "a");
 }
 

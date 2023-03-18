@@ -87,33 +87,37 @@ void EndEffector::SimulationPeriodic() {}
 
 void EndEffector::runEndEffector()
 {
-    double endEffectorRollerIn = m_operatorJoystick->GetLeftTriggerAxis();
-    double endEffectorRollerOut = m_operatorJoystick->GetRightTriggerAxis();
+    double endEffectorRollerIn = m_operatorJoystick->GetRightTriggerAxis();
+    double endEffectorRollerOut = m_operatorJoystick->GetLeftTriggerAxis();
     double endEffectorSpeed = 0.0;
 
     if(endEffectorRollerIn > k_jsDeadband)
     {
         if (m_isCone)
         {
-            endEffectorSpeed = endEffectorRollerIn;
+            std::cout << "IN - cone" << std::endl;
+            endEffectorSpeed = -endEffectorRollerIn;
         }
         else
         {
-            endEffectorSpeed = -endEffectorRollerIn*0.5; 
+            if(!m_cubeDetected)
+            {
+                std::cout << "IN - cube" << std::endl;
+                endEffectorSpeed = endEffectorRollerIn*0.5; 
+            }
         }
     }
     else if (endEffectorRollerOut > k_jsDeadband)
     {
         if (m_isCone)
         {
-            endEffectorSpeed = -endEffectorRollerOut;
+            std::cout << "OUT - cone" << std::endl;
+            endEffectorSpeed = endEffectorRollerOut;
         }
         else
         {
-            if(!m_cubeDetected)
-            {
-                endEffectorSpeed = endEffectorRollerOut*0.5; 
-            }
+            std::cout << "OUT - cube" << std::endl;
+            endEffectorSpeed = -endEffectorRollerOut*0.5; 
         }
     }
     setRoller(endEffectorSpeed);
