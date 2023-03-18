@@ -24,6 +24,7 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramC
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\df5z1tdmtprv1zl32nen6pmhk\\Vision.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhvnccgr6zcre49ouohilqty0\\WaveWaitCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhzd5z903pgpagpeamid8c3or\\ExtendElevatorMidCone.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dojpcz4abz8r8qjsqk7bngqih\\AutoBalanceSwerve.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dzgzahidgdpofmjyrrqjpwl8e\\DriveHeading.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\e0xclfgehbabwga92smk06hp9\\Intake.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\esafwn6bxe6r8ammt45i8qdwa\\Elevator.o
