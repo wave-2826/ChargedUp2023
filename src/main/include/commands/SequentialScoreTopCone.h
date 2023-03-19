@@ -10,7 +10,6 @@
 
 // ROBOTBUILDER TYPE: SequentialCommandGroup.
 
-
 #pragma once
 
 #include <frc2/command/CommandHelper.h>
@@ -22,22 +21,20 @@
 #include <frc2/command/SequentialCommandGroup.h>
 
 /**
+ * Autonomous command header file to score a cone on the top node
  *
- *
- * @author ExampleAuthor
+ * @author 2826WaveRobotics
  */
 class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-// class SequentialScoreTopCone: public frc2:: CommandHelper<frc2::ParallelCommandGroup,
 SequentialScoreTopCone>{
 public:
 
-    explicit SequentialScoreTopCone(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector);
+    explicit SequentialScoreTopCone(Elevator* elevator, EndEffector* endEffector);
 
     bool RunsWhenDisabled() const override;
 
 private:
 
     Elevator* m_elevator;
-    SwerveDrive* m_drive;
     EndEffector* m_endEffector;
 };

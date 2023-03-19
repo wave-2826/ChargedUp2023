@@ -384,7 +384,6 @@ void SwerveDrive::DrivePods(double move, double strafe, double rotation, double 
     // transforming from pure joystick input into chassisspeeds
     double transform = k_wheelCircumferenceMeters * k_gearRatioWheelSpeed * k_maxMotorSpeed;
 
- 
     // represents the velocity of the robot chassis
     // ChassisSpeeds struct represents a velocity w.r.t to the robot frame of reference
     // foward (LX) is considered the POINT

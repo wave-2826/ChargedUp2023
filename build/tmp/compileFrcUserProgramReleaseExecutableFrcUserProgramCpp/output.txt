@@ -3,29 +3,49 @@ compiling AutoBalance.cpp successful.
 
 compiling AutoBalanceSwerve.cpp successful.
 
-compiling DriveTimed.cpp successful.
+compiling AutonomousCommand.cpp successful.
 
-compiling DriveToChargingStation.cpp successful.
-
-compiling ScoreConeMid.cpp successful.
+compiling CustomCommand.cpp successful.
 
 compiling DriveHeading.cpp successful.
 
-compiling SequentialAutoBalance.cpp successful.
+compiling EndEffectorDown.cpp successful.
 
-compiling SequentialScoreTopCone.cpp successful.
+compiling ElevatorHold.cpp successful.
+
+compiling ExtendElevatorMidCone.cpp successful.
+
+compiling ExtendElevatorTopCone.cpp successful.
+
+compiling WaveWaitCommand.cpp successful.
+
+compiling StowElevator.cpp successful.
 
 compiling SwerveInitializeCommand.cpp successful.
 
+compiling ScoreMidConeBackout.cpp successful.
+
+compiling ScoreTopConeBackout.cpp successful.
+
+compiling SequentialScoreTopCone.cpp successful.
+
 compiling SequentialScoreMidCone.cpp successful.
 
-compiling Elevator.cpp successful.
+compiling Intake.cpp successful.
 
-compiling EndEffector.cpp successful.
+compiling Vision.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling SwervePod.cpp successful.
 
 compiling RobotContainer.cpp successful.
 
-compiling Robot.cpp successful.
+compiling EndEffector.cpp successful.
+
+compiling Elevator.cpp successful.
+
+compiling DriveTimed.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

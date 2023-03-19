@@ -65,7 +65,7 @@ class SwerveDrive: public frc2::SubsystemBase {
 
         // Swerve smartdashboard inputs - offsets
         double m_leftPodOffsetAngle = 278.0;
-        double m_rightPodOffsetAngle = 135.0;
+        double m_rightPodOffsetAngle = -45.0;
         double m_pointPodOffsetAngle = 183.0;
         double leftOffset;
         double rightOffset;

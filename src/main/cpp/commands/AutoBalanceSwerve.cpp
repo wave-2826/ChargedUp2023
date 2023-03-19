@@ -13,7 +13,7 @@
 #include "commands/AutoBalanceSwerve.h"
 #include "Globals.h"
 
-static const double k_multiplier = -1.5;
+static const double k_multiplier = 1.5;
 
 AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
                       : m_swerveDrive(swerveDrive)
@@ -22,7 +22,8 @@ AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
     SetName("AutoBalanceSwerve");
-    m_balanceState = Balance_Off;
+    m_balanceState = Balance_Rotate;
+    m_startingYaw = m_swerveDrive->GetRobotYaw();
 
     // Set default gains
     m_pGain = 1.0;
@@ -34,9 +35,10 @@ AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
 
 // Called just before this Command runs the first time
 void AutoBalanceSwerve::Initialize() {
-    m_balanceState = Balance_Off;
+    m_balanceState = Balance_Rotate;
     m_isBalanced = false;
     while (!m_swerveDrive->InitialSwerve());
+    m_startingYaw = m_swerveDrive->GetRobotYaw();
 }
 
 void AutoBalanceSwerve::updatePID(double p, double i, double d, double delta)
@@ -56,6 +58,8 @@ void AutoBalanceSwerve::Execute()
     double moveCmd = 0.0;
     double strafeCmd = 0.0;
     double rotCmd = 0.0;
+    double currentYaw = m_swerveDrive->GetRobotYaw();
+    double delta = std::fabs(m_startingYaw - currentYaw);
 
     switch(m_balanceState) 
     {
@@ -69,12 +73,26 @@ void AutoBalanceSwerve::Execute()
 
             // CASE: before charging station ramp drive straight   
             m_isBalanced = false; 
-            moveCmd = 0.5;        
-            if (robotPitch < -2.0) {
+            moveCmd = robotPitch < -2 ? 1.0 : 0.7;
+            if (robotPitch > 1.0)
+            {
                 m_balancePID->Reset();
                 m_balanceState = Balance_Active;
             }
-            std::cout << "BEFORE BALANCE" << std::endl;
+            break;
+        case Balance_Rotate:
+            if (delta < 160.0)
+            {
+                rotCmd = 0.3;
+            }
+            else if (delta < 178.0)
+            {
+                rotCmd = 0.05;
+            }
+            else
+            {
+                m_balanceState = Balance_Off;
+            }
             break;
         case Balance_Active:
             m_isBalanced = false;
@@ -107,16 +125,16 @@ void AutoBalanceSwerve::Execute()
     }
 
     m_swerveDrive->DrivePods(strafeCmd, moveCmd, rotCmd, nullptr);
-    std::cout << "PITCH: " << robotPitch << " Move: " << moveCmd << std::endl;
+    std::cout << "State: " << m_balanceState << " PITCH: " << robotPitch << " Move: " << moveCmd << std::endl;
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoBalanceSwerve::IsFinished() {
     // m_swerveDrive->DrivePods(0, 0, 0);
     // return false;
-    std::cout << "IS FINISHED: " << m_isBalanced << std::endl;
     if (m_isBalanced) {
         m_swerveDrive->DrivePods(0, 0, 0, nullptr);
+        std::cout << "IS FINISHED: " << m_isBalanced << std::endl;
     }
     return m_isBalanced;
 }

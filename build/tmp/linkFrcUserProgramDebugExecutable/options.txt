@@ -5,7 +5,6 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramC
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\2qtxrqcwne4zkkq001k7ahxs\\ExtendElevatorTopCone.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\2s6195xxtz9s1wpm1lz5gymqc\\CustomCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\3ihf5dusj6zglk0wo615lai0m\\ScoreConeTop.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\45vqxio4pi9nbs4dcvmcpqo1r\\RobotContainer.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\4gjybek19j3sap9hk6k1iswrs\\StowElevator.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\4thua9hat0gea9vepalem5jhy\\EndEffectorDown.o
@@ -13,14 +12,12 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramC
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\6fcrwmqtq5sg0iihfjt67vp7r\\ElevatorHold.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\6w9e30mzks111z3jlcfc141gi\\AutoBalance.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\76b1erbt8fr9r2w83wg4rkosr\\SequentialScoreMidCone.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\7x0pcveekurkqd5g7zt72d3f4\\WavePIDCommand.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\7nyp9wn5qxuezx45lx9gn1t0z\\ScoreTopConeBackout.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\8q3wiu7zk74ql6bc43y280t5y\\EndEffector.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\9s3yxi7gm4ja4cohb37g9qelv\\ScoreMidConeBackout.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\9yvqzo36yqmd3do9iqt0tjs3q\\SwervePod.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\ag6pq62fvnv1s2txeu3xzgosc\\SequentialAutoBalance.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\azbhnrziv6ao1kobf4di4zwgl\\SwerveDrive.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\b090uxgyspjmb6jsenh4cfckl\\DriveTimed.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\cgfqyuxc09ih5bg6y7rheec4f\\DriveToChargingStation.o
-C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\d75jfowehhiztss5dcaesyvz3\\ScoreConeMid.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\df5z1tdmtprv1zl32nen6pmhk\\Vision.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhvnccgr6zcre49ouohilqty0\\WaveWaitCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\debug\\frcUserProgramCpp\\dhzd5z903pgpagpeamid8c3or\\ExtendElevatorMidCone.o

@@ -20,10 +20,11 @@
 #include <units/time.h>
 #include "frc2/command/PIDSubsystem.h"
 
-// // Steps to balance on charging station
+// Steps to balance on charging station
 typedef enum
 {
     Balance_Off,
+    Balance_Rotate,
     Balance_Active,
     Balance_Success
 } BalanceStates;
@@ -59,6 +60,7 @@ private:
     double m_iGain;
     double m_dGain;
     double m_pitchTolerence;
+    double m_startingYaw;
     frc2::PIDController *m_balancePID; 
 
     std::vector<double> previousPitches;

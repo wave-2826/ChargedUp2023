@@ -1,0 +1,878 @@
+{
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode",
+              "_title": "Auto Mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left Offset",
+              "_title": "Left Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -360.0,
+              "Slider Settings/Max": 360.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "17,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point Offset",
+              "_title": "Point Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -360.0,
+              "Slider Settings/Max": 360.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "15,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right Offset",
+              "_title": "Right Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -360.0,
+              "Slider Settings/Max": 360.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Top Motor Temp",
+              "_title": "RT",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Right Top Temp Indicator",
+              "_title": "RT",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "1,6": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Bottom Motor Temp",
+              "_title": "RB",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Right Bottom Temp Indicator",
+              "_title": "RB",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Top Motor Temp",
+              "_title": "LT",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Left Top Temp Indicator",
+              "_title": "LT",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "0,6": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Bottom Motor Temp",
+              "_title": "LB",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Left Bottom Temp Indicator",
+              "_title": "LB",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Top Motor Temp",
+              "_title": "PT",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Point Top Temp Indicator",
+              "_title": "PT",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "2,6": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Bottom Motor Temp",
+              "_title": "PB",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Point Bottom Temp Indicator",
+              "_title": "PB",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#800000FF",
+              "Colors/Color when false": "#00FF00FF"
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Test Motor Speed",
+              "_title": "Test Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Pod Case",
+              "_title": "Right Pod Case",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Pod Case",
+              "_title": "Left Pod Case",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Pod Case",
+              "_title": "Point Pod Case",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left p_PID",
+              "_title": "Left p_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right p_PID",
+              "_title": "Right p_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point p_PID",
+              "_title": "Point p_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point p_PID",
+              "_title": "Point p_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 1.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "8,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right p_PID",
+              "_title": "Right p_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 1.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "6,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left p_PID",
+              "_title": "Left p_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 1.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "13,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Offset",
+              "_title": "Left Offset",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Offset",
+              "_title": "Point Offset",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Offset",
+              "_title": "Right Offset",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Aligned Angle",
+              "_title": "Left Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Aligned Angle",
+              "_title": "Right Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Aligned Angle",
+              "_title": "Point Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left d_PID",
+              "_title": "Left d_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right d_PID",
+              "_title": "Right d_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point d_PID",
+              "_title": "Point d_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right d_PID",
+              "_title": "Right d_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "10,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point d_PID",
+              "_title": "Point d_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left d_PID",
+              "_title": "Left d_PID",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "13,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left Motor Scaling",
+              "_title": "Left Motor Scaling",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "17,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point Motor Scaling",
+              "_title": "Point Motor Scaling",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "15,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right Motor Scaling",
+              "_title": "Right Motor Scaling",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.05,
+              "Visuals/Display value": true
+            }
+          },
+          "13,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left Aligned Angle",
+              "_title": "SmartDashboard/Left Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "17,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point Aligned Angle",
+              "_title": "SmartDashboard/Point Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "15,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right Aligned Angle",
+              "_title": "SmartDashboard/Right Aligned Angle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "12,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LX",
+              "_title": "LX",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LY",
+              "_title": "LY",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/RX",
+              "_title": "RX",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Pod Voltage Comp.",
+              "_title": "Left Voltage",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Pod Voltage Comp.",
+              "_title": "Right Voltage",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Pod Voltage Comp.",
+              "_title": "Point Voltage",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator P",
+              "_title": "Elevator P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator I",
+              "_title": "Elevator I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator D",
+              "_title": "Elevator D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Ramp",
+              "_title": "Elevator Ramp",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///FMSInfo/IsRedAlliance",
+              "_title": "Alliance Color",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#0000FFFF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance_P",
+              "_title": "Balance_P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance_I",
+              "_title": "Balance_I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance_D",
+              "_title": "Balance_D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance_Delta",
+              "_title": "Balance_Delta",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "LiveWindow",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "LiveWindow/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {}
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
+  }
+}

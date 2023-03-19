@@ -4,10 +4,14 @@
 #include "commands/EndEffectorDown.h"
 #include "commands/StowElevator.h"
 #include "commands/ElevatorHold.h"
-#include "commands/DriveTimed.h"
 
-SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector)
-: m_elevator(elevator), m_drive(drive), m_endEffector(endEffector)
+/**
+ * Autonomous command implementation to score a cone on the top node
+ *
+ * @author 2826WaveRobotics
+ */
+SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, EndEffector* endEffector)
+: m_elevator(elevator), m_endEffector(endEffector)
 {
     SetName("SequentialScoreTopCone");
     AddRequirements({m_elevator});
@@ -21,8 +25,7 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, SwerveDrive* 
                 EndEffectorDown(m_endEffector)
             ),          
             // stow sequence
-            StowElevator(m_elevator),
-            DriveTimed(m_drive, 0.0, -0.7, 0.0, (units::time::second_t)1.0)
+            StowElevator(m_elevator)
         )
     );
 }

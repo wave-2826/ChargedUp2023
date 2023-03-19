@@ -102,16 +102,16 @@ private:
     double getPIDSpeed(double pidCommnd);
 
     // Constants used for Elevator functions
-    static constexpr const double k_maxElevatorSpeed = 0.7;
+    static constexpr const double k_maxElevatorSpeed = 1.0;
     static constexpr const double k_elevatorHoldSpeed = 0.04;
     static constexpr const double k_endEffectorSpeedFactor = 0.5;
 
     // Tuning PID values
-    double k_P = 0.15;
+    double k_P = 1.1;
     double k_I = 5.0;
-    double k_D = 0.05;
+    double k_D = 0.1;
     double k_delta = 1.0;
-    double k_rampPerLoop = 0.005;
+    double k_rampPerLoop = 0.0075;
 
     static constexpr const double k_PFine = 0.1;
     static constexpr const double k_IFine = 0.5;

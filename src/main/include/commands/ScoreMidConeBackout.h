@@ -22,19 +22,22 @@
 
 /**
  * Autonomous command header file to score a cone on the mid node
+ * and back out of the community
  *
  * @author 2826WaveRobotics
  */
-class SequentialScoreMidCone: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
-SequentialScoreMidCone>{
+class ScoreMidConeBackout: public frc2:: CommandHelper<frc2::SequentialCommandGroup,
+ScoreMidConeBackout>{
+    
 public:
 
-    explicit SequentialScoreMidCone(Elevator* elevator, EndEffector* endEffector);
+    explicit ScoreMidConeBackout(Elevator* elevator, SwerveDrive* drive, EndEffector* endEffector);
 
     bool RunsWhenDisabled() const override;
 
 private:
 
     Elevator* m_elevator;
+    SwerveDrive* m_drive;
     EndEffector* m_endEffector;
 };

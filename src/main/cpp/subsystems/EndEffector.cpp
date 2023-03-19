@@ -95,14 +95,12 @@ void EndEffector::runEndEffector()
     {
         if (m_isCone)
         {
-            std::cout << "IN - cone" << std::endl;
             endEffectorSpeed = -endEffectorRollerIn;
         }
         else
         {
             if(!m_cubeDetected)
             {
-                std::cout << "IN - cube" << std::endl;
                 endEffectorSpeed = endEffectorRollerIn*0.5; 
             }
         }
@@ -111,12 +109,10 @@ void EndEffector::runEndEffector()
     {
         if (m_isCone)
         {
-            std::cout << "OUT - cone" << std::endl;
             endEffectorSpeed = endEffectorRollerOut;
         }
         else
         {
-            std::cout << "OUT - cube" << std::endl;
             endEffectorSpeed = -endEffectorRollerOut*0.5; 
         }
     }
@@ -127,7 +123,7 @@ void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed); 
     
-    std::cout << "Cone: " << m_isCone << " Cube: " << m_cubeDetected << " Speed: " << speed << std::endl;
+    // std::cout << "Cone: " << m_isCone << " Cube: " << m_cubeDetected << " Speed: " << speed << std::endl;
 }
 
 
