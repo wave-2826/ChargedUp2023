@@ -13,7 +13,7 @@
 #include "commands/AutoBalanceSwerve.h"
 #include "Globals.h"
 
-static const double k_multiplier = -1.5;
+static const double k_multiplier = -1.0;
 
 AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
                       : m_swerveDrive(swerveDrive)
@@ -22,29 +22,29 @@ AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
     // Use AddRequirements() here to declare subsystem dependencies
     // eg. AddRequirements(m_Subsystem);
     SetName("AutoBalanceSwerve");
-    m_balanceState = Balance_Off;
+    m_balanceState = Balance_Start;
 
     // Set default gains
-    m_pGain = 1.0;
-    m_iGain = 2.0;
-    m_dGain = 0.5;
-    m_pitchTolerence = 2.0;
+    m_pGain = k_pGain;
+    m_iGain = k_iGain;
+    m_dGain = k_dGain;
+    m_pitchTolerence = k_pitchTolerence;
     m_balancePID = new frc2::PIDController(m_pGain, m_iGain, m_dGain);
 }
 
 // Called just before this Command runs the first time
 void AutoBalanceSwerve::Initialize() {
-    m_balanceState = Balance_Off;
+    m_balanceState = Balance_Start;
     m_isBalanced = false;
     while (!m_swerveDrive->InitialSwerve());
 }
 
 void AutoBalanceSwerve::updatePID(double p, double i, double d, double delta)
 {
-    m_pGain = frc::SmartDashboard::GetNumber("Balance_P", 1.0);
-    m_iGain = frc::SmartDashboard::GetNumber("Balance_I", 5.0);
-    m_dGain = frc::SmartDashboard::GetNumber("Balance_D", 0.1);
-    m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", 2.0);
+    m_pGain = frc::SmartDashboard::GetNumber("Balance_P", k_pGain);
+    m_iGain = frc::SmartDashboard::GetNumber("Balance_I", k_iGain);
+    m_dGain = frc::SmartDashboard::GetNumber("Balance_D", k_dGain);
+    m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", k_pitchTolerence);
 
     m_balancePID->SetPID(m_pGain, m_iGain, m_dGain);
 }
@@ -59,18 +59,18 @@ void AutoBalanceSwerve::Execute()
 
     switch(m_balanceState) 
     {
-        case Balance_Off:
+        case Balance_Start:
             // Get latest from Smart Dash Board
-            m_pGain = frc::SmartDashboard::GetNumber("Balance_P", 1.0);
-            m_iGain = frc::SmartDashboard::GetNumber("Balance_I", 5.0);
-            m_dGain = frc::SmartDashboard::GetNumber("Balance_D", 0.1);
-            m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", 2.0);
+            m_pGain = frc::SmartDashboard::GetNumber("Balance_P", k_pGain);
+            m_iGain = frc::SmartDashboard::GetNumber("Balance_I", k_iGain);
+            m_dGain = frc::SmartDashboard::GetNumber("Balance_D", k_dGain);
+            m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", k_pitchTolerence);
             m_balancePID->SetPID(m_pGain, m_iGain, m_dGain);
 
-            // CASE: before charging station ramp drive straight   
+            // CASE: before charging station ramp drive straight on the other side 
             m_isBalanced = false; 
-            moveCmd = 0.5;        
-            if (robotPitch < -2.0) {
+            moveCmd = k_multiplier * m_balancePID->Calculate(robotPitch, 2.0);        
+            if (robotPitch > 2.0) {
                 m_balancePID->Reset();
                 m_balanceState = Balance_Active;
             }
@@ -97,8 +97,7 @@ void AutoBalanceSwerve::Execute()
             }
             break;
         case Balance_Success:
-            // // CASE: balanced on station
-            // // stay put + end auto
+            // CASE: balanced on station
             m_isBalanced = true;
             std::cout << "LEVEL BALANCE" << std::endl;
             break;
@@ -106,15 +105,14 @@ void AutoBalanceSwerve::Execute()
             break;
     }
 
+
     m_swerveDrive->DrivePods(strafeCmd, moveCmd, rotCmd, nullptr);
-    std::cout << "PITCH: " << robotPitch << " Move: " << moveCmd << std::endl;
+    std::cout << "State: " << m_balanceState <<" PITCH: " << robotPitch << " Move: " << moveCmd << "FINISHED: " << m_isBalanced << std::endl;
+    std::cout << "P: " << m_pGain <<" I: " << m_iGain << " D: " << m_dGain << std::endl;
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoBalanceSwerve::IsFinished() {
-    // m_swerveDrive->DrivePods(0, 0, 0);
-    // return false;
-    std::cout << "IS FINISHED: " << m_isBalanced << std::endl;
     if (m_isBalanced) {
         m_swerveDrive->DrivePods(0, 0, 0, nullptr);
     }
@@ -123,7 +121,6 @@ bool AutoBalanceSwerve::IsFinished() {
 
 // Called once after isFinished returns true
 void AutoBalanceSwerve::End(bool interrupted) {
-    // WaitCommand::End(interrupted);
     m_swerveDrive->DrivePods(0, 0, 0, nullptr);
 }
 

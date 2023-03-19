@@ -35,10 +35,10 @@ RobotContainer::RobotContainer() : m_autonomousCommand()
     frc::SmartDashboard::PutNumber("Elevator Ramp", 0.005);
 
     // Smartdashboard Balance Swerve PID values
-    frc::SmartDashboard::PutNumber("Balance_P", 1.0);
+    frc::SmartDashboard::PutNumber("Balance_P", 2.0);
     frc::SmartDashboard::PutNumber("Balance_I", 5.0);
-    frc::SmartDashboard::PutNumber("Balance_D", 0.5);
-    frc::SmartDashboard::PutNumber("Balance_Delta", 2.0);
+    frc::SmartDashboard::PutNumber("Balance_D", 0.0);
+    frc::SmartDashboard::PutNumber("Balance_Delta", 0.5);
 
     // Smartdashboard Swerve Drive Offsets
     frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());

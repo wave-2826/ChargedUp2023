@@ -22,7 +22,7 @@ SequentialScoreTopCone::SequentialScoreTopCone(Elevator* elevator, SwerveDrive* 
             ),          
             // stow sequence
             StowElevator(m_elevator),
-            DriveTimed(m_drive, 0.0, -0.7, 0.0, (units::time::second_t)1.0)
+            DriveTimed(m_drive, 0.0, -0.7, 0.0, (units::time::second_t)3.0)
         )
     );
 }

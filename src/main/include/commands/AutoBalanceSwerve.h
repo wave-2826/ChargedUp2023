@@ -23,7 +23,7 @@
 // // Steps to balance on charging station
 typedef enum
 {
-    Balance_Off,
+    Balance_Start,
     Balance_Active,
     Balance_Success
 } BalanceStates;
@@ -47,6 +47,11 @@ public:
     bool RunsWhenDisabled() const override;
 
     void updatePID(double p, double i, double d, double delta);
+
+    static constexpr const double k_pGain = 2.0;
+    static constexpr const double k_iGain = 5.0;
+    static constexpr const double k_dGain = 0.0;
+    static constexpr const double k_pitchTolerence = 1.0;
 
 private:
 
