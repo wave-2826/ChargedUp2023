@@ -41,8 +41,6 @@ void EndEffector::Periodic()
         m_allianceLED = new frc::DigitalOutput(m_allianceLEDID);
         m_allianceLED->Set(true);
     }
-    
-    runEndEffector();
 
     // Check cone or cube
     int checkConeOrCube = m_operatorJoystick->GetPOV();
@@ -59,7 +57,7 @@ void EndEffector::Periodic()
         m_cubeLED->Set(true); 
     }
 
-    // Check the CUbe sensor
+    // Check the Cube sensor
     bool endEffectorOverride = m_operatorJoystick->GetRightBumper();
     if(endEffectorOverride)
     {

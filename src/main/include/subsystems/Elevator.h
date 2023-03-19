@@ -46,15 +46,6 @@ private:
     // It's desirable that everything possible is private except
     // for methods that implement subsystem capabilities
 
-    frc::PneumaticHub m_pneumaticHub{k_pneumaticHub};
-    frc::Compressor *m_compressor;
-
-    // EndEffector solenoid to move up. Spring to down
-    frc::Solenoid m_endEffectorSolenoid = m_pneumaticHub.MakeSolenoid(k_endEffectorOut);
-
-    // EndEffector grabber solenoid to grab and release the cone
-    frc::Solenoid m_endEffectorGrabberSolenoid = m_pneumaticHub.MakeSolenoid(k_endEffectorGrabber);
-
     // Current position of the elevator
     double m_elevatorPosition;
 

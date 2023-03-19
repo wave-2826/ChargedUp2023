@@ -13,35 +13,40 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <frc/XboxController.h>
-#include <rev/CANSparkMax.h>
-#include <rev/CANSparkMaxLowLevel.h>
+#include "frc/PneumaticHub.h"
+#include "frc/Solenoid.h"
+#include "frc/Compressor.h"
 #include "Globals.h"
 
 /**
- * Intake subsystem header file
+ * RobotIntake subsystem header file
  *
  * @author 2826WaveRobotics
  */
-class Intake: public frc2::SubsystemBase 
+class RobotIntake: public frc2::SubsystemBase 
 {
     private:
         // It's desirable that everything possible is private except
         // for methods that implement subsystem capabilities
 
-        // intake motors
-        rev::CANSparkMax *m_intakeLeftDeployMotor;
-        rev::CANSparkMax *m_intakeRightDeployMotor;
-        rev::CANSparkMax *m_intakeRollerMotor;
-
         // Pointer to the operator controller
-        frc::XboxController *m_operatorJoystick;
+        frc::XboxController *m_driverJoystick;
+
+        frc::PneumaticHub m_pneumaticHub{k_pneumaticHub};
+        frc::Compressor *m_compressor;
+
+        // RobotIntake solenoid to deploy
+        frc::Solenoid m_robotIntakeDeploySolenoid = m_pneumaticHub.MakeSolenoid(k_robotIntakeDeploy);
+
+        // RobotIntake grabber solenoid to clamp and release robot bumper
+        frc::Solenoid m_robotIntakeClampSolenoid = m_pneumaticHub.MakeSolenoid(k_robotIntakeClamp);
 
     public:
-        Intake();
+        RobotIntake();
 
-        void moveIntake(double speed);
-        void setIntakeRollerMotorSpeed(double speed);
-        void runIntake();
+        void robotIntakeClamp(bool isClamped);
+        void robotIntakeDeploy(bool isDeployed);
+        void runRobotIntake();
 
         void Initialize();
         void Periodic() override;

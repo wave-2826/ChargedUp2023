@@ -10,6 +10,7 @@ C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgra
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\4thua9hat0gea9vepalem5jhy\\EndEffectorDown.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5755hwy6zdvf3ckow229yxsu9\\SwerveInitializeCommand.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6fcrwmqtq5sg0iihfjt67vp7r\\ElevatorHold.o
+C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6qi6rq55ijoo903oruq0dnzuu\\RobotIntake.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6w9e30mzks111z3jlcfc141gi\\AutoBalance.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\76b1erbt8fr9r2w83wg4rkosr\\SequentialScoreMidCone.o
 C:\\Wave2826\\ChargedUp2023\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\7nyp9wn5qxuezx45lx9gn1t0z\\ScoreTopConeBackout.o

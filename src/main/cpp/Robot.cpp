@@ -23,11 +23,13 @@
 
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
-  m_container->m_elevator.Initialize();
   m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, nullptr);
-
   m_container->m_swerveDrive.SetVoltageCompensation();
+
+  m_container->m_elevator.Initialize();
   m_container->m_endEffector.Initialize();
+  m_container->m_intake.Initialize();
+  m_container->m_robotIntake.Initialize();
 
   // Get the USB camera from CameraServer
   // cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
@@ -270,6 +272,12 @@ void Robot::TeleopPeriodic()
 
   // End Effector Operations
   m_container->m_endEffector.runEndEffector();
+
+  // Intake Operations
+  m_container->m_intake.runIntake();
+
+  // Robot Intake Operations
+  m_container->m_robotIntake.runRobotIntake();
 
   frc::SmartDashboard::PutString("Right Pod Case", m_container->m_swerveDrive.GetRightPodCase());
   frc::SmartDashboard::PutString("Left Pod Case", m_container->m_swerveDrive.GetLeftPodCase());

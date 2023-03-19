@@ -16,10 +16,12 @@
 #include <frc2/command/Command.h>
 #include <frc/XboxController.h>
 
+// need to include subsystems
 #include "subsystems/SwerveDrive.h"
 #include "subsystems/Elevator.h"
 #include "subsystems/EndEffector.h"
 #include "subsystems/Intake.h"
+#include "subsystems/RobotIntake.h"
 #include "subsystems/Vision.h"
 
 // need to include auto routines
@@ -45,6 +47,7 @@ public:
     Elevator m_elevator;
     EndEffector m_endEffector;
     Intake m_intake;
+    RobotIntake m_robotIntake;
     Vision m_vision;
 
     // Controller input

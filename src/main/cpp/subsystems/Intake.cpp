@@ -11,16 +11,30 @@
 // ROBOTBUILDER TYPE: Subsystem.
 
 #include "subsystems/Intake.h"
+#include "RobotContainer.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-Intake::Intake(){
+/**
+ * Intake subsystem implementation
+ *
+ * @author 2826WaveRobotics
+ */
+Intake::Intake()
+{
     SetName("Intake");
     SetSubsystem("Intake");
 
-    // m_compressor = new frc::Compressor(k_pneumaticHub, frc::PneumaticsModuleType::REVPH);
-    // m_pneumaticHub.EnableCompressorAnalog(units::pressure::pounds_per_square_inch_t(90), 
-    //                                       units::pressure::pounds_per_square_inch_t(110));
+    m_intakeLeftDeployMotor = new rev::CANSparkMax(k_intakeLeftDeployMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    m_intakeRightDeployMotor = new rev::CANSparkMax(k_intakeRightDeployMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    m_intakeRollerMotor = new rev::CANSparkMax(k_intakeRollerMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
 
+    m_intakeRightDeployMotor->SetInverted(true);
+}
+
+// Initializers
+void Intake::Initialize() 
+{
+    m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
 }
 
 // Put code here to be run every loop
@@ -29,5 +43,45 @@ void Intake::Periodic() {}
 // This method will be called once per scheduler run when in simulation
 void Intake::SimulationPeriodic() {}
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+// intake funtions
+void Intake::moveIntake(double speed)
+{
+    m_intakeLeftDeployMotor->Set(speed);
+    m_intakeRightDeployMotor->Set(speed);
+}
+
+void Intake::setIntakeRollerMotorSpeed(double speed)
+{
+    m_intakeRollerMotor->Set(speed);
+}
+
+void Intake::runIntake() 
+{
+    // intake rollers
+    double intakeRollerSpeedInput = m_operatorJoystick->GetLeftTriggerAxis();
+    double intakeRollerSpeed = 0;
+    if(fabs(intakeRollerSpeedInput) > k_jsDeadband)
+    {
+        intakeRollerSpeed = intakeRollerSpeedInput;
+    }
+    // set intake roller speed
+    setIntakeRollerMotorSpeed(intakeRollerSpeed);
+
+    // intake stow/deploy
+    if (m_operatorJoystick->GetLeftStickButton())
+    {
+        // deploy
+        moveIntake(0.5);
+    }
+    else if (m_operatorJoystick->GetLeftStickButton() && m_operatorJoystick->GetBackButton())
+    {
+        // stow
+        moveIntake(0.5);
+    }
+    else
+    {
+        // stop
+        moveIntake(0.0);
+    }
+
+}
