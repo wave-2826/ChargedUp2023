@@ -22,7 +22,11 @@
 #include <ctre/phoenix/sensors/Pigeon2.h>
 #include <frc/XboxController.h>
 
-#define k_DB (double)0.07
+typedef enum
+{
+    Heading_Init,
+    Heading_Active
+} SwerveHeadingState;
 
 /**
  * SwerveDrive header file
@@ -108,6 +112,16 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_lockedPointAngle = 90.0; // 0
 
         bool m_allAligned = false;
+
+        frc2::PIDController *m_yawPID; 
+        double m_yawPGain;
+        double m_yawIGain;
+        double m_yawDGain;
+        double m_yawTolerence;
+        double m_startingYaw;
+        uint16_t m_yawTimer;
+        SwerveHeadingState m_headingState;
+
 
     public:
 
@@ -220,6 +234,10 @@ class SwerveDrive: public frc2::SubsystemBase {
         double GetRobotYaw();
 
         void Initialize();
+
+        // Drive straight Features
+        void HeadingSwerve(double targetSpeed);
+        void initHeading();
         
 };
 

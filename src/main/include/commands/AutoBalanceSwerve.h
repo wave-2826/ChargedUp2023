@@ -16,7 +16,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/WaitCommand.h>
 #include <subsystems/SwerveDrive.h>
-#include <ctre/phoenix/sensors/Pigeon2.h>
+// #include <ctre/phoenix/sensors/Pigeon2.h>
 #include <units/time.h>
 #include "frc2/command/PIDSubsystem.h"
 
@@ -24,7 +24,6 @@
 typedef enum
 {
     Balance_Off,
-    Balance_Rotate,
     Balance_Active,
     Balance_Success
 } BalanceStates;
@@ -52,7 +51,7 @@ public:
 private:
 
     SwerveDrive* m_swerveDrive;
-    ctre::phoenix::sensors::Pigeon2* m_pigeon;
+    // ctre::phoenix::sensors::Pigeon2* m_pigeon;
     BalanceStates m_balanceState;
     uint16_t m_balanceTimer;
     bool m_isBalanced;
@@ -60,8 +59,8 @@ private:
     double m_iGain;
     double m_dGain;
     double m_pitchTolerence;
-    double m_startingYaw;
+    // double m_startingYaw;
     frc2::PIDController *m_balancePID; 
 
-    std::vector<double> previousPitches;
+    // std::vector<double> previousPitches;
 };

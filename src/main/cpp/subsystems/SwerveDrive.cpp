@@ -83,6 +83,14 @@ SwerveDrive::SwerveDrive()
         m_rightLocation, m_leftLocation, m_pointLocation
     };
 
+    // Set default gains for Yaw PID
+    m_yawPGain = 1.0;
+    m_yawIGain = 2.0;
+    m_yawDGain = 0.5;
+    m_yawTolerence = 2.0;
+    m_yawTimer = 0;
+    m_yawPID = new frc2::PIDController(m_yawPGain, m_yawIGain, m_yawDGain);
+
     SetName("SwerveDrive");
     SetSubsystem("SwerveDrive");
 }
@@ -95,6 +103,11 @@ void SwerveDrive::Initialize()
 
     // TODO: configure pigeon (?)
     m_pigeon->ConfigMountPose(ctre::phoenix::sensors::AxisDirection::NegativeZ, ctre::phoenix::sensors::AxisDirection::PositiveY);
+
+    // Initialize Yaw PID
+    m_headingState = Heading_Init;
+    m_yawPID->SetPID(m_yawPGain, m_yawIGain, m_yawDGain);
+    m_yawPID->Reset();
 }
 
 void SwerveDrive::SetVoltageCompensation() {
@@ -501,4 +514,71 @@ void SwerveDrive::DiagonosticSwerveRotate(std::string podInput, std::string moto
     {
         m_pointBottomMotor->Set(speedIncrement);
     }
+}
+
+void SwerveDrive::initHeading()
+{
+    m_yawTimer = 0;
+    m_yawPID->Reset();
+    m_headingState = Heading_Init;
+}
+
+void SwerveDrive::HeadingSwerve(double targetSpeed)
+{
+    static const double k_maxYawPIDOutput = 5.0; // May need to adjust based on testing
+    double moveCmd = 0.0;
+    double strafeCmd = 0.0;
+    double rotCmd = 0.0;
+    double currentYaw = m_pigeon->GetYaw();
+    
+    switch (m_headingState)
+    {
+        case Heading_Init:
+            m_startingYaw = currentYaw;
+            if (targetSpeed > 0.0)
+            {
+                m_yawTimer = 0;
+                m_yawPID->Reset();
+                m_headingState = Heading_Active;
+            }
+            break;
+        case Heading_Active:
+            if (std::fabs(m_startingYaw - currentYaw) > m_yawTolerence)
+            {
+                double pidRotationOut = m_yawPID->Calculate(currentYaw, m_startingYaw);
+                std::cout << "YawPID Out: " << pidRotationOut << std::endl;
+                rotCmd = pidRotationOut / k_maxYawPIDOutput;
+                if (rotCmd > 1.0)
+                {
+                    rotCmd = 1.0;
+                }
+                else if (rotCmd < -1.0)
+                {
+                    rotCmd = -1.0;
+                }      
+            }
+
+            moveCmd = targetSpeed;
+            // Turn off if no longer commanding to drive
+            if(targetSpeed == 0)
+            {
+                m_yawTimer++;
+                if (m_yawTimer > TWO_SECONDS)
+                {
+                    m_headingState = Heading_Init;
+                }                
+            }
+            else
+            {
+                m_yawTimer = 0;
+            }
+            break;
+        
+        default:
+            break;
+    }
+    
+    DrivePods(moveCmd, strafeCmd, rotCmd, nullptr);
+    std::cout << "Yaw: " << currentYaw << " Target: " << m_startingYaw << " Rotation: " << rotCmd << std::endl;
+
 }
