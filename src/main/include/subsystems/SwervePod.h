@@ -6,6 +6,7 @@
 #include <frc/controller/PIDController.h>
 #include <frc2/command/PIDSubsystem.h>
 #include <string>
+#include <vector>
 
 /**
  * Swerve Pod encapsulating individual swerve pod functions + attributes
@@ -38,9 +39,14 @@ class SwervePod {
 
         // swerve tuning variables 
         double m_p;
+        double m_i;
         double m_d;
         double m_alignedAngle;
         double m_motorScaling;
+
+        std::vector<double> m_angleValues = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        int m_anglePointer = 0;
+
         // Angles are measured counter-clockwise, with zero being "robot forward"
         double m_offsetAngle;
 
@@ -63,7 +69,7 @@ class SwervePod {
 
     public:
     
-        SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+        SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
 
         // Initialize this module with the details provided by the robot-specific subclass.
         void Initialize(); 
@@ -122,6 +128,7 @@ class SwervePod {
         // Swerve Dashboard Live Update Functions
         void UpdateOffsetAngle();
         void UpdatePPID();
+        void UpdateIPID();
         void UpdateDPID();
         void UpdateMotorScaling();
         void UpdateAlignedAngle();

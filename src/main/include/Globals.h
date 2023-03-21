@@ -58,7 +58,7 @@ int const k_redLED =                    8;
 int const k_blueLED =                   9;
 
 // Sensor to detect a Cube
-int const k_cubeSense =                 3;
+int const k_cubeSense =                 4;
 
 typedef enum 
 {
