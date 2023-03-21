@@ -58,25 +58,6 @@ void Robot::RobotPeriodic()
 
   m_container->m_elevator.updateValues();
 
-  // SET p_PID values from the dashboard
-  double pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 1.0);
-  double pRight = frc::SmartDashboard::GetNumber("Right p_PID", 1.0);
-  double pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 1.0);
-  m_container->m_swerveDrive.SetLeftPodPPID(pLeft);
-  m_container->m_swerveDrive.SetRightPodPPID(pRight);
-  m_container->m_swerveDrive.SetPointPodPPID(pPoint);
-  
-  // updates pod angle offsets (on dashboard)
-  m_container->m_swerveDrive.UpdatePodOffsetAngles();
-  // updates pod p_PID vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodPPID();
-  // updates pod d_PID vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodDPID();
-  // updates pod motor scaling vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodMotorScaling();
-  // updates pod aligned angles vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodAlignedAngle();
-
   // SmartDashboard Swerve Drive Motor Temperatures + indicators
   frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
   frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
@@ -142,6 +123,20 @@ double Joystick(double input, double deadzone)
  */
 void Robot::TeleopPeriodic() 
 {
+  
+  // updates pod angle offsets (on dashboard)
+  m_container->m_swerveDrive.UpdatePodOffsetAngles();
+  // updates pod p_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodPPID();
+  // updates pod i_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodIPID();
+  // updates pod d_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodDPID();
+  // updates pod motor scaling vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodMotorScaling();
+  // updates pod aligned angles vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodAlignedAngle();
+
   // Controller Inputs - Driver Operations
   double targetJoystickLX = Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double targetJoystickLY = Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
