@@ -58,6 +58,16 @@ SwerveDrive::SwerveDrive()
     pRight = frc::SmartDashboard::GetNumber("Right p_PID", 3.0);
     pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 3.0);
 
+    // set initial i_PID values from the smart dashboard
+    iLeft = frc::SmartDashboard::GetNumber("Left i_PID", 3.0);
+    iRight = frc::SmartDashboard::GetNumber("Right i_PID", 3.0);
+    iPoint = frc::SmartDashboard::GetNumber("Point i_PID", 3.0);
+    
+    // set initial d_PID values from the smart dashboard
+    dLeft = frc::SmartDashboard::GetNumber("Left d_PID", 3.0);
+    dRight = frc::SmartDashboard::GetNumber("Right d_PID", 3.0);
+    dPoint = frc::SmartDashboard::GetNumber("Point d_PID", 3.0);
+
     // set initial motor scaling factors from the smart dashboard
     leftPodScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.3);
     rightPodScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.3);
@@ -69,9 +79,9 @@ SwerveDrive::SwerveDrive()
     pointPodAlignedAngle = frc::SmartDashboard::GetNumber("Point Aligned Angle", 30.0);
 
     // Individual swerve pod instances
-    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
-    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, pRight, rightPodScaling, rightPodAlignedAngle, rightOffset, k_rightPodEncoder);
-    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, pPoint, pointPodScaling, pointPodAlignedAngle, pointOffset, k_pointPodEncoder);
+    m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, iLeft, dLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
+    m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, pRight, iRight, dRight, rightPodScaling, rightPodAlignedAngle, rightOffset, k_rightPodEncoder);
+    m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, pPoint, iPoint, dPoint, pointPodScaling, pointPodAlignedAngle, pointOffset, k_pointPodEncoder);
 
     // Locations for the swerve drive modules relative to the robot center.
     frc::Translation2d m_rightLocation{(units::meter_t)-0.5*robotWidth, (units::meter_t)-0.5*robotHeight};
@@ -210,6 +220,14 @@ void SwerveDrive::UpdatePodPPID()
     m_leftPod->UpdatePPID();
     m_rightPod->UpdatePPID();
     m_pointPod->UpdatePPID();
+}
+
+void SwerveDrive::UpdatePodIPID() 
+{
+    // UPDATE pod p_PID vals
+    m_leftPod->UpdateIPID();
+    m_rightPod->UpdateIPID();
+    m_pointPod->UpdateIPID();
 }
 
 void SwerveDrive::UpdatePodDPID()

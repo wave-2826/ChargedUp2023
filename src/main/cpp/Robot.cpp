@@ -58,38 +58,6 @@ void Robot::RobotPeriodic()
 
   m_container->m_elevator.updateValues();
 
-  // SET p_PID values from the dashboard
-  double pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 1.0);
-  double pRight = frc::SmartDashboard::GetNumber("Right p_PID", 1.0);
-  double pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 1.0);
-  m_container->m_swerveDrive.SetLeftPodPPID(pLeft);
-  m_container->m_swerveDrive.SetRightPodPPID(pRight);
-  m_container->m_swerveDrive.SetPointPodPPID(pPoint);
-
-  // SET d_PID values from the dashboard
-  double dLeft = frc::SmartDashboard::GetNumber("Left d_PID", 0.0);
-  double dRight = frc::SmartDashboard::GetNumber("Right d_PID", 0.0);
-  double dPoint = frc::SmartDashboard::GetNumber("Point d_PID", 0.0);
-  m_container->m_swerveDrive.SetLeftPodDPID(dLeft);
-  m_container->m_swerveDrive.SetRightPodDPID(dRight);
-  m_container->m_swerveDrive.SetPointPodDPID(dPoint);
-
-  // SET motor scaling values from the dashboard
-  double leftScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.01);
-  double rightScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.01);
-  double pointScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", 0.01);
-  m_container->m_swerveDrive.SetLeftPodPPID(leftScaling);
-  m_container->m_swerveDrive.SetRightPodPPID(rightScaling);
-  m_container->m_swerveDrive.SetPointPodPPID(pointScaling);
-
-  // SET aligned angle values from the dashboard
-  double leftAligned = frc::SmartDashboard::GetNumber("Left Aligned Angle", 404.0);
-  double rightAligned = frc::SmartDashboard::GetNumber("Right Aligned Angle", 404.0);
-  double pointAligned = frc::SmartDashboard::GetNumber("Point Aligned Angle", 404.0);
-  m_container->m_swerveDrive.SetLeftPodPPID(leftAligned);
-  m_container->m_swerveDrive.SetRightPodPPID(rightAligned);
-  m_container->m_swerveDrive.SetPointPodPPID(pointAligned);
-
   // SmartDashboard Swerve Drive Motor Temperatures + indicators
   frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
   frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
@@ -154,11 +122,14 @@ double Joystick(double input, double deadzone)
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() 
-{  
+{
+  
   // updates pod angle offsets (on dashboard)
   m_container->m_swerveDrive.UpdatePodOffsetAngles();
   // updates pod p_PID vals (on dashboard)
   m_container->m_swerveDrive.UpdatePodPPID();
+  // updates pod i_PID vals (on dashboard)
+  m_container->m_swerveDrive.UpdatePodIPID();
   // updates pod d_PID vals (on dashboard)
   m_container->m_swerveDrive.UpdatePodDPID();
   // updates pod motor scaling vals (on dashboard)
@@ -193,7 +164,7 @@ void Robot::TeleopPeriodic()
   m_dPadValueLastFrame = dPadValue;
 
   std::string driveCase = "NONE";
-  double fileOutputs[6];
+  double fileOutputs[6] = { 404, 404, 404, 404, 404, 404};
 
   if (!lockSwerve) 
   {

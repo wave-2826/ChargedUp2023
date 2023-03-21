@@ -1,8 +1,18 @@
 #include "subsystems/SwervePod.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "math.h"
+#include "array"
 #include <iostream>
 #include <string>
+#include <vector>
+
+double averageVector(std::vector<double> arr) {
+    double total = 0;
+    for (int i = 0; i < arr.size(); i++) {
+        total += arr[i];
+    }
+    return total / arr.size();
+}
 
 /**
  * SwervePod implementation - including motors, absolute encoder, and offset angle of encoder ZERO
@@ -11,7 +21,7 @@
  *
  * @author 2826WaveRobotics
  */
-SwervePod::SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel) 
+SwervePod::SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel) 
 {
     m_topMotor = topMotor;
     m_bottomMotor = bottomMotor;
@@ -19,6 +29,8 @@ SwervePod::SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, 
     m_bottomEncoder = new rev::SparkMaxRelativeEncoder(m_bottomMotor->GetEncoder());
 
     m_p = p_PID;
+    m_i = i_PID;
+    m_d = d_PID;
     m_offsetAngle = offsetAngle;
     m_encoderChannel = encoderChannel;
     m_motorScaling = motorScaling;
@@ -98,6 +110,25 @@ void SwervePod::UpdatePPID()
         case 2:
             m_podName = "Point";
             m_p = frc::SmartDashboard::GetNumber("Point p_PID", 1.0);
+            break;
+    }
+}
+
+// update d_PID using the smart dashboard inputs (used for quick optimization)
+void SwervePod::UpdateIPID()
+{
+    switch(m_encoderChannel) {
+        case 0:
+            m_podName = "Right";
+            m_i = frc::SmartDashboard::GetNumber("Right d_PID", 0.0);
+            break;
+        case 1:
+            m_podName = "Left";
+            m_i = frc::SmartDashboard::GetNumber("Left d_PID", 0.0);
+            break;
+        case 2:
+            m_podName = "Point";
+            m_i = frc::SmartDashboard::GetNumber("Point d_PID", 0.0);
             break;
     }
 }
@@ -231,6 +262,14 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     // encoder angle (current) is 0 - 360
     // offsetAngle adjusts "forward" to align to position on robot
     double current_angle = m_offsetAngle + ToDegree(m_podEncoder->GetAbsolutePosition());
+    
+    if (fabs(current_angle - m_previousAngle) > 30.0) {
+        // reset array of delta angles used for i_PID calculations
+        for (int i = 0; i < m_angleValues.size(); i++) {
+            m_angleValues[i] = 0;
+        }
+    }
+
     // double current_angle = ToDegree(m_podEncoder->GetAbsolutePosition());
     double target_angle;
     if (!GetIsReversed()) {
@@ -269,6 +308,11 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     {
         angle_delta += 360.0;
     }
+
+    m_angleValues[m_anglePointer] = angle_delta;
+    m_anglePointer = (m_anglePointer + 1) % m_angleValues.size();
+    double anglesAverage = averageVector(m_angleValues);
+
     double angle_delta_optimized = 0.0;
     double normalizer = 1 / 180.0;
     std::string swerveCase = "DID NOT ENTER";
@@ -289,13 +333,13 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
             double divisor;
             if (GetIsReversed())
             {
-                stationKeepTop = (1.0 - m_p * angle_delta * normalizer + m_d * GetDeltaD());
-                stationKeepBottom = (1.0 + m_p * angle_delta * normalizer + m_d * GetDeltaD());
+                stationKeepTop = (1.0 - m_p * angle_delta * normalizer + m_d * GetDeltaD() + m_i * anglesAverage);
+                stationKeepBottom = (1.0 + m_p * angle_delta * normalizer + m_d * GetDeltaD() + m_i * anglesAverage);
             }
             else
             {            
-                stationKeepTop = (1.0 + m_p * angle_delta * normalizer + m_d * GetDeltaD());                
-                stationKeepBottom = (1.0 - m_p * angle_delta * normalizer + m_d * GetDeltaD());
+                stationKeepTop = (1.0 + m_p * angle_delta * normalizer + m_d * GetDeltaD() + m_i * anglesAverage);                
+                stationKeepBottom = (1.0 - m_p * angle_delta * normalizer + m_d * GetDeltaD() + m_i * anglesAverage);
             }
             if (fabs(stationKeepTop) > fabs(stationKeepBottom))
             {
