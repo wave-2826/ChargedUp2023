@@ -22,7 +22,7 @@ EndEffector::EndEffector()
     SetSubsystem("EndEffector");
 
     m_endEffectorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_endEffectorMotor->SetInverted(true);
+    m_endEffectorMotor->SetInverted(false);
 
     m_coneLED = new frc::DigitalOutput(k_coneLED);
     m_cubeLED = new frc::DigitalOutput(k_cubeLED);
@@ -41,7 +41,7 @@ void EndEffector::Periodic()
         m_allianceLED = new frc::DigitalOutput(m_allianceLEDID);
         m_allianceLED->Set(true);
     }
-
+    
     // Check cone or cube
     int checkConeOrCube = m_operatorJoystick->GetPOV();
     if ((checkConeOrCube >= 0 && checkConeOrCube <= 90) || (checkConeOrCube > 270))
@@ -85,8 +85,8 @@ void EndEffector::SimulationPeriodic() {}
 
 void EndEffector::runEndEffector()
 {
-    double endEffectorRollerIn = m_operatorJoystick->GetRightTriggerAxis();
-    double endEffectorRollerOut = m_operatorJoystick->GetLeftTriggerAxis();
+    double endEffectorRollerIn = m_operatorJoystick->GetLeftTriggerAxis();
+    double endEffectorRollerOut = m_operatorJoystick->GetRightTriggerAxis();
     double endEffectorSpeed = 0.0;
 
     if(endEffectorRollerIn > k_jsDeadband)
@@ -121,7 +121,7 @@ void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed); 
     
-    // std::cout << "Cone: " << m_isCone << " Cube: " << m_cubeDetected << " Speed: " << speed << std::endl;
+    std::cout << "Cone: " << m_isCone << " CubeSensor: " << m_cubeSensor->Get() << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
 }
 
 
