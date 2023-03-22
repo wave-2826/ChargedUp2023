@@ -58,7 +58,6 @@ private:
 
     bool m_coneOut;
     uint16_t m_coneOutTimer;
-    uint16_t m_endEffectorTimer;
 
 public:
     EndEffector();

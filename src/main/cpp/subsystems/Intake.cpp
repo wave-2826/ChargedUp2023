@@ -26,40 +26,81 @@ Intake::Intake()
 
     m_intakeLeftDeployMotor = new rev::CANSparkMax(k_intakeLeftDeployMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
     m_intakeRightDeployMotor = new rev::CANSparkMax(k_intakeRightDeployMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
+    m_intakeLeftEncoder = new rev::SparkMaxRelativeEncoder(m_intakeLeftDeployMotor->GetEncoder());
+
     m_intakeRollerMotor = new rev::CANSparkMax(k_intakeRollerMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
 
     m_intakeRightDeployMotor->SetInverted(true);
+    m_intakePosition = 0.0;
+    // gear rario = 125:1, wheel diameter = 4.25 inches
+    m_distancePerRotation = (3.141 * k_wheelDiameter) / k_gearRatio;
 }
 
 // Initializers
 void Intake::Initialize() 
 {
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
+    // Set the home position for the intake
+    m_intakeLeftDeployMotor->Set(0.0);
+    m_intakeRightDeployMotor->Set(0.0);
 }
 
 // Put code here to be run every loop
-void Intake::Periodic() {}
+void Intake::Periodic() 
+{
+    m_intakePosition = getIntakePosition();
+}
 
 // This method will be called once per scheduler run when in simulation
 void Intake::SimulationPeriodic() {}
 
+double Intake::getIntakePosition()
+{
+    // Get the number of rotation of the motor
+    double numOfRotation = m_intakeLeftEncoder->GetPosition();
+    std::cout << "NumberOfRotation: " << numOfRotation << std::endl;
+
+    return (m_distancePerRotation * numOfRotation);
+}
+
 // intake funtions
 void Intake::moveIntake(double speed)
 {
+    if(speed > k_maxIntakeSpeed) 
+    {
+        speed = k_maxIntakeSpeed;
+    }
     m_intakeLeftDeployMotor->Set(speed);
     m_intakeRightDeployMotor->Set(speed);
 }
 
 void Intake::setIntakeRollerMotorSpeed(double speed)
 {
+    if (speed > k_maxIntakeRollerSpeed)
+    {
+        speed = k_maxIntakeRollerSpeed;
+    }
+    
     m_intakeRollerMotor->Set(speed);
+}
+
+bool Intake::stowIntake()
+{
+    if(m_operatorJoystick->GetBackButton())
+    {
+        return (moveToTarget(0.0));
+    }
+    else
+    {
+        return true;
+    }
 }
 
 void Intake::runIntake() 
 {
     // intake rollers
-    double intakeRollerSpeedInput = m_operatorJoystick->GetLeftTriggerAxis();
-    double intakeRollerSpeed = 0;
+    double intakeRollerSpeedInput = m_operatorJoystick->GetLeftY();
+    double intakeRollerSpeed = 0.0;
     if(fabs(intakeRollerSpeedInput) > k_jsDeadband)
     {
         intakeRollerSpeed = intakeRollerSpeedInput;
@@ -68,20 +109,63 @@ void Intake::runIntake()
     setIntakeRollerMotorSpeed(intakeRollerSpeed);
 
     // intake stow/deploy
+    double intakeCmd = 0.0;
     if (m_operatorJoystick->GetLeftStickButton())
     {
         // deploy
-        moveIntake(0.5);
+        intakeCmd = 0.5;
     }
-    else if (m_operatorJoystick->GetLeftStickButton() && m_operatorJoystick->GetBackButton())
+    else if (m_operatorJoystick->GetBackButton())
     {
         // stow
-        moveIntake(0.5);
+        stowIntake();
+    }
+
+    moveIntake(intakeCmd);
+}
+
+bool Intake::moveToTarget(double target)
+{
+    bool retVal = false;
+    double speedCmd = 0.0;
+    const double k_manualCmd = 0.3; 
+    double delta = std::fabs(target - m_intakePosition);
+
+    if(4.0 <= delta)
+    {
+        // Move the Intake
+        if(target > m_intakePosition)
+        {
+            // Need to extend the Intake
+            speedCmd = k_manualCmd;
+        }
+        else if(target < m_intakePosition)
+        {
+            // Need to retract the Intake
+            speedCmd = -k_manualCmd;
+        }
+    }
+    else if(0.1 <= delta)
+    {
+        // Move the Intake
+        if(target > m_intakePosition)
+        {
+            // Need to extend the Intake
+            speedCmd = k_manualCmd/2.0;
+        }
+        else if(target < m_intakePosition)
+        {
+            // Need to retract the Intake
+            speedCmd = -k_manualCmd/2.0;
+        }
     }
     else
     {
-        // stop
-        moveIntake(0.0);
+        // Target reached
+        retVal = true;
     }
 
+    moveIntake(speedCmd);
+
+    return retVal;
 }

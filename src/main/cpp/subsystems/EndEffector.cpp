@@ -75,7 +75,6 @@ void EndEffector::Initialize()
 {
     m_allianceLEDID = -1;
     m_operatorJoystick = RobotContainer::GetInstance()->getOperator();
-    m_endEffectorTimer = (uint16_t)ONE_SECOND;
 }
 
 // This method will be called once per scheduler run when in simulation
@@ -114,6 +113,9 @@ void EndEffector::runEndEffector()
             endEffectorSpeed = -endEffectorRollerOut*0.5; 
         }
     }
+    else 
+    {
+    }
     setRoller(endEffectorSpeed);
 }
 
@@ -121,7 +123,9 @@ void EndEffector::setRoller(double speed)
 {
     m_endEffectorMotor->Set(speed); 
     
-    std::cout << "Cone: " << m_isCone << " CubeSensor: " << m_cubeSensor->Get() << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
+    std::cout << "Cone: " << m_isCone << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
+    // std::cout <<"CubeSensor: " << m_cubeSensor->Get() << " Channel: " << m_cubeSensor->GetChannel() << std::endl;
+
 }
 
 

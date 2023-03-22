@@ -31,10 +31,22 @@ class Intake: public frc2::SubsystemBase
         // intake motors
         rev::CANSparkMax *m_intakeLeftDeployMotor;
         rev::CANSparkMax *m_intakeRightDeployMotor;
+        rev::SparkMaxRelativeEncoder *m_intakeLeftEncoder;
         rev::CANSparkMax *m_intakeRollerMotor;
 
         // Pointer to the operator controller
         frc::XboxController *m_operatorJoystick;
+
+        double m_intakePosition;
+        double m_distancePerRotation;
+
+        static constexpr const double k_maxIntakeSpeed = 0.8;
+        static constexpr const double k_maxIntakeRollerSpeed = 0.5;
+        static constexpr const double k_wheelDiameter = 4.25; // in inches
+        static constexpr const double k_gearRatio = 125.0;     // 125:1
+
+        bool moveToTarget(double target);
+
 
     public:
         Intake();
@@ -46,6 +58,10 @@ class Intake: public frc2::SubsystemBase
         void Initialize();
         void Periodic() override;
         void SimulationPeriodic() override;
+
+        double getIntakePosition();
+
+        bool stowIntake();
 
 };
 
