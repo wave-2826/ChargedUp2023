@@ -15,7 +15,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include "ctre/Phoenix.h"
 #include <frc/Encoder.h>
-#include <rev/CANSparkMax.h>
+#include <rev/CANSparkMaxLowLevel.h>
 #include "subsystems/SwervePod.h"
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <units/velocity.h>
@@ -41,12 +41,12 @@ class SwerveDrive: public frc2::SubsystemBase {
         ctre::phoenix::sensors::Pigeon2 *m_pigeon;
         double m_gyroHeadings[3] = {0, 0, 0};
 
-        rev::CANSparkMax *m_rightBottomMotor;
-        rev::CANSparkMax *m_rightTopMotor;
-        rev::CANSparkMax *m_leftBottomMotor;
-        rev::CANSparkMax *m_leftTopMotor;
-        rev::CANSparkMax *m_pointBottomMotor;
-        rev::CANSparkMax *m_pointTopMotor;
+        rev::CANSparkMaxLowLevel *m_rightBottomMotor;
+        rev::CANSparkMaxLowLevel *m_rightTopMotor;
+        rev::CANSparkMaxLowLevel *m_leftBottomMotor;
+        rev::CANSparkMaxLowLevel *m_leftTopMotor;
+        rev::CANSparkMaxLowLevel *m_pointBottomMotor;
+        rev::CANSparkMaxLowLevel *m_pointTopMotor;
 
         frc::SwerveDriveKinematics<3> *m_kinematics;
 

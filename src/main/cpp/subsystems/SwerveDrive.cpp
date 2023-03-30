@@ -30,14 +30,22 @@ SwerveDrive::SwerveDrive()
 
     // All swerve module motors
     // A = bottom , B = top
-    m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
-    m_rightBottomMotor = new CANSparkMax(k_swerveRightBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    // m_rightTopMotor = new CANSparkMax(k_swerveRightTop, CANSparkMaxLowLevel::MotorType::kBrushless, CANSparkMaxLowLevel::ControlType::kVelocity); // A
+    m_rightTopMotor = new CANSparkMaxLowLevel(k_swerveRightTop, 1); // A
+    m_rightBottomMotor = new CANSparkMaxLowLevel(k_swerveRightBottom, 1); // B
     // A = bottom , B = top
-    m_leftTopMotor = new CANSparkMax(k_swerveLeftTop, CANSparkMaxLowLevel::MotorType::kBrushless); // A
-    m_leftBottomMotor = new CANSparkMax(k_swerveLeftBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // B
+    m_leftTopMotor = new CANSparkMaxLowLevel(k_swerveLeftTop, 1); // A
+    m_leftBottomMotor = new CANSparkMaxLowLevel(k_swerveLeftBottom, 1); // B
     // right = bottom , left = top
-    m_pointTopMotor = new CANSparkMax(k_swervePointTop, CANSparkMaxLowLevel::MotorType::kBrushless); // L
-    m_pointBottomMotor = new CANSparkMax(k_swervePointBottom, CANSparkMaxLowLevel::MotorType::kBrushless); // R
+    m_pointTopMotor = new CANSparkMaxLowLevel(k_swervePointTop, 1); // L
+    m_pointBottomMotor = new CANSparkMaxLowLevel(k_swervePointBottom, 1); // R
+
+    m_rightTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+    m_rightBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+    m_leftTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+    m_leftBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+    m_pointTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+    m_pointBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
 
     // explicitly set all motors to coast
     m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);

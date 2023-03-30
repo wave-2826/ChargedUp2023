@@ -5,27 +5,17 @@ compiling AutoBalanceSwerve.cpp successful.
 
 compiling DriveHeading.cpp successful.
 
-compiling EndEffectorDown.cpp successful.
-
-compiling ElevatorHold.cpp successful.
-
-compiling ExtendElevatorMidCone.cpp successful.
-
-compiling ExtendElevatorTopCone.cpp successful.
-
-compiling DriveTimed.cpp successful.
-
-compiling StowElevator.cpp successful.
-
 compiling DriveHeadingTimed.cpp successful.
+
+compiling ScoreMidConeBackout.cpp successful.
 
 compiling ScoreTopConeBackout.cpp successful.
 
-compiling SwerveInitializeCommand.cpp successful.
-
 compiling SequentialScoreMidCone.cpp successful.
 
-compiling SequentialScoreTopCone.cpp successful.
+compiling DriveTimed.cpp successful.
+
+compiling SwerveInitializeCommand.cpp successful.
 
 compiling Robot.cpp successful.
 
@@ -39,8 +29,214 @@ compiling Intake.cpp successful.
 
 compiling RobotIntake.cpp successful.
 
-compiling ScoreMidConeBackout.cpp successful.
+compiling SequentialScoreTopCone.cpp successful.
 
-compiling SwerveDrive.cpp successful.
+compiling SwerveDrive.cpp failed.
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp: In constructor 'SwerveDrive::SwerveDrive()':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:34:66: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   34 |     m_rightTopMotor = new CANSparkMaxLowLevel(k_swerveRightTop, 1); // A
+      |                                                                  ^
+In file included from C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwerveDrive.h:18,
+                 from C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:13:
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:50:7: note:   because the following virtual functions are pure within 'rev::CANSparkMaxLowLevel':
+   50 | class CANSparkMaxLowLevel : public frc::MotorController {
+      |       ^~~~~~~~~~~~~~~~~~~
+In file included from C:\Users\Wave\.gradle\caches\transforms-3\1de6a35d85bf935e6a42215fdf41183d\transformed\wpiapi-cpp-5.30.3-headers/ctre/phoenix/motorcontrol/can/WPI_BaseMotorController.h:26,
+                 from C:\Users\Wave\.gradle\caches\transforms-3\1de6a35d85bf935e6a42215fdf41183d\transformed\wpiapi-cpp-5.30.3-headers/ctre/phoenix/motorcontrol/can/WPI_TalonFX.h:14,
+                 from C:\Users\Wave\.gradle\caches\transforms-3\3464ce95fc12fa8aca847765e759c2da\transformed\api-cpp-5.30.3-headers/ctre/Phoenix.h:42,
+                 from C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwerveDrive.h:16:
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:23:16: note:     'virtual void frc::MotorController::Set(double)'
+   23 |   virtual void Set(double speed) = 0;
+      |                ^~~
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:44:18: note:     'virtual double frc::MotorController::Get() const'
+   44 |   virtual double Get() const = 0;
+      |                  ^~~
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:51:16: note:     'virtual void frc::MotorController::SetInverted(bool)'
+   51 |   virtual void SetInverted(bool isInverted) = 0;
+      |                ^~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:58:16: note:     'virtual bool frc::MotorController::GetInverted() const'
+   58 |   virtual bool GetInverted() const = 0;
+      |                ^~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:63:16: note:     'virtual void frc::MotorController::Disable()'
+   63 |   virtual void Disable() = 0;
+      |                ^~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\2248a5f0cdaa42c1391739edb89c05c3\transformed\wpilibc-cpp-2023.1.1-headers/frc/motorcontrol/MotorController.h:68:16: note:     'virtual void frc::MotorController::StopMotor()'
+   68 |   virtual void StopMotor() = 0;
+      |                ^~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:35:72: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   35 |     m_rightBottomMotor = new CANSparkMaxLowLevel(k_swerveRightBottom, 1); // B
+      |                                                                        ^
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:37:64: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   37 |     m_leftTopMotor = new CANSparkMaxLowLevel(k_swerveLeftTop, 1); // A
+      |                                                                ^
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:38:70: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   38 |     m_leftBottomMotor = new CANSparkMaxLowLevel(k_swerveLeftBottom, 1); // B
+      |                                                                      ^
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:40:66: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   40 |     m_pointTopMotor = new CANSparkMaxLowLevel(k_swervePointTop, 1); // L
+      |                                                                  ^
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:41:72: error: invalid new-expression of abstract class type 'rev::CANSparkMaxLowLevel'
+   41 |     m_pointBottomMotor = new CANSparkMaxLowLevel(k_swervePointBottom, 1); // R
+      |                                                                        ^
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:43:37: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   43 |     m_rightTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:44:40: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   44 |     m_rightBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:45:36: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   45 |     m_leftTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:46:39: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   46 |     m_leftBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:47:37: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   47 |     m_pointTopMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:48:40: error: 'rev::REVLibError rev::CANSparkMaxLowLevel::SetpointCommand(double, ControlType, int, double, int)' is protected within this context
+   48 |     m_pointBottomMotor->SetpointCommand(1, rev::CANSparkMaxLowLevel::ControlType::kVelocity);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\Wave\.gradle\caches\transforms-3\eb10d22e26573f2bc49bc27d7d8d0d5b\transformed\REVLib-cpp-2023.1.2-headers/rev/CANSparkMaxLowLevel.h:339:17: note: declared protected here
+  339 |     REVLibError SetpointCommand(
+      |                 ^~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:51:22: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   51 |     m_rightTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                      ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:52:25: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   52 |     m_rightBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                         ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:53:21: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   53 |     m_leftTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                     ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:54:24: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   54 |     m_leftBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                        ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:55:22: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   55 |     m_pointTopMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                      ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:56:25: error: 'class rev::CANSparkMaxLowLevel' has no member named 'SetIdleMode'
+   56 |     m_pointBottomMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+      |                         ^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:95:31: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   95 |     m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, iLeft, dLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
+      |                               ^~~~~~~~~~~~~~
+      |                               |
+      |                               rev::CANSparkMaxLowLevel*
+In file included from C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwerveDrive.h:19:
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:37: note:   initializing argument 1 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                   ~~~~~~~~~~~~~~~~~~^~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:95:47: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   95 |     m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, iLeft, dLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
+      |                                               ^~~~~~~~~~~~~~~~~
+      |                                               |
+      |                                               rev::CANSparkMaxLowLevel*
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:65: note:   initializing argument 2 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                                               ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:96:32: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   96 |     m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, pRight, iRight, dRight, rightPodScaling, rightPodAlignedAngle, rightOffset, k_rightPodEncoder);
+      |                                ^~~~~~~~~~~~~~~
+      |                                |
+      |                                rev::CANSparkMaxLowLevel*
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:37: note:   initializing argument 1 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                   ~~~~~~~~~~~~~~~~~~^~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:96:49: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   96 |     m_rightPod = new SwervePod(m_rightTopMotor, m_rightBottomMotor, pRight, iRight, dRight, rightPodScaling, rightPodAlignedAngle, rightOffset, k_rightPodEncoder);
+      |                                                 ^~~~~~~~~~~~~~~~~~
+      |                                                 |
+      |                                                 rev::CANSparkMaxLowLevel*
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:65: note:   initializing argument 2 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                                               ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:97:32: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   97 |     m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, pPoint, iPoint, dPoint, pointPodScaling, pointPodAlignedAngle, pointOffset, k_pointPodEncoder);
+      |                                ^~~~~~~~~~~~~~~
+      |                                |
+      |                                rev::CANSparkMaxLowLevel*
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:37: note:   initializing argument 1 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                   ~~~~~~~~~~~~~~~~~~^~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:97:49: error: invalid conversion from 'rev::CANSparkMaxLowLevel*' to 'rev::CANSparkMax*' [-fpermissive]
+   97 |     m_pointPod = new SwervePod(m_pointTopMotor, m_pointBottomMotor, pPoint, iPoint, dPoint, pointPodScaling, pointPodAlignedAngle, pointOffset, k_pointPodEncoder);
+      |                                                 ^~~~~~~~~~~~~~~~~~
+      |                                                 |
+      |                                                 rev::CANSparkMaxLowLevel*
+C:\Wave2826\ChargedUp2023\src\main\include/subsystems/SwervePod.h:83:65: note:   initializing argument 2 of 'SwervePod::SwervePod(rev::CANSparkMax*, rev::CANSparkMax*, double, double, double, double, double, double, int)'
+   83 |         SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, double p_PID, double i_PID, double d_PID, double motorScaling, double alignedAngle, double offsetAngle, int encoderChannel);
+      |                                               ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp: In member function 'void SwerveDrive::SetVoltageCompensation()':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:139:22: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  139 |     m_rightTopMotor->EnableVoltageCompensation(rightVoltageCompensation);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:140:25: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  140 |     m_rightBottomMotor->EnableVoltageCompensation(rightVoltageCompensation);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:142:21: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  142 |     m_leftTopMotor->EnableVoltageCompensation(leftVoltageCompensation);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:143:24: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  143 |     m_leftBottomMotor->EnableVoltageCompensation(leftVoltageCompensation);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:145:22: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  145 |     m_pointTopMotor->EnableVoltageCompensation(pointVoltageCompensation);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:146:25: error: 'class rev::CANSparkMaxLowLevel' has no member named 'EnableVoltageCompensation'
+  146 |     m_pointBottomMotor->EnableVoltageCompensation(pointVoltageCompensation);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp: In member function 'double SwerveDrive::GetMotorTemperature(int, int)':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:182:41: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  182 |                 return m_rightTopMotor->GetMotorTemperature();
+      |                                         ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:184:44: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  184 |                 return m_rightBottomMotor->GetMotorTemperature();
+      |                                            ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:189:40: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  189 |                 return m_leftTopMotor->GetMotorTemperature();
+      |                                        ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:191:43: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  191 |                 return m_leftBottomMotor->GetMotorTemperature();
+      |                                           ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:196:41: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  196 |                 return m_pointTopMotor->GetMotorTemperature();
+      |                                         ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:198:44: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetMotorTemperature'
+  198 |                 return m_pointBottomMotor->GetMotorTemperature();
+      |                                            ^~~~~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp: In member function 'double SwerveDrive::GetPodCurrent(int, bool)':
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:283:41: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  283 |                 return m_rightTopMotor->GetOutputCurrent();
+      |                                         ^~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:285:44: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  285 |                 return m_rightBottomMotor->GetOutputCurrent();
+      |                                            ^~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:289:40: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  289 |                 return m_leftTopMotor->GetOutputCurrent();
+      |                                        ^~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:291:43: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  291 |                 return m_leftBottomMotor->GetOutputCurrent();
+      |                                           ^~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:295:41: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  295 |                 return m_pointTopMotor->GetOutputCurrent();
+      |                                         ^~~~~~~~~~~~~~~~
+C:\Wave2826\ChargedUp2023\src\main\cpp\subsystems\SwerveDrive.cpp:297:44: error: 'class rev::CANSparkMaxLowLevel' has no member named 'GetOutputCurrent'
+  297 |                 return m_pointBottomMotor->GetOutputCurrent();
+      |                                            ^~~~~~~~~~~~~~~~
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
