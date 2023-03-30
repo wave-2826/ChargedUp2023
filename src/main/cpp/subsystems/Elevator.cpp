@@ -41,7 +41,7 @@ Elevator::Elevator()
     m_isCone = true;
 
     // May or may not use this
-    m_distancePerRotation = (k_numOfTeeth * k_teethSize) /k_gearRatio;
+    m_distancePerRotation = (k_numOfTeeth * k_teethSize) / k_gearRatio;
 }
 
 void Elevator::setCustomTarget(double target)
@@ -386,6 +386,7 @@ bool Elevator::moveElevatorToTargetManual(double target)
         retVal = true;
     }
 
+    std::cout << "elev - target: " << m_elevatorPosition << " speed: " << speedCmd << std::endl;
     setElevator(speedCmd);
 
     return retVal;

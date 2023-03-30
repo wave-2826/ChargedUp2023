@@ -29,6 +29,8 @@ void EndEffectorDown::Initialize()
 {
     m_targetReached = false;
     m_timerSet = false;
+    m_endEffector->setCone(true);
+    m_endEffector->setLEDS();
 }
 
 // Called repeatedly when this Command is scheduled to run

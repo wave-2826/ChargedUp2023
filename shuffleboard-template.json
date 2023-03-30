@@ -283,7 +283,7 @@
               "_showGlyph": false
             }
           },
-          "13,0": {
+          "13,2": {
             "size": [
               2,
               1
@@ -296,7 +296,7 @@
               "_showGlyph": false
             }
           },
-          "17,0": {
+          "17,2": {
             "size": [
               2,
               1
@@ -309,7 +309,7 @@
               "_showGlyph": false
             }
           },
-          "15,0": {
+          "15,2": {
             "size": [
               2,
               1
@@ -322,7 +322,7 @@
               "_showGlyph": false
             }
           },
-          "13,2": {
+          "13,4": {
             "size": [
               2,
               1
@@ -335,7 +335,7 @@
               "_showGlyph": false
             }
           },
-          "15,2": {
+          "15,4": {
             "size": [
               2,
               1
@@ -348,7 +348,7 @@
               "_showGlyph": false
             }
           },
-          "17,2": {
+          "17,4": {
             "size": [
               2,
               1
@@ -400,7 +400,7 @@
               "_showGlyph": false
             }
           },
-          "13,1": {
+          "13,3": {
             "size": [
               2,
               1
@@ -413,7 +413,7 @@
               "_showGlyph": false
             }
           },
-          "17,1": {
+          "17,3": {
             "size": [
               2,
               1
@@ -426,7 +426,7 @@
               "_showGlyph": false
             }
           },
-          "15,1": {
+          "15,3": {
             "size": [
               2,
               1
@@ -870,7 +870,7 @@
               "_showGlyph": false
             }
           },
-          "13,3": {
+          "13,5": {
             "size": [
               2,
               1
@@ -883,7 +883,7 @@
               "_showGlyph": false
             }
           },
-          "15,3": {
+          "15,5": {
             "size": [
               2,
               1
@@ -896,7 +896,7 @@
               "_showGlyph": false
             }
           },
-          "17,3": {
+          "17,5": {
             "size": [
               2,
               1
@@ -907,6 +907,57 @@
               "_title": "Recommend Offset P",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left Offset",
+              "_title": "SmartDashboard/Left Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "17,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point Offset",
+              "_title": "SmartDashboard/Point Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "15,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right Offset",
+              "_title": "SmartDashboard/Right Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
             }
           }
         }

@@ -69,7 +69,23 @@ void EndEffector::Periodic()
         m_cubeDetected = (false == m_cubeSensor->Get());
     }
 
-}    
+}   
+
+void EndEffector::setCone(bool isCone)
+{
+    m_isCone = isCone; 
+}
+
+void EndEffector::setLEDS()
+{
+    m_coneLED->Set(m_isCone);
+    m_cubeLED->Set(!m_isCone);
+}
+
+bool EndEffector::getCone()
+{
+    return m_isCone;
+}
 
 void EndEffector::Initialize() 
 {
@@ -118,12 +134,12 @@ void EndEffector::runEndEffector()
         }
     }
 
-    setRoller(-endEffectorSpeed);
+    setRoller(endEffectorSpeed);
 }
 
 void EndEffector::setRoller(double speed)
 {
-    m_endEffectorMotor->Set(speed); 
+    m_endEffectorMotor->Set(-speed); 
     
     // std::cout << "Cone: " << m_isCone << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
 }
@@ -139,6 +155,7 @@ bool EndEffector::rollerOut()
         if(m_coneOutTimer > ONE_SECOND)
         {
             m_coneOut = false;
+
             return true;
         }
     }

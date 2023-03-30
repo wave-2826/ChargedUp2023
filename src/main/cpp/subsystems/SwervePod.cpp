@@ -143,15 +143,15 @@ void SwervePod::UpdateIPID()
     switch(m_encoderChannel) {
         case 0:
             m_podName = "Right";
-            m_i = frc::SmartDashboard::GetNumber("Right i_PID", 0.025);
+            m_i = frc::SmartDashboard::GetNumber("Right i_PID", 0.0);
             break;
         case 1:
             m_podName = "Left";
-            m_i = frc::SmartDashboard::GetNumber("Left i_PID", 0.025);
+            m_i = frc::SmartDashboard::GetNumber("Left i_PID", 0.0);
             break;
         case 2:
             m_podName = "Point";
-            m_i = frc::SmartDashboard::GetNumber("Point i_PID", 0.025);
+            m_i = frc::SmartDashboard::GetNumber("Point i_PID", 0.0);
             break;
     }
 }

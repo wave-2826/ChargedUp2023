@@ -60,9 +60,12 @@ void Robot::RobotPeriodic()
 
   m_container->m_swerveDrive.DisplayPodPIDValues();
 
-  frc::SmartDashboard::PutNumber("Recommend Offset L", -m_container->m_swerveDrive.GetLeftPodEncoderPosition()  + 90.0);
-  frc::SmartDashboard::PutNumber("Recommend Offset R", -m_container->m_swerveDrive.GetRightPodEncoderPosition() + 90.0);
-  frc::SmartDashboard::PutNumber("Recommend Offset P", -m_container->m_swerveDrive.GetPointPodEncoderPosition() + 90.0);
+  // frc::SmartDashboard::PutNumber("Recommend Offset L", -m_container->m_swerveDrive.GetLeftPodEncoderPosition() + 90.0);
+  // frc::SmartDashboard::PutNumber("Recommend Offset R", -m_container->m_swerveDrive.GetRightPodEncoderPosition() + 90.0);
+  // frc::SmartDashboard::PutNumber("Recommend Offset P", -m_container->m_swerveDrive.GetPointPodEncoderPosition() + 90.0);
+  frc::SmartDashboard::PutNumber("Recommend Offset L", m_container->m_swerveDrive.GetLeftPodEncoderPosition());
+  frc::SmartDashboard::PutNumber("Recommend Offset R", m_container->m_swerveDrive.GetRightPodEncoderPosition());
+  frc::SmartDashboard::PutNumber("Recommend Offset P", m_container->m_swerveDrive.GetPointPodEncoderPosition());
 
 
   if (TEST_STATE)

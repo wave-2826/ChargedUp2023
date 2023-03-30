@@ -45,8 +45,8 @@ int const k_intakeRightDeployMotor =    57;
 int const k_intakeRollerMotor =         61;
 
 // Robot Intake Solenoids
-int const k_robotIntakeDeploy =         1;
-int const k_robotIntakeClamp =          0;
+int const k_robotIntakeDeploy =         0;
+int const k_robotIntakeClamp =          1;
 
 // Pneumatics
 int const k_pneumaticHub =              8;

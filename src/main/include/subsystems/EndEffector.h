@@ -37,7 +37,7 @@ private:
     frc::XboxController *m_operatorJoystick;
 
     // Scoring object flag. True when scoring with Cone
-    bool m_isCone;
+    bool m_isCone = true;
 
     // LED
     frc::DigitalOutput *m_coneLED;
@@ -75,4 +75,9 @@ public:
     bool rollerOut();
 
     void setConeOut();
+
+    void setCone(bool isCone);
+    bool getCone();
+
+    void setLEDS();
 };

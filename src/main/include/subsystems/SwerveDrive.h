@@ -69,25 +69,25 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodBottomMotorCurrent = 0.0;
 
         // Swerve smartdashboard inputs - offsets
-        double m_leftPodOffsetAngle = -19.6;
-        double m_rightPodOffsetAngle = 260.5;
-        double m_pointPodOffsetAngle = 3.8;
+        double m_leftPodOffsetAngle = 37.7;
+        double m_rightPodOffsetAngle = -402;
+        double m_pointPodOffsetAngle = 120.6;
         double leftOffset;
         double rightOffset;
         double pointOffset;
 
         // Swerve smartdashboard inputs - rotate
-        double m_leftRotate = 2.0;
-        double m_rightRotate = 2.0;
-        double m_pointRotate = 2.0;
+        double m_leftRotate = 1.0;
+        double m_rightRotate = 1.0;
+        double m_pointRotate = 1.0;
         double leftRotate;
         double rightRotate;
         double pointRotate;
 
         // Swerve smartdashboard inputs - p_PID
-        double m_pLeft  = 4.0;
-        double m_pRight = 4.0;
-        double m_pPoint = 4.0;
+        double m_pLeft  = 2.0;
+        double m_pRight = 2.0;
+        double m_pPoint = 2.0;
         double pLeft;
         double pRight;
         double pPoint;

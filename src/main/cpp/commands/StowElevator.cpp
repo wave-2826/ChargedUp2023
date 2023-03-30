@@ -21,11 +21,13 @@ void StowElevator::Initialize()
 void StowElevator::Execute() 
 {
     m_targetReached = m_elevator->stowElevatorAuto();
+    std::cout << "STOW ELEVATOR - target reached: " << m_targetReached << std::endl;
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool StowElevator::IsFinished() 
 {
+    std::cout << "STOW ELEVATOR - IS FINISHED!!!: " << std::endl;
     return m_targetReached;
 }
 
