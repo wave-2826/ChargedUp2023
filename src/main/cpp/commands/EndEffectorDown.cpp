@@ -52,7 +52,6 @@ bool EndEffectorDown::IsFinished()
 // Called once after isFinished returns true
 void EndEffectorDown::End(bool interrupted) 
 {
-    std::cout << "END - End Effector down" << std::endl;
     m_targetReached = false;
     m_timerSet = false;
 }

@@ -49,34 +49,39 @@ SwerveDrive::SwerveDrive()
 
     // TODO: FIGURE OUT SOMETHING FOR AUTO
     // set initial offset angles from the smart dashboard
-    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 275.0);
-    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 135.0);
-    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 185.0);
+    leftOffset = frc::SmartDashboard::GetNumber("Left Offset", m_leftPodOffsetAngle);
+    rightOffset = frc::SmartDashboard::GetNumber("Right Offset", m_rightPodOffsetAngle);
+    pointOffset = frc::SmartDashboard::GetNumber("Point Offset", m_pointPodOffsetAngle);
+
+    // set initial rotate multiplier from the smart dashboard
+    leftRotate = frc::SmartDashboard::GetNumber("Left Rotate", m_leftRotate);
+    rightRotate = frc::SmartDashboard::GetNumber("Right Rotate", m_rightRotate);
+    pointRotate = frc::SmartDashboard::GetNumber("Point Rotate", m_pointRotate);
 
     // set initial p_PID values from the smart dashboard
-    pLeft = frc::SmartDashboard::GetNumber("Left p_PID", 3.0);
-    pRight = frc::SmartDashboard::GetNumber("Right p_PID", 3.0);
-    pPoint = frc::SmartDashboard::GetNumber("Point p_PID", 3.0);
+    pLeft = frc::SmartDashboard::GetNumber("Left p_PID",   m_pLeft);
+    pRight = frc::SmartDashboard::GetNumber("Right p_PID", m_pRight);
+    pPoint = frc::SmartDashboard::GetNumber("Point p_PID", m_pPoint);
 
     // set initial i_PID values from the smart dashboard
-    iLeft = frc::SmartDashboard::GetNumber("Left i_PID", 3.0);
-    iRight = frc::SmartDashboard::GetNumber("Right i_PID", 3.0);
-    iPoint = frc::SmartDashboard::GetNumber("Point i_PID", 3.0);
+    iLeft = frc::SmartDashboard::GetNumber("Left i_PID",   m_iLeft);
+    iRight = frc::SmartDashboard::GetNumber("Right i_PID", m_iRight);
+    iPoint = frc::SmartDashboard::GetNumber("Point i_PID", m_iPoint);
     
     // set initial d_PID values from the smart dashboard
-    dLeft = frc::SmartDashboard::GetNumber("Left d_PID", 3.0);
-    dRight = frc::SmartDashboard::GetNumber("Right d_PID", 3.0);
-    dPoint = frc::SmartDashboard::GetNumber("Point d_PID", 3.0);
+    dLeft = frc::SmartDashboard::GetNumber("Left d_PID",   m_dLeft);
+    dRight = frc::SmartDashboard::GetNumber("Right d_PID", m_dRight);
+    dPoint = frc::SmartDashboard::GetNumber("Point d_PID", m_dPoint);
 
     // set initial motor scaling factors from the smart dashboard
-    leftPodScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", 0.3);
-    rightPodScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", 0.3);
-    pointPodScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", 0.3);
+    leftPodScaling = frc::SmartDashboard::GetNumber("Left Motor Scaling", m_leftPodScaling);
+    rightPodScaling = frc::SmartDashboard::GetNumber("Right Motor Scaling", m_rightPodScaling);
+    pointPodScaling = frc::SmartDashboard::GetNumber("Point Motor Scaling", m_pointPodScaling);
 
     // set initial aligned angles from the smart dashboard
-    leftPodAlignedAngle = frc::SmartDashboard::GetNumber("Left Aligned Angle", 30.0);
-    rightPodAlignedAngle = frc::SmartDashboard::GetNumber("Right Aligned Angle", 30.0);
-    pointPodAlignedAngle = frc::SmartDashboard::GetNumber("Point Aligned Angle", 30.0);
+    leftPodAlignedAngle = frc::SmartDashboard::GetNumber("Left Aligned Angle", m_leftPodAlignedAngle);
+    rightPodAlignedAngle = frc::SmartDashboard::GetNumber("Right Aligned Angle", m_rightPodAlignedAngle);
+    pointPodAlignedAngle = frc::SmartDashboard::GetNumber("Point Aligned Angle", m_pointPodAlignedAngle);
 
     // Individual swerve pod instances
     m_leftPod = new SwervePod(m_leftTopMotor, m_leftBottomMotor, pLeft, iLeft, dLeft, leftPodScaling, leftPodAlignedAngle, leftOffset, k_leftPodEncoder);
@@ -214,6 +219,14 @@ void SwerveDrive::UpdatePodOffsetAngles()
     m_pointPod->UpdateOffsetAngle();
 }
 
+void SwerveDrive::UpdatePodRotate() 
+{
+    // UPDATE pod rotate multiplier
+    m_leftPod->UpdateRotate();
+    m_rightPod->UpdateRotate();
+    m_pointPod->UpdateRotate();
+}
+
 void SwerveDrive::UpdatePodPPID() 
 {
     // UPDATE pod p_PID vals
@@ -306,6 +319,32 @@ void SwerveDrive::SetPointPodOffsetAngle(double offsetAngle)
     m_pointPodOffsetAngle = offsetAngle;
 }
 
+// Rotate multiplier getters & setters
+double SwerveDrive::GetLeftPodRotate() 
+{
+    return m_leftRotate;
+}
+double SwerveDrive::GetRightPodRotate() 
+{
+    return m_rightRotate;
+}
+double SwerveDrive::GetPointPodRotate() 
+{
+    return m_pointRotate;
+}
+void SwerveDrive::SetLeftPodRotate(double rotate)
+{
+    m_leftRotate = rotate;
+}
+void SwerveDrive::SetRightPodRotate(double rotate)
+{
+    m_rightRotate = rotate;
+}
+void SwerveDrive::SetPointPodRotate(double rotate)
+{
+    m_pointRotate = rotate;
+}
+
 // p_PID getters & setters
 double SwerveDrive::GetLeftPodPPID()
 {
@@ -332,6 +371,33 @@ void SwerveDrive::SetPointPodPPID(double p)
     m_pPoint = p;
 }
 
+
+// i_PID getters & setters
+double SwerveDrive::GetLeftPodIPID()
+{
+    return m_iLeft;
+}
+double SwerveDrive::GetRightPodIPID()
+{
+    return m_iRight;
+}
+double SwerveDrive::GetPointPodIPID()
+{
+    return m_iPoint;
+}
+void SwerveDrive::SetLeftPodIPID(double i)
+{
+    m_iLeft = i;
+}
+void SwerveDrive::SetRightPodIPID(double i)
+{
+    m_iRight = i;
+}
+void SwerveDrive::SetPointPodIPID(double i)
+{
+    m_iPoint = i;
+}
+
 // d_PID getters & setters
 double SwerveDrive::GetLeftPodDPID()
 {
@@ -356,6 +422,14 @@ void SwerveDrive::SetRightPodDPID(double d)
 void SwerveDrive::SetPointPodDPID(double d)
 {
     m_dPoint = d;
+}
+
+// Show PID values for testing
+void SwerveDrive::DisplayPodPIDValues()
+{
+    m_leftPod->DisplayPIDValues();
+    m_rightPod->DisplayPIDValues();
+    m_pointPod->DisplayPIDValues();
 }
 
 // motor scaling getters & setters
@@ -408,6 +482,21 @@ void SwerveDrive::SetRightPodAlignedAngle(double angle)
 void SwerveDrive::SetPointPodAlignedAngle(double angle)
 {
     m_pointPodAlignedAngle = angle;
+}
+
+double SwerveDrive::GetLeftPodEncoderPosition()
+{
+    return m_leftPod->GetEncoderPosition();
+}
+
+double SwerveDrive::GetRightPodEncoderPosition()
+{
+    return m_rightPod->GetEncoderPosition();
+}
+
+double SwerveDrive::GetPointPodEncoderPosition()
+{
+    return m_pointPod->GetEncoderPosition();
 }
 
 void SwerveDrive::DrivePods(double move, double strafe, double rotation, double *returnArray) 
@@ -581,7 +670,7 @@ void SwerveDrive::HeadingSwerve(double targetSpeed)
             if(targetSpeed == 0)
             {
                 m_yawTimer++;
-                if (m_yawTimer > TWO_SECONDS)
+                if (m_yawTimer > ONE_SECOND)
                 {
                     m_headingState = Heading_Init;
                 }                

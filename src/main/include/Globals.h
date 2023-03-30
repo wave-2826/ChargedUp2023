@@ -9,9 +9,13 @@
 #define _DEBUGME                    
 #define _TESTJOYSTICK               
 #define _TESTPIGEON                 
-#define _TESTELEVATOR               
+#define _TESTELEVATOR     
 
-double const k_jsDeadband =      0.08;
+// Diagnostic State
+bool const TEST_STATE =                 true;
+
+// Deadband
+double const k_jsDeadband =             0.12;
 
 // Swerve Drive Motors
 int const k_swervePointBottom =         2;
@@ -36,9 +40,9 @@ int const k_elevatorMotorB =            12;
 int const k_endofactorMotor =           13;
 
 // Intake Motors
-int const k_intakeLeftDeployMotor =     14;
-int const k_intakeRightDeployMotor =    15;
-int const k_intakeRollerMotor =         16;
+int const k_intakeLeftDeployMotor =     54;
+int const k_intakeRightDeployMotor =    57;
+int const k_intakeRollerMotor =         61;
 
 // Robot Intake Solenoids
 int const k_robotIntakeDeploy =         1;

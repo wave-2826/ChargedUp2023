@@ -28,7 +28,7 @@ DriveTimed::DriveTimed(SwerveDrive* swerveDrive, double inputLX, double inputLY,
 // Called just before this Command runs the first time
 void DriveTimed::Initialize() {
     WaitCommand::Initialize();
-    m_swerveDrive->InitialSwerve();
+    // m_swerveDrive->InitialSwerve();
 }
 
 // Called repeatedly when this Command is scheduled to run

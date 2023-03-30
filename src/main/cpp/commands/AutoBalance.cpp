@@ -29,7 +29,7 @@ void AutoBalance::Initialize() {
     // WaitCommand::Initialize();
     m_balanceState = Before_Balance;
     m_isBalanced = false;
-    while (!m_swerveDrive->InitialSwerve());
+    // while (!m_swerveDrive->InitialSwerve());
 }
 
 // Called repeatedly when this Command is scheduled to run

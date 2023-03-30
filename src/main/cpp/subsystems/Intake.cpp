@@ -58,7 +58,7 @@ double Intake::getIntakePosition()
 {
     // Get the number of rotation of the motor
     double numOfRotation = m_intakeLeftEncoder->GetPosition();
-    std::cout << "NumberOfRotation: " << numOfRotation << std::endl;
+    // std::cout << "NumberOfRotation: " << numOfRotation << std::endl;
 
     return (m_distancePerRotation * numOfRotation);
 }
@@ -113,12 +113,13 @@ void Intake::runIntake()
     if (m_operatorJoystick->GetLeftStickButton())
     {
         // deploy
-        intakeCmd = 0.5;
+        intakeCmd = -1.0;
     }
     else if (m_operatorJoystick->GetBackButton())
     {
         // stow
-        stowIntake();
+        // stowIntake();
+        intakeCmd = 1.0;
     }
 
     moveIntake(intakeCmd);

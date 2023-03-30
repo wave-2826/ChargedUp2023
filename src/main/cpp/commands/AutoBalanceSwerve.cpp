@@ -26,10 +26,11 @@ AutoBalanceSwerve::AutoBalanceSwerve(SwerveDrive* swerveDrive)
     // m_startingYaw = m_swerveDrive->GetRobotYaw();
 
     // Set default gains
-    m_pGain = 1.0;
-    m_iGain = 2.0;
-    m_dGain = 0.5;
-    m_pitchTolerence = 2.0;
+    // m_pGain = 1.0;
+    // m_iGain = 2.0;
+    // m_dGain = 0.5;
+    // m_pitchTolerence = 2.0;
+    // updatePID(m_pGain, m_iGain, m_dGain, m_pitchTolerence);
     m_balancePID = new frc2::PIDController(m_pGain, m_iGain, m_dGain);
 }
 
@@ -38,16 +39,16 @@ void AutoBalanceSwerve::Initialize() {
     m_balanceState = Balance_Off;
     m_isBalanced = false;
     m_swerveDrive->initHeading();
-    while (!m_swerveDrive->InitialSwerve());
+    // while (!m_swerveDrive->InitialSwerve());
     // m_startingYaw = m_swerveDrive->GetRobotYaw();
 }
 
 void AutoBalanceSwerve::updatePID(double p, double i, double d, double delta)
 {
-    m_pGain = frc::SmartDashboard::GetNumber("Balance_P", 1.0);
-    m_iGain = frc::SmartDashboard::GetNumber("Balance_I", 5.0);
-    m_dGain = frc::SmartDashboard::GetNumber("Balance_D", 0.1);
-    m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", 2.0);
+    m_pGain = frc::SmartDashboard::GetNumber("Balance_P", p);
+    m_iGain = frc::SmartDashboard::GetNumber("Balance_I", i);
+    m_dGain = frc::SmartDashboard::GetNumber("Balance_D", d);
+    m_pitchTolerence = frc::SmartDashboard::GetNumber("Balance_Delta", delta);
 
     m_balancePID->SetPID(m_pGain, m_iGain, m_dGain);
 }
@@ -105,8 +106,8 @@ void AutoBalanceSwerve::Execute()
             }
             break;
         case Balance_Success:
-            // // CASE: balanced on station
-            // // stay put + end auto
+            // CASE: balanced on station
+            // stay put + end auto
             m_isBalanced = true;
             std::cout << "LEVEL BALANCE" << std::endl;
             break;
