@@ -41,7 +41,7 @@ Elevator::Elevator()
     m_isCone = true;
 
     // May or may not use this
-    m_distancePerRotation = (k_numOfTeeth * k_teethSize) /k_gearRatio;
+    m_distancePerRotation = (k_numOfTeeth * k_teethSize) / k_gearRatio;
 }
 
 void Elevator::setCustomTarget(double target)
@@ -96,10 +96,10 @@ void Elevator::setStowTarget()
 
 void Elevator::updateValues()
 {
-    k_P = frc::SmartDashboard::GetNumber("Elevator P", 0.5);
+    k_P = frc::SmartDashboard::GetNumber("Elevator P", 1.1);
     k_I = frc::SmartDashboard::GetNumber("Elevator I", 5.0);
     k_D = frc::SmartDashboard::GetNumber("Elevator D", 0.1);
-    k_rampPerLoop = frc::SmartDashboard::GetNumber("Elevator Ramp", 0.005);
+    k_rampPerLoop = frc::SmartDashboard::GetNumber("Elevator Ramp", 0.0075);
 }
 
 double Elevator::getElevatorPosition() 
@@ -130,6 +130,7 @@ void Elevator::setElevator(double speed)
     m_elevatorMotorB->Set(speed);
 
     std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << "  ElevSpeed: " << speed << "   isCone: " << m_isCone << std::endl;
+    // std::cout << "Pos: " << m_elevatorPosition << "   Target: " << m_elevatorTarget << " p=" << k_P << " i=" << k_I << " d=" << k_D << "  isCone: " << m_isCone << std::endl;
 }
 
 void Elevator::holdElevator()
@@ -385,6 +386,7 @@ bool Elevator::moveElevatorToTargetManual(double target)
         retVal = true;
     }
 
+    std::cout << "elev - target: " << m_elevatorPosition << " speed: " << speedCmd << std::endl;
     setElevator(speedCmd);
 
     return retVal;

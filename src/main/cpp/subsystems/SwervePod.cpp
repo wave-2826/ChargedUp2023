@@ -36,6 +36,10 @@ SwervePod::SwervePod(rev::CANSparkMax *topMotor, rev::CANSparkMax *bottomMotor, 
     m_motorScaling = motorScaling;
     m_alignedAngle = alignedAngle;
 
+    for (int j = 0; j < 32; j++) {
+        m_angleValues.push_back(0);
+    }
+
     // convert encoder channel to pod designation
     switch(encoderChannel) {
         case 0:
@@ -95,6 +99,25 @@ void SwervePod::UpdateOffsetAngle()
     }
 }
 
+// update rotate using the smart dashboard inputs (used for quick optimization)
+void SwervePod::UpdateRotate()
+{
+    switch(m_encoderChannel) {
+        case 0:
+            m_podName = "Right";
+            m_rotate = frc::SmartDashboard::GetNumber("Right Rotate", 404.0);
+            break;
+        case 1:
+            m_podName = "Left";
+            m_rotate = frc::SmartDashboard::GetNumber("Left Rotate", 404.0);
+            break;
+        case 2:
+            m_podName = "Point";
+            m_rotate = frc::SmartDashboard::GetNumber("Point Rotate", 404.0);
+            break;
+    }
+}
+
 // update p_PID using the smart dashboard inputs (used for quick optimization)
 void SwervePod::UpdatePPID()
 {
@@ -114,21 +137,21 @@ void SwervePod::UpdatePPID()
     }
 }
 
-// update d_PID using the smart dashboard inputs (used for quick optimization)
+// update i_PID using the smart dashboard inputs (used for quick optimization)
 void SwervePod::UpdateIPID()
 {
     switch(m_encoderChannel) {
         case 0:
             m_podName = "Right";
-            m_i = frc::SmartDashboard::GetNumber("Right d_PID", 0.0);
+            m_i = frc::SmartDashboard::GetNumber("Right i_PID", 0.0);
             break;
         case 1:
             m_podName = "Left";
-            m_i = frc::SmartDashboard::GetNumber("Left d_PID", 0.0);
+            m_i = frc::SmartDashboard::GetNumber("Left i_PID", 0.0);
             break;
         case 2:
             m_podName = "Point";
-            m_i = frc::SmartDashboard::GetNumber("Point d_PID", 0.0);
+            m_i = frc::SmartDashboard::GetNumber("Point i_PID", 0.0);
             break;
     }
 }
@@ -190,6 +213,28 @@ void SwervePod::UpdateAlignedAngle()
     }
 }
 
+// aligned state
+bool SwervePod::GetLastStateAligned()
+{
+    return m_lastStateAligned;
+}
+void SwervePod::SetLastStateAligned(bool state)
+{
+    m_lastStateAligned = state;
+}
+double SwervePod::GetAngleAlignedLarger()
+{
+    return m_alignedAngleLarger;
+}
+void SwervePod::SetAngleAlignedLarger(double angle)
+{
+    m_alignedAngleLarger = angle;
+}
+double SwervePod::GetMotorSpeed() 
+{
+    return fabs((m_topEncoder->GetVelocity() + m_bottomEncoder->GetVelocity()) / 2.0);
+}
+
 void SwervePod::SimulationPeriodic()
 {
     // This method will be called once per scheduler run when in simulation
@@ -222,6 +267,11 @@ void SwervePod::FlipIsReversed()
     m_isReversed = !m_isReversed;
 }
 
+double SwervePod::GetEncoderPosition()
+{
+    return ToDegree(m_podEncoder->GetAbsolutePosition());
+}
+
 std::string SwervePod::GetCurrentCase() {
     return m_currentCase;
 }
@@ -245,6 +295,66 @@ void SwervePod::SetDeltaD(double delta)
     m_deltaD = delta;
 }
 
+// PID vals getters & setters
+double SwervePod::GetP()
+{
+    return m_proportional;
+}
+double SwervePod::GetI()
+{
+    return m_integral;
+}
+double SwervePod::GetD()
+{
+    return m_derivative;
+}
+double SwervePod::GetStationKeep()
+{
+    return m_stationKeep;
+}
+void SwervePod::SetP(double p)
+{
+    m_proportional = p;
+}
+void SwervePod::SetI(double i)
+{
+    m_integral = i;
+}
+void SwervePod::SetD(double d)
+{
+    m_derivative = d;
+}
+void SwervePod::SetStationKeep(double stationKeep)
+{
+    m_stationKeep = stationKeep;
+}
+void SwervePod::DisplayPIDValues()
+{
+    switch(m_encoderChannel) {
+        case 0:
+            m_podName = "Right";
+            frc::SmartDashboard::PutNumber("Right P", GetP());
+            frc::SmartDashboard::PutNumber("Right I", GetI());
+            frc::SmartDashboard::PutNumber("Right D", GetD());
+            frc::SmartDashboard::PutNumber("Right StationKeep", GetStationKeep());
+            break;
+        case 1:
+            m_podName = "Left";
+            frc::SmartDashboard::PutNumber("Left P", GetP());
+            frc::SmartDashboard::PutNumber("Left I", GetI());
+            frc::SmartDashboard::PutNumber("Left D", GetD());
+            frc::SmartDashboard::PutNumber("Left StationKeep", GetStationKeep());
+            break;
+        case 2:
+            m_podName = "Point";
+            frc::SmartDashboard::PutNumber("Point P", GetP());
+            frc::SmartDashboard::PutNumber("Point I", GetI());
+            frc::SmartDashboard::PutNumber("Point D", GetD());
+            frc::SmartDashboard::PutNumber("Point StationKeep", GetStationKeep());
+            break;
+    }
+}
+
 /**
  * takes the swerve module state and calculates behavior based on 4 cases
  * (aligned, optimize > 90, optimize < -90, rotate)
@@ -256,6 +366,18 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     // TODO: set max motor speeds
     double topMotorSpeed = 0.0;
     double bottomMotorSpeed = 0.0;
+
+    // TODO: THIS SHOULD BE IT'S OWN FN
+    if (GetAngleAlignedLarger() > 90.0) 
+    {
+        SetAngleAlignedLarger(90.0);
+    }
+    else 
+    {
+        double newAngle = (2800.0/90.0) * GetMotorSpeed() + 10.0;
+        // std::cout << "NEW ANGLE: " << newAngle << std::endl;
+        SetAngleAlignedLarger(newAngle);
+    }
 
     // tracking angles
     // pod state angle (target) is -180 to 180
@@ -292,6 +414,7 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     // std::cout << m_podName << "-> delta: " << GetDeltaD() << " current: " << current_angle << " prev: " << GetPreviousAngle() << std::endl;
     // std::cout << m_podName << "D: " << m_d * GetDeltaD() << "delta: " << GetDeltaD() << std::endl;
     
+
     // conversion from input state speed (rpm) to a motor power % val (0-1)
     double commanded_speed = (state.speed.value() / 5200.0);
     if (1 < commanded_speed)
@@ -317,7 +440,7 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     double normalizer = 1 / 180.0;
     std::string swerveCase = "DID NOT ENTER";
 
-    if (fabs(angle_delta) < m_alignedAngle)
+    if ((fabs(angle_delta) < m_alignedAngle && !GetLastStateAligned()) || (fabs(angle_delta) < GetAngleAlignedLarger() && GetLastStateAligned()))
     {
         // tuning factor is the P in PID (if we decide to use it)
         // double tunedAngleDelta = angle_delta * turnTuningFactor;
@@ -360,7 +483,12 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
                 topMotorSpeed = commanded_speed * (stationKeepTop / divisor);
                 bottomMotorSpeed = commanded_speed * (stationKeepBottom / divisor);
             }
+            SetP(m_p);
+            SetI(m_i * anglesAverage);
+            SetD(m_d * GetDeltaD());
+            SetStationKeep(stationKeepTop / divisor);
         }
+        SetLastStateAligned(true);
     }
     else if (angle_delta < -90.0)
     {
@@ -379,6 +507,14 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
 
         topMotorSpeed = commanded_speed * angle_delta_optimized * normalizer;
         bottomMotorSpeed = -commanded_speed * angle_delta_optimized * normalizer;
+        if (fabs(angle_delta) < GetAngleAlignedLarger()) 
+        {
+            SetLastStateAligned(true);
+        }
+        else 
+        {
+            SetLastStateAligned(false);
+        }
     }
     else if (angle_delta > 90.0)
     {
@@ -397,6 +533,14 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
 
         topMotorSpeed = -commanded_speed * angle_delta_optimized * normalizer;
         bottomMotorSpeed = commanded_speed * angle_delta_optimized * normalizer;
+        if (fabs(angle_delta) < GetAngleAlignedLarger()) 
+        {
+            SetLastStateAligned(true);
+        }
+        else 
+        {
+            SetLastStateAligned(false);
+        }
     }
     else
     {
@@ -413,8 +557,11 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
         //     bottomMotorSpeed = commanded_speed * (std::max(turnTuningFactor, angle_delta * normalizer));
         // }
 
-        topMotorSpeed = -commanded_speed * angle_delta * normalizer;
-        bottomMotorSpeed = commanded_speed * angle_delta * normalizer;   
+        // topMotorSpeed = -commanded_speed * angle_delta * normalizer;
+        // bottomMotorSpeed = commanded_speed * angle_delta * normalizer;
+        topMotorSpeed = -m_rotate * angle_delta * normalizer;
+        bottomMotorSpeed = m_rotate * angle_delta * normalizer; 
+        SetLastStateAligned(false);
     }
 
     // speed safety - ensure not commanding more than 100% motor speed
@@ -435,6 +582,13 @@ void SwervePod::Drive(frc::SwerveModuleState state, bool allAligned, double *ret
     returnArray[0] = angle_delta;
     returnArray[1] = target_angle;
 
+    // if (m_podName == "Left")
+    // {
+    //     std::cout << "Get Last Aligned State: " << GetLastStateAligned() << std::endl;
+    //     std::cout << "angle: " << m_alignedAngle << " larger angle: " << GetAngleAlignedLarger() << " motor spd: " << GetMotorSpeed() << std::endl;
+    //     std::cout << "state: " << m_lastStateAligned << " rotate: " << m_rotate << " p: " << m_p << " i: " << m_i << " d: " << m_d << " align angle: " << m_alignedAngle << " scaling: " << m_motorScaling << std::endl;
+    // }
+    
     // auto balance test printouts
     // std::cout << "drive pod - INITIALIZED" << std::endl;
     // std::cout << m_podName << " -> target: " << target_angle << "  cur: " << current_angle << "  offset: " << m_offsetAngle << std::endl;

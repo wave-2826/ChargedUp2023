@@ -25,6 +25,12 @@ compiling RobotIntake.cpp successful.
 
 compiling SwerveInitializeCommand.cpp successful.
 
+compiling Intake.cpp successful.
+
+compiling RobotIntake.cpp successful.
+
+compiling DriveHeadingTimed.cpp successful.
+
 compiling SwerveDrive.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Wave2826/ChargedUp2023/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

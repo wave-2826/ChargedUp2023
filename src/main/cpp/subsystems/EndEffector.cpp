@@ -22,7 +22,7 @@ EndEffector::EndEffector()
     SetSubsystem("EndEffector");
 
     m_endEffectorMotor = new rev::CANSparkMax(k_endofactorMotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless);
-    m_endEffectorMotor->SetInverted(false);
+    m_endEffectorMotor->SetInverted(true);
 
     m_coneLED = new frc::DigitalOutput(k_coneLED);
     m_cubeLED = new frc::DigitalOutput(k_cubeLED);
@@ -69,7 +69,23 @@ void EndEffector::Periodic()
         m_cubeDetected = (false == m_cubeSensor->Get());
     }
 
-}    
+}   
+
+void EndEffector::setCone(bool isCone)
+{
+    m_isCone = isCone; 
+}
+
+void EndEffector::setLEDS()
+{
+    m_coneLED->Set(m_isCone);
+    m_cubeLED->Set(!m_isCone);
+}
+
+bool EndEffector::getCone()
+{
+    return m_isCone;
+}
 
 void EndEffector::Initialize() 
 {
@@ -84,18 +100,20 @@ void EndEffector::SimulationPeriodic() {}
 
 void EndEffector::runEndEffector()
 {
-    double endEffectorRollerIn = m_operatorJoystick->GetLeftTriggerAxis();
-    double endEffectorRollerOut = m_operatorJoystick->GetRightTriggerAxis();
+    double endEffectorRollerIn = m_operatorJoystick->GetRightTriggerAxis();
+    double endEffectorRollerOut = m_operatorJoystick->GetLeftTriggerAxis();
     double endEffectorSpeed = 0.0;
 
     if(endEffectorRollerIn > k_jsDeadband)
     {
         if (m_isCone)
         {
+            // std::cout << "CASE: cone in" << std::endl;
             endEffectorSpeed = -endEffectorRollerIn;
         }
         else
         {
+            // std::cout << "CASE: cube in" << std::endl;
             if(!m_cubeDetected)
             {
                 endEffectorSpeed = endEffectorRollerIn*0.5; 
@@ -106,26 +124,24 @@ void EndEffector::runEndEffector()
     {
         if (m_isCone)
         {
+            // std::cout << "CASE: cone out" << std::endl;
             endEffectorSpeed = endEffectorRollerOut;
         }
         else
         {
+            // std::cout << "CASE: cube out" << std::endl;
             endEffectorSpeed = -endEffectorRollerOut*0.5; 
         }
     }
-    else 
-    {
-    }
+
     setRoller(endEffectorSpeed);
 }
 
 void EndEffector::setRoller(double speed)
 {
-    m_endEffectorMotor->Set(speed); 
+    m_endEffectorMotor->Set(-speed); 
     
-    std::cout << "Cone: " << m_isCone << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
-    // std::cout <<"CubeSensor: " << m_cubeSensor->Get() << " Channel: " << m_cubeSensor->GetChannel() << std::endl;
-
+    // std::cout << "Cone: " << m_isCone << " CubeDetected: " << m_cubeDetected << " Speed: " << speed << std::endl;
 }
 
 
@@ -139,6 +155,7 @@ bool EndEffector::rollerOut()
         if(m_coneOutTimer > ONE_SECOND)
         {
             m_coneOut = false;
+
             return true;
         }
     }

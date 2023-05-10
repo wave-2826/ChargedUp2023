@@ -24,57 +24,6 @@
               "_showGlyph": false
             }
           },
-          "13,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Left Offset",
-              "_title": "Left Offset",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -360.0,
-              "Slider Settings/Max": 360.0,
-              "Slider Settings/Block increment": 1.0,
-              "Visuals/Display value": true
-            }
-          },
-          "17,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Point Offset",
-              "_title": "Point Offset",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -360.0,
-              "Slider Settings/Max": 360.0,
-              "Slider Settings/Block increment": 1.0,
-              "Visuals/Display value": true
-            }
-          },
-          "15,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Right Offset",
-              "_title": "Right Offset",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -360.0,
-              "Slider Settings/Max": 360.0,
-              "Slider Settings/Block increment": 1.0,
-              "Visuals/Display value": true
-            }
-          },
           "1,4": {
             "size": [
               1,
@@ -256,7 +205,7 @@
               "_showGlyph": false
             }
           },
-          "8,0": {
+          "8,6": {
             "size": [
               2,
               1
@@ -269,7 +218,7 @@
               "_showGlyph": false
             }
           },
-          "6,0": {
+          "6,6": {
             "size": [
               2,
               1
@@ -282,7 +231,7 @@
               "_showGlyph": false
             }
           },
-          "10,0": {
+          "10,6": {
             "size": [
               2,
               1
@@ -295,33 +244,7 @@
               "_showGlyph": false
             }
           },
-          "6,6": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left p_PID",
-              "_title": "Left p_PID",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,6": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right p_PID",
-              "_title": "Right p_PID",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "10,6": {
+          "10,0": {
             "size": [
               2,
               1
@@ -334,55 +257,30 @@
               "_showGlyph": false
             }
           },
-          "10,4": {
+          "8,0": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Point p_PID",
-              "_title": "Point p_PID",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 1.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
-            }
-          },
-          "8,4": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Right p_PID",
               "_title": "Right p_PID",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 1.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
-          "6,4": {
+          "6,0": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Left p_PID",
               "_title": "Left p_PID",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 1.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
           "13,2": {
@@ -424,7 +322,7 @@
               "_showGlyph": false
             }
           },
-          "13,7": {
+          "13,4": {
             "size": [
               2,
               1
@@ -437,7 +335,7 @@
               "_showGlyph": false
             }
           },
-          "15,7": {
+          "15,4": {
             "size": [
               2,
               1
@@ -450,7 +348,7 @@
               "_showGlyph": false
             }
           },
-          "17,7": {
+          "17,4": {
             "size": [
               2,
               1
@@ -463,20 +361,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left d_PID",
-              "_title": "Left d_PID",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,3": {
+          "8,2": {
             "size": [
               2,
               1
@@ -489,7 +374,7 @@
               "_showGlyph": false
             }
           },
-          "10,3": {
+          "10,2": {
             "size": [
               2,
               1
@@ -502,157 +387,56 @@
               "_showGlyph": false
             }
           },
-          "8,1": {
+          "6,2": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Right d_PID",
-              "_title": "Right d_PID",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
-            }
-          },
-          "10,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Point d_PID",
-              "_title": "Point d_PID",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
-            }
-          },
-          "6,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Left d_PID",
               "_title": "Left d_PID",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
           "13,3": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Left Motor Scaling",
               "_title": "Left Motor Scaling",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
           "17,3": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Point Motor Scaling",
               "_title": "Point Motor Scaling",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
           "15,3": {
             "size": [
               2,
-              2
+              1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Right Motor Scaling",
               "_title": "Right Motor Scaling",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.05,
-              "Visuals/Display value": true
-            }
-          },
-          "13,5": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Left Aligned Angle",
-              "_title": "SmartDashboard/Left Aligned Angle",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -1.0,
-              "Slider Settings/Max": 1.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
-            }
-          },
-          "17,5": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Point Aligned Angle",
-              "_title": "SmartDashboard/Point Aligned Angle",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -1.0,
-              "Slider Settings/Max": 1.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
-            }
-          },
-          "15,5": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Right Aligned Angle",
-              "_title": "SmartDashboard/Right Aligned Angle",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": -1.0,
-              "Slider Settings/Max": 1.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
+              "_showGlyph": false
             }
           },
           "12,1": {
@@ -694,9 +478,9 @@
               "_showGlyph": false
             }
           },
-          "6,7": {
+          "12,5": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -707,9 +491,9 @@
               "_showGlyph": false
             }
           },
-          "8,7": {
+          "12,6": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -720,9 +504,9 @@
               "_showGlyph": false
             }
           },
-          "10,7": {
+          "12,7": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -851,6 +635,330 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "6,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left i_PID",
+              "_title": "Left i_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point i_PID",
+              "_title": "Point i_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right i_PID",
+              "_title": "Right i_PID",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Rotate",
+              "_title": "Left Rotate",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Rotate",
+              "_title": "Right Rotate",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point Rotate",
+              "_title": "Point Rotate",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right P",
+              "_title": "Right P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right I",
+              "_title": "Right I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right D",
+              "_title": "Right D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right StationKeep",
+              "_title": "Right StationKeep",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left P",
+              "_title": "Left P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left I",
+              "_title": "Left I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left D",
+              "_title": "Left D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left StationKeep",
+              "_title": "Left StationKeep",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point P",
+              "_title": "Point P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point I",
+              "_title": "Point I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point D",
+              "_title": "Point D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Point StationKeep",
+              "_title": "Point StationKeep",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Recommend Offset L",
+              "_title": "Recommend Offset L",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Recommend Offset R",
+              "_title": "Recommend Offset R",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Recommend Offset P",
+              "_title": "Recommend Offset P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Left Offset",
+              "_title": "SmartDashboard/Left Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "17,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Point Offset",
+              "_title": "SmartDashboard/Point Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
+          },
+          "15,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Right Offset",
+              "_title": "SmartDashboard/Right Offset",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": -500.0,
+              "Slider Settings/Max": 500.0,
+              "Slider Settings/Block increment": 1.0,
+              "Visuals/Display value": true
+            }
           }
         }
       }
@@ -859,6 +967,19 @@
       "title": "LiveWindow",
       "autoPopulate": true,
       "autoPopulatePrefix": "LiveWindow/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {}
+      }
+    },
+    {
+      "title": "Tab 3",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
         "showGrid": true,

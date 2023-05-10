@@ -15,65 +15,92 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "commands/ExtendElevatorTopCone.h"
 #include "commands/ExtendElevatorMidCone.h"
-#include "commands/SequentialScoreTopCone.h"
 #include "commands/AutonomousCommand.h"
 #include "commands/AutoBalanceSwerve.h"
 #include "commands/ScoreMidConeBackout.h"
 #include "commands/ScoreTopConeBackout.h"
+#include "Globals.h"
 
 RobotContainer* RobotContainer::m_robotContainer = NULL;
 
 RobotContainer::RobotContainer() : m_autonomousCommand()
 {
-    // Smartdashboard Joystick Inputs
-    frc::SmartDashboard::PutNumber("LX", 0.0);
-    frc::SmartDashboard::PutNumber("LY", 0.0);
-    frc::SmartDashboard::PutNumber("RX", 0.0);
+    if (TEST_STATE) 
+    {
+        // Smartdashboard Joystick Inputs
+        frc::SmartDashboard::PutNumber("LX", 0.0);
+        frc::SmartDashboard::PutNumber("LY", 0.0);
+        frc::SmartDashboard::PutNumber("RX", 0.0);
 
-    // Smartdashboard Elevator values
-    frc::SmartDashboard::PutNumber("Elevator P", 0.15);
-    frc::SmartDashboard::PutNumber("Elevator I", 5.0);
-    frc::SmartDashboard::PutNumber("Elevator D", 0.05);
-    frc::SmartDashboard::PutNumber("Elevator Ramp", 0.005);
+        // Smartdashboard Elevator values
+        frc::SmartDashboard::PutNumber("Elevator P", 1.1);
+        frc::SmartDashboard::PutNumber("Elevator I", 5.0);
+        frc::SmartDashboard::PutNumber("Elevator D", 0.1);
+        frc::SmartDashboard::PutNumber("Elevator Ramp", 0.0075);
 
-    // Smartdashboard Balance Swerve PID values
-    frc::SmartDashboard::PutNumber("Balance_P", 2.0);
-    frc::SmartDashboard::PutNumber("Balance_I", 5.0);
-    frc::SmartDashboard::PutNumber("Balance_D", 0.0);
-    frc::SmartDashboard::PutNumber("Balance_Delta", 0.5);
+        // Smartdashboard Balance Swerve PID values
+        frc::SmartDashboard::PutNumber("Balance_P", 2.0);
+        frc::SmartDashboard::PutNumber("Balance_I", 5.0);
+        frc::SmartDashboard::PutNumber("Balance_D", 0.0);
+        frc::SmartDashboard::PutNumber("Balance_Delta", 0.5);
 
-    // Smartdashboard Swerve Drive Offsets
-    frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
-    frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
-    frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
+        // PID vals for testing (just viewing)
+        frc::SmartDashboard::PutNumber("Right P", 0.0);
+        frc::SmartDashboard::PutNumber("Right I", 0.0);
+        frc::SmartDashboard::PutNumber("Right D", 0.0);
+        frc::SmartDashboard::PutNumber("Right StationKeep", 0.0);
+        frc::SmartDashboard::PutNumber("Left P", 0.0);
+        frc::SmartDashboard::PutNumber("Left I", 0.0);
+        frc::SmartDashboard::PutNumber("Left D", 0.0);
+        frc::SmartDashboard::PutNumber("Left StationKeep", 0.0);
+        frc::SmartDashboard::PutNumber("Point P", 0.0);
+        frc::SmartDashboard::PutNumber("Point I", 0.0);
+        frc::SmartDashboard::PutNumber("Point D", 0.0);
+        frc::SmartDashboard::PutNumber("Point StationKeep", 0.0);
 
-    // Smartdashboard Swerve Drive p_PID
-    frc::SmartDashboard::PutNumber("Left p_PID", m_swerveDrive.GetLeftPodPPID());
-    frc::SmartDashboard::PutNumber("Right p_PID", m_swerveDrive.GetRightPodPPID());
-    frc::SmartDashboard::PutNumber("Point p_PID", m_swerveDrive.GetPointPodPPID());
+        // Smartdashboard Swerve Drive Offsets
+        frc::SmartDashboard::PutNumber("Left Offset", m_swerveDrive.GetLeftPodOffsetAngle());
+        frc::SmartDashboard::PutNumber("Right Offset", m_swerveDrive.GetRightPodOffsetAngle());
+        frc::SmartDashboard::PutNumber("Point Offset", m_swerveDrive.GetPointPodOffsetAngle());
 
-    // Smartdashboard Swerve Drive d_PID
-    frc::SmartDashboard::PutNumber("Left d_PID", m_swerveDrive.GetLeftPodDPID());
-    frc::SmartDashboard::PutNumber("Right d_PID", m_swerveDrive.GetRightPodDPID());
-    frc::SmartDashboard::PutNumber("Point d_PID", m_swerveDrive.GetPointPodDPID());
+        // Smartdashboard Swerve Drive rotate multiplier
+        frc::SmartDashboard::PutNumber("Left Rotate", m_swerveDrive.GetLeftPodRotate());
+        frc::SmartDashboard::PutNumber("Right Rotate", m_swerveDrive.GetRightPodRotate());
+        frc::SmartDashboard::PutNumber("Point Rotate", m_swerveDrive.GetPointPodRotate());
 
-    // Smartdashboard Swerve Drive Motor Scaling
-    frc::SmartDashboard::PutNumber("Left Motor Scaling", m_swerveDrive.GetLeftPodMotorScaling());
-    frc::SmartDashboard::PutNumber("Right Motor Scaling", m_swerveDrive.GetRightPodMotorScaling());
-    frc::SmartDashboard::PutNumber("Point Motor Scaling", m_swerveDrive.GetPointPodMotorScaling());
+        // Smartdashboard Swerve Drive p_PID
+        frc::SmartDashboard::PutNumber("Left p_PID", m_swerveDrive.GetLeftPodPPID());
+        frc::SmartDashboard::PutNumber("Right p_PID", m_swerveDrive.GetRightPodPPID());
+        frc::SmartDashboard::PutNumber("Point p_PID", m_swerveDrive.GetPointPodPPID());
 
-    // Smartdashboard Swerve Drive Aligned Angle
-    frc::SmartDashboard::PutNumber("Left Aligned Angle", m_swerveDrive.GetLeftPodAlignedAngle());
-    frc::SmartDashboard::PutNumber("Right Aligned Angle", m_swerveDrive.GetRightPodAlignedAngle());
-    frc::SmartDashboard::PutNumber("Point Aligned Angle", m_swerveDrive.GetPointPodAlignedAngle());
-    
-    frc::SmartDashboard::PutString("Right Pod Case", m_swerveDrive.GetRightPodCase());
-    frc::SmartDashboard::PutString("Left Pod Case", m_swerveDrive.GetLeftPodCase());
-    frc::SmartDashboard::PutString("Point Pod Case", m_swerveDrive.GetPointPodCase());
+        // Smartdashboard Swerve Drive i_PID
+        frc::SmartDashboard::PutNumber("Left i_PID", m_swerveDrive.GetLeftPodIPID());
+        frc::SmartDashboard::PutNumber("Right i_PID", m_swerveDrive.GetRightPodIPID());
+        frc::SmartDashboard::PutNumber("Point i_PID", m_swerveDrive.GetPointPodIPID());
 
-    frc::SmartDashboard::PutNumber("Left Pod Voltage Comp.", 10.0);
-    frc::SmartDashboard::PutNumber("Right Pod Voltage Comp.", 10.0);
-    frc::SmartDashboard::PutNumber("Point Pod Voltage Comp.", 10.0);
+        // Smartdashboard Swerve Drive d_PID
+        frc::SmartDashboard::PutNumber("Left d_PID", m_swerveDrive.GetLeftPodDPID());
+        frc::SmartDashboard::PutNumber("Right d_PID", m_swerveDrive.GetRightPodDPID());
+        frc::SmartDashboard::PutNumber("Point d_PID", m_swerveDrive.GetPointPodDPID());
+
+        // Smartdashboard Swerve Drive Motor Scaling
+        frc::SmartDashboard::PutNumber("Left Motor Scaling", m_swerveDrive.GetLeftPodMotorScaling());
+        frc::SmartDashboard::PutNumber("Right Motor Scaling", m_swerveDrive.GetRightPodMotorScaling());
+        frc::SmartDashboard::PutNumber("Point Motor Scaling", m_swerveDrive.GetPointPodMotorScaling());
+
+        // Smartdashboard Swerve Drive Aligned Angle
+        frc::SmartDashboard::PutNumber("Left Aligned Angle", m_swerveDrive.GetLeftPodAlignedAngle());
+        frc::SmartDashboard::PutNumber("Right Aligned Angle", m_swerveDrive.GetRightPodAlignedAngle());
+        frc::SmartDashboard::PutNumber("Point Aligned Angle", m_swerveDrive.GetPointPodAlignedAngle());
+        
+        frc::SmartDashboard::PutString("Right Pod Case", m_swerveDrive.GetRightPodCase());
+        frc::SmartDashboard::PutString("Left Pod Case", m_swerveDrive.GetLeftPodCase());
+        frc::SmartDashboard::PutString("Point Pod Case", m_swerveDrive.GetPointPodCase());
+
+        frc::SmartDashboard::PutNumber("Left Pod Voltage Comp.", 10.0);
+        frc::SmartDashboard::PutNumber("Right Pod Voltage Comp.", 10.0);
+        frc::SmartDashboard::PutNumber("Point Pod Voltage Comp.", 10.0);
+    }
 
     // SmartDashboard Buttons
     // frc::SmartDashboard::PutData("Score Top Cone", new SequentialScoreTopCone(&m_elevator, &m_swerveDrive, &m_endEffector));

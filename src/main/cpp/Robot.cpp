@@ -24,7 +24,12 @@
 void Robot::RobotInit() {
   m_container = RobotContainer::GetInstance();
   m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, nullptr);
-  m_container->m_swerveDrive.SetVoltageCompensation();
+
+  if (TEST_STATE)
+  {
+    m_container->m_swerveDrive.SetVoltageCompensation();
+  }
+ 
 
   m_container->m_elevator.Initialize();
   m_container->m_endEffector.Initialize();
@@ -46,34 +51,45 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() 
 { 
-  frc2::CommandScheduler::GetInstance().Run(); 
+  frc2::CommandScheduler::GetInstance().Run();
 
-  // SET pod offset angles with values from dashboard
-  double leftOffset = frc::SmartDashboard::GetNumber("Left Offset", 404.0);
-  double rightOffset = frc::SmartDashboard::GetNumber("Right Offset", 404.0);
-  double pointOffset = frc::SmartDashboard::GetNumber("Point Offset", 404.0);
-  m_container->m_swerveDrive.SetLeftPodOffsetAngle(leftOffset);
-  m_container->m_swerveDrive.SetRightPodOffsetAngle(rightOffset);
-  m_container->m_swerveDrive.SetPointPodOffsetAngle(pointOffset);
+  // std::cout << "LEFT ENCODER ANGLE: " << m_container->m_swerveDrive.GetLeftPodEncoderPosition();
+  // std::cout << "  RIGHT ENCODER ANGLE: " << m_container->m_swerveDrive.GetRightPodEncoderPosition();
+  // std::cout << "  POINT ENCODER ANGLE: " << m_container->m_swerveDrive.GetPointPodEncoderPosition();
+  // std::cout << std::endl;
 
-  m_container->m_elevator.updateValues();
+  m_container->m_swerveDrive.DisplayPodPIDValues();
 
-  // SmartDashboard Swerve Drive Motor Temperatures + indicators
-  frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
-  frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
-  frc::SmartDashboard::PutNumber("Right Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR));
-  frc::SmartDashboard::PutBoolean("Right Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR) > max_motor_temp);
-  frc::SmartDashboard::PutNumber("Left Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR));
-  frc::SmartDashboard::PutBoolean("Left Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR) > max_motor_temp);
-  frc::SmartDashboard::PutNumber("Left Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR));
-  frc::SmartDashboard::PutBoolean("Left Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR) > max_motor_temp);
-  frc::SmartDashboard::PutNumber("Point Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR));
-  frc::SmartDashboard::PutBoolean("Point Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR) > max_motor_temp);
-  frc::SmartDashboard::PutNumber("Point Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR));
-  frc::SmartDashboard::PutBoolean("Point Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR) > max_motor_temp);
+  // frc::SmartDashboard::PutNumber("Recommend Offset L", -m_container->m_swerveDrive.GetLeftPodEncoderPosition() + 90.0);
+  // frc::SmartDashboard::PutNumber("Recommend Offset R", -m_container->m_swerveDrive.GetRightPodEncoderPosition() + 90.0);
+  // frc::SmartDashboard::PutNumber("Recommend Offset P", -m_container->m_swerveDrive.GetPointPodEncoderPosition() + 90.0);
+  frc::SmartDashboard::PutNumber("Recommend Offset L", m_container->m_swerveDrive.GetLeftPodEncoderPosition());
+  frc::SmartDashboard::PutNumber("Recommend Offset R", m_container->m_swerveDrive.GetRightPodEncoderPosition());
+  frc::SmartDashboard::PutNumber("Recommend Offset P", m_container->m_swerveDrive.GetPointPodEncoderPosition());
 
-  // SmartDashboard Swerve Drive Test Motor Speeds
-  frc::SmartDashboard::PutNumber("Test Motor Speed", m_diagnosticSpeed);
+
+  if (TEST_STATE)
+  {
+    m_container->m_elevator.updateValues();
+
+    // SmartDashboard Swerve Drive Motor Temperatures + indicators
+    frc::SmartDashboard::PutNumber("Right Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR));
+    frc::SmartDashboard::PutBoolean("Right Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, TOP_MOTOR) > max_motor_temp);
+    frc::SmartDashboard::PutNumber("Right Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR));
+    frc::SmartDashboard::PutBoolean("Right Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(RIGHT_POD, BOTTOM_MOTOR) > max_motor_temp);
+    frc::SmartDashboard::PutNumber("Left Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR));
+    frc::SmartDashboard::PutBoolean("Left Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, TOP_MOTOR) > max_motor_temp);
+    frc::SmartDashboard::PutNumber("Left Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR));
+    frc::SmartDashboard::PutBoolean("Left Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(LEFT_POD, BOTTOM_MOTOR) > max_motor_temp);
+    frc::SmartDashboard::PutNumber("Point Top Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR));
+    frc::SmartDashboard::PutBoolean("Point Top Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, TOP_MOTOR) > max_motor_temp);
+    frc::SmartDashboard::PutNumber("Point Bottom Motor Temp", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR));
+    frc::SmartDashboard::PutBoolean("Point Bottom Temp Indicator", m_container->m_swerveDrive.GetMotorTemperature(POINT_POD, BOTTOM_MOTOR) > max_motor_temp);
+
+    // SmartDashboard Swerve Drive Test Motor Speeds
+    frc::SmartDashboard::PutNumber("Test Motor Speed", m_diagnosticSpeed);
+
+  }
 }
 
 /**
@@ -123,27 +139,36 @@ double Joystick(double input, double deadzone)
  */
 void Robot::TeleopPeriodic() 
 {
-  
-  // updates pod angle offsets (on dashboard)
-  m_container->m_swerveDrive.UpdatePodOffsetAngles();
-  // updates pod p_PID vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodPPID();
-  // updates pod i_PID vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodIPID();
-  // updates pod d_PID vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodDPID();
-  // updates pod motor scaling vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodMotorScaling();
-  // updates pod aligned angles vals (on dashboard)
-  m_container->m_swerveDrive.UpdatePodAlignedAngle();
+  if (TEST_STATE)
+  {
+    // updates pod angle offsets (on dashboard)
+    m_container->m_swerveDrive.UpdatePodOffsetAngles();
+    //update rotate multiplier
+    m_container->m_swerveDrive.UpdatePodRotate();
+    // updates pod p_PID vals (on dashboard)
+    m_container->m_swerveDrive.UpdatePodPPID();
+    // updates pod i_PID vals (on dashboard)
+    m_container->m_swerveDrive.UpdatePodIPID();
+    // updates pod d_PID vals (on dashboard)
+    m_container->m_swerveDrive.UpdatePodDPID();
+    // updates pod motor scaling vals (on dashboard)
+    m_container->m_swerveDrive.UpdatePodMotorScaling();
+    // updates pod aligned angles vals (on dashboard)
+    m_container->m_swerveDrive.UpdatePodAlignedAngle();
+  }
 
   // Controller Inputs - Driver Operations
   double targetJoystickLX = Joystick(m_container->getDriver()->GetLeftX(), k_jsDeadband);
   double targetJoystickLY = Joystick(m_container->getDriver()->GetLeftY(), k_jsDeadband);
   double targetJoystickRX = Joystick(m_container->getDriver()->GetRightX(), k_jsDeadband);
-  frc::SmartDashboard::PutNumber("LX", targetJoystickLX);
-  frc::SmartDashboard::PutNumber("LY", targetJoystickLY);
-  frc::SmartDashboard::PutNumber("RX", targetJoystickRX);
+ 
+  if (TEST_STATE)
+  {
+    frc::SmartDashboard::PutNumber("LX", targetJoystickLX);
+    frc::SmartDashboard::PutNumber("LY", targetJoystickLY);
+    frc::SmartDashboard::PutNumber("RX", targetJoystickRX);
+  }
+  
   // Initial Swerve State
   bool initialSwerveState = m_container->getDriver()->GetStartButton();
   // Lock Swerve State
@@ -153,15 +178,6 @@ void Robot::TeleopPeriodic()
   bool testLeftPod = m_container->getDriver()->GetXButton();
   bool testPointPod = m_container->getDriver()->GetAButton();
   int dPadValue = m_container->getDriver()->GetPOV();
-
-  // When D-Pad is pressed, print if pods are reversed
-  if (dPadValue != m_dPadValueLastFrame && dPadValue != -1)
-  {
-    std::cout << "Left Pod Reversed: " << m_container->m_swerveDrive.GetLeftPodReversed() << std::endl;
-    std::cout << "Right Pod Reversed: " << m_container->m_swerveDrive.GetRightPodReversed() << std::endl;
-    std::cout << "Point Pod Reversed: " << m_container->m_swerveDrive.GetPointPodReversed() << std::endl;
-  }
-  m_dPadValueLastFrame = dPadValue;
 
   std::string driveCase = "NONE";
   double fileOutputs[6] = { 404, 404, 404, 404, 404, 404};
@@ -185,43 +201,48 @@ void Robot::TeleopPeriodic()
       driveCase = "Initial state";
       m_container->m_swerveDrive.InitialSwerve();
     }
-    else if ((testRightPod || testLeftPod || testPointPod) && (dPadValue == 0 || dPadValue == 180))
+    else if (TEST_STATE && dPadValue != -1)
     {
-      driveCase = "Pod diagnostic";
-      std::string podInput;
-      std::string motorInput; 
-      podInput = testRightPod ? "RIGHT" : podInput;
-      podInput = testLeftPod ? "LEFT" : podInput;
-      podInput = testPointPod ? "POINT" : podInput;
-      motorInput = dPadValue == 0 ? "TOP" : motorInput; 
-      motorInput = dPadValue == 180 ? "BOTTOM" : motorInput;
+      if ((testRightPod || testLeftPod || testPointPod) && (dPadValue == 0 || dPadValue == 180))
+      {
+        driveCase = "Pod diagnostic";
+        std::string podInput;
+        std::string motorInput; 
+        podInput = testRightPod ? "RIGHT" : podInput;
+        podInput = testLeftPod ? "LEFT" : podInput;
+        podInput = testPointPod ? "POINT" : podInput;
+        motorInput = dPadValue == 0 ? "TOP" : motorInput; 
+        motorInput = dPadValue == 180 ? "BOTTOM" : motorInput;
 
-      // set motors for testing
-      m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.6);
-    } else if ((!testRightPod && !testLeftPod && !testPointPod) && (dPadValue == 0 || dPadValue == 90 || dPadValue == 180 || dPadValue == 270)) {
-      // TESTING FOR SWERVE ANGLE OFFSETS
-      driveCase = "dpad offset testing";
-      if (dPadValue == 0)
-      {
-        // forward
-        m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0, fileOutputs);
-      } else if (dPadValue == 180)
-      {
-        // backward
-        m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0, fileOutputs);
-      } else if (dPadValue == 90) {
-        // right
-        m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0, fileOutputs);
-      } else if (dPadValue == 270) {
-        // left
-        m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0, fileOutputs);
+        // set motors for testing
+        m_container->m_swerveDrive.DiagonosticSwerveRotate(podInput, motorInput, 0.6);
+      } else if ((!testRightPod && !testLeftPod && !testPointPod) && (dPadValue == 0 || dPadValue == 90 || dPadValue == 180 || dPadValue == 270)) {
+        // TESTING FOR SWERVE ANGLE OFFSETS
+        driveCase = "dpad offset testing";
+        if (dPadValue == 180)
+        {
+          // forward
+          m_container->m_swerveDrive.DrivePods(0.0, 0.2, 0.0, fileOutputs);
+        } else if (dPadValue == 0)
+        {
+          // backward
+          m_container->m_swerveDrive.DrivePods(0.0, -0.2, 0.0, fileOutputs);
+        } else if (dPadValue == 90) {
+          // right
+          m_container->m_swerveDrive.DrivePods(0.2, 0.0, 0.0, fileOutputs);
+        } else if (dPadValue == 270) {
+          // left
+          m_container->m_swerveDrive.DrivePods(-0.2, 0.0, 0.0, fileOutputs);
+        } 
+      } else {
+        // stopped
+        m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, fileOutputs);
       }
     }
     else {
       driveCase = "STOPPED";
-      m_container->m_swerveDrive.DrivePods(0,0,0,fileOutputs);
+      m_container->m_swerveDrive.DrivePods(0.0, 0.0, 0.0, fileOutputs);
     }
-
   } 
   else 
   {

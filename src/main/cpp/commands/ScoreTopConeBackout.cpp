@@ -19,7 +19,7 @@ ScoreTopConeBackout::ScoreTopConeBackout(Elevator* elevator, SwerveDrive* drive,
             // score cone (top)
             SequentialScoreTopCone(m_elevator, m_endEffector),       
             // back out of community
-            DriveTimed(m_drive, 0.0, -0.7, 0.0, (units::time::second_t)1.0)
+            DriveTimed(m_drive, 0.0, 0.75, 0.0, (units::time::second_t)2.5)
         )
     );
 }

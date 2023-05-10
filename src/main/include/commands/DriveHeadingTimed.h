@@ -14,31 +14,19 @@
 
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/CommandBase.h>
-#include <frc2/command/WaitCommand.h>
 #include <subsystems/SwerveDrive.h>
-// #include <ctre/phoenix/sensors/Pigeon2.h>
-#include <units/time.h>
-#include "frc2/command/PIDSubsystem.h"
-
-// Steps to balance on charging station
-typedef enum
-{
-    Balance_Off,
-    Balance_Active,
-    Balance_Success
-} BalanceStates;
 
 /**
  *
  *
  * @author 2826WaveRobotics
  */
-class AutoBalanceSwerve: public frc2::CommandHelper<frc2::CommandBase, AutoBalanceSwerve> 
+class DriveHeadingTimed : public frc2::CommandHelper<frc2::CommandBase, DriveHeadingTimed>
 {
 
 public:
 
-    explicit AutoBalanceSwerve(SwerveDrive* swerveDrive);
+    explicit DriveHeadingTimed(SwerveDrive* swerveDrive, double cmdSpeed, uint16_t timeout = 0);
 
     void Initialize() override;
     void Execute() override;
@@ -46,23 +34,11 @@ public:
     void End(bool interrupted) override;
     bool RunsWhenDisabled() const override;
 
-    void updatePID(double p, double i, double d, double delta);
-
 private:
 
     SwerveDrive* m_swerveDrive;
-    // ctre::phoenix::sensors::Pigeon2* m_pigeon;
-    BalanceStates m_balanceState;
-    uint16_t m_balanceTimer;
-    bool m_isBalanced;
+    double m_targetSpeed;
+    double m_timer;
+    uint16_t m_timeout;
 
-    double m_pGain = 1.0;
-    double m_iGain = 2.0;
-    double m_dGain = 0.5;
-    double m_pitchTolerence = 2.0;
-    
-    // double m_startingYaw;
-    frc2::PIDController *m_balancePID; 
-
-    // std::vector<double> previousPitches;
 };

@@ -38,13 +38,20 @@ class SwervePod {
         static constexpr const double kD = 0.0;
 
         // swerve tuning variables 
+        double m_rotate;
         double m_p;
         double m_i;
         double m_d;
         double m_alignedAngle;
         double m_motorScaling;
 
-        std::vector<double> m_angleValues = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        // swerve tuning vals to observe for testing
+        double m_proportional;
+        double m_integral;
+        double m_derivative;
+        double m_stationKeep;
+
+        std::vector<double> m_angleValues;
         int m_anglePointer = 0;
 
         // Angles are measured counter-clockwise, with zero being "robot forward"
@@ -66,6 +73,10 @@ class SwervePod {
 
         double m_previousTopMotorSpeed;
         double m_previousBottomMotorSpeed;
+
+        // aligned state tracking
+        bool m_lastStateAligned = false;
+        double m_alignedAngleLarger = 45.0;
 
     public:
     
@@ -127,11 +138,25 @@ class SwervePod {
 
         // Swerve Dashboard Live Update Functions
         void UpdateOffsetAngle();
+        void UpdateRotate();
         void UpdatePPID();
         void UpdateIPID();
         void UpdateDPID();
         void UpdateMotorScaling();
         void UpdateAlignedAngle();
+
+        // PID vals getters & setters
+        double GetP();
+        double GetI();
+        double GetD();
+        double GetStationKeep();
+        void SetP(double p);
+        void SetI(double i);
+        void SetD(double d);
+        void SetStationKeep(double stationKeep);
+        void DisplayPIDValues();
+
+        double GetEncoderPosition();
 
         // Track Position of Module
         double GetPreviousAngle();
@@ -139,6 +164,13 @@ class SwervePod {
         // Track delta D
         double GetDeltaD();
         void SetDeltaD(double delta);
+
+        // aligned state
+        bool GetLastStateAligned();
+        void SetLastStateAligned(bool state);
+        double GetMotorSpeed();
+        double GetAngleAlignedLarger();
+        void SetAngleAlignedLarger(double angle);
 
         void Periodic(); 
         void SimulationPeriodic();

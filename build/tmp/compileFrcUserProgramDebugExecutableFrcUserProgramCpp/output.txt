@@ -9,8 +9,6 @@ compiling SwerveInitializeCommand.cpp successful.
 
 compiling AutoBalanceSwerve.cpp successful.
 
-compiling ScoreTopConeBackout.cpp successful.
-
 compiling ScoreMidConeBackout.cpp successful.
 
 compiling EndEffector.cpp successful.
@@ -21,9 +19,11 @@ compiling Intake.cpp successful.
 
 compiling RobotIntake.cpp successful.
 
+compiling RobotContainer.cpp successful.
+
 compiling Robot.cpp successful.
 
-compiling RobotContainer.cpp successful.
+compiling SwerveInitializeCommand.cpp successful.
 
 compiling SwerveDrive.cpp successful.
 

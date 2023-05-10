@@ -54,7 +54,8 @@ class SwerveDrive: public frc2::SubsystemBase {
         SwervePod *m_leftPod;
         SwervePod *m_pointPod;
 
-        const double k_gearRatioWheelSpeed = 3.2196;
+        // const double k_gearRatioWheelSpeed = 3.2196;
+        const double k_gearRatioWheelSpeed = 4.9659;
         const double k_wheelDiameterMeters = 0.0635;
         const double k_wheelCircumferenceMeters = k_wheelDiameterMeters * (double)3.141592653;
         const double k_maxMotorSpeed = 5200.0;
@@ -68,25 +69,33 @@ class SwerveDrive: public frc2::SubsystemBase {
         double m_pointPodBottomMotorCurrent = 0.0;
 
         // Swerve smartdashboard inputs - offsets
-        double m_leftPodOffsetAngle = 278.0;
-        double m_rightPodOffsetAngle = -45.0;
-        double m_pointPodOffsetAngle = 183.0;
+        double m_leftPodOffsetAngle = 37.7;
+        double m_rightPodOffsetAngle = -402;
+        double m_pointPodOffsetAngle = 120.6;
         double leftOffset;
         double rightOffset;
         double pointOffset;
 
+        // Swerve smartdashboard inputs - rotate
+        double m_leftRotate = 1.0;
+        double m_rightRotate = 1.0;
+        double m_pointRotate = 1.0;
+        double leftRotate;
+        double rightRotate;
+        double pointRotate;
+
         // Swerve smartdashboard inputs - p_PID
-        double m_pLeft  = 3.0;
-        double m_pRight = 3.0;
-        double m_pPoint = 3.0;
+        double m_pLeft  = 2.0;
+        double m_pRight = 2.0;
+        double m_pPoint = 2.0;
         double pLeft;
         double pRight;
         double pPoint;
 
         // Swerve smartdashboard inputs - i_PID
-        double m_iLeft  = 3.0;
-        double m_iRight = 3.0;
-        double m_iPoint = 3.0;
+        double m_iLeft  = 0.0;
+        double m_iRight = 0.0;
+        double m_iPoint = 0.0;
         double iLeft;
         double iRight;
         double iPoint;
@@ -100,17 +109,17 @@ class SwerveDrive: public frc2::SubsystemBase {
         double dPoint;
 
         // Swerve smartdashboard inputs - scale top & bottom motor speeds
-        double m_leftPodScaling = 0.3;
-        double m_rightPodScaling = 0.3;
-        double m_pointPodScaling = 0.3;
+        double m_leftPodScaling = 1.0;
+        double m_rightPodScaling = 1.0;
+        double m_pointPodScaling = 1.0;
         double leftPodScaling;
         double rightPodScaling;
         double pointPodScaling;
 
         // Swerve smartdashboard inputs - scale top & bottom motor speeds
-        double m_leftPodAlignedAngle = 30.0;
-        double m_rightPodAlignedAngle = 30.0;
-        double m_pointPodAlignedAngle = 30.0;
+        double m_leftPodAlignedAngle = 5.0;
+        double m_rightPodAlignedAngle = 5.0;
+        double m_pointPodAlignedAngle = 5.0;
         double leftPodAlignedAngle;
         double rightPodAlignedAngle;
         double pointPodAlignedAngle;
@@ -169,6 +178,10 @@ class SwerveDrive: public frc2::SubsystemBase {
         */
         bool InitialSwerve();
 
+        double GetLeftPodEncoderPosition();
+        double GetRightPodEncoderPosition();
+        double GetPointPodEncoderPosition();
+
         // Swerve drive smartdashboard functions
         double GetLeftPodOffsetAngle();
         double GetRightPodOffsetAngle();
@@ -178,6 +191,17 @@ class SwerveDrive: public frc2::SubsystemBase {
         void SetPointPodOffsetAngle(double offsetAngle);  
         // Function that updates a pod offset angle based on input from the smartdashboard
         void UpdatePodOffsetAngles();
+        // Show PID values for testing
+        void DisplayPodPIDValues();
+
+        double GetLeftPodRotate();
+        double GetRightPodRotate();
+        double GetPointPodRotate();
+        void SetLeftPodRotate(double rotate);
+        void SetRightPodRotate(double rotate);
+        void SetPointPodRotate(double rotate);  
+        // Function that updates a pod rotate multiplier based on input from the smartdashboard
+        void UpdatePodRotate();
 
         double GetLeftPodPPID();
         double GetRightPodPPID();

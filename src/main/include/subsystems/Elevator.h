@@ -121,8 +121,8 @@ private:
     static constexpr const double k_elevatorTargetMiddleCone = 31.0;
     static constexpr const double k_elevatorTargetTopCube = 54.5;
     static constexpr const double k_elevatorTargetMiddleCube = 36.0;
-    static constexpr const double k_elevatorHumanStationCone = 34.7;
-    static constexpr const double k_elevatorHumanStationCube = 29.0;
+    static constexpr const double k_elevatorHumanStationCone = 31.5;
+    static constexpr const double k_elevatorHumanStationCube = 28.5;
 
 public:
     Elevator();
